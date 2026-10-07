@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestionar perfumes</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body class="admin-page">
+
+<div th:insert="fragments/general.html :: menu"></div>
+
+<main class="admin-shell">
+    <section class="section-heading admin-heading">
+        <div>
+            <p class="eyebrow">Catalogo</p>
+            <h1>Gestionar perfumes</h1>
+            <p>Listado de productos disponibles para revisar, editar o eliminar.</p>
+        </div>
+        <a class="btn btn-primary" href="registrarPerfume">Nuevo producto</a>
+    </section>
+
+    <section class="admin-product-grid">
+        <article class="admin-product-card" th:each="p : ${perfumes}">
+            <img th:src="@{${ '../mostrar_imagen?id=' + p.id }}" alt="Imagen del perfume"/>
+            <div class="admin-product-info">
+                <p class="product-brand" th:text="${p.marca}"></p>
+                <h2 th:text="${p.nombre}"></h2>
+                <p class="product-price"><span th:text="${p.precio}"></span> EUR</p>
+
+                <dl class="product-details">
+                    <div>
+                        <dt>Familia olfativa</dt>
+                        <dd th:text="${p.familiaOlfativa}"></dd>
+                    </div>
+                    <div>
+                        <dt>Mililitros</dt>
+                        <dd th:text="${p.mililitros}"></dd>
+                    </div>
+                    <div>
+                        <dt>Concentracion</dt>
+                        <dd th:text="${p.concentracion}"></dd>
+                    </div>
+                    <div>
+                        <dt>Genero</dt>
+                        <dd th:text="${p.genero}"></dd>
+                    </div>
+                    <div class="full-detail">
+                        <dt>Descripcion</dt>
+                        <dd th:text="${p.descripcion}"></dd>
+                    </div>
+                </dl>
+
+                <a class="btn btn-danger" th:href="@{/admin/borrarPerfume(id=${p.id})}" onclick="return confirm('Estas seguro?')">Borrar</a>
+                <br>
+                <a class="btn btn-danger" th:href="@{/admin/editarPerfume(id=${p.id})}">Editar</a>
+                <br>
+
+
+            </div>
+        </article>
+    </section>
+</main>
+
+</body>
+</html>

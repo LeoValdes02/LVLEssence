@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar perfume</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body class="admin-page">
+
+<div th:insert="fragments/general.html :: menu"></div>
+
+<main class="admin-shell">
+    <section class="form-card">
+        <div class="section-heading">
+            <p class="eyebrow">Administracion</p>
+            <h1>Registrar nuevo perfume</h1>
+            <p>Introduce los datos del nuevo producto para incorporarlo al catalogo.</p>
+        </div>
+
+        <form class="luxury-form" action="#" th:action="@{/admin/guardarPerfume}" th:object="${nuevo}" method="post" enctype="multipart/form-data">
+            <div class="form-field">
+                <label for="nombre">Nombre</label>
+                <input type="text" th:field="*{nombre}">
+                <span class="field-error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+            </div>
+
+            <div class="form-field">
+                <label for="marca">Marca</label>
+                <input type="text" th:field="*{marca}">
+            </div>
+
+            <div class="form-grid">
+                <div class="form-field">
+                    <label for="precio">Precio</label>
+                    <input type="text" th:field="*{precio}">
+                    <span class="field-error" th:if="${#fields.hasErrors('precio')}" th:errors="*{precio}"></span>
+                </div>
+
+                <div class="form-field">
+                    <label for="mililitros">Mililitros</label>
+                    <input type="text" th:field="*{mililitros}">
+                </div>
+            </div>
+
+            <div class="form-field">
+                <label for="familiaOlfativa">Familia olfativa</label>
+                <input type="text" th:field="*{familiaOlfativa}">
+            </div>
+
+            <div class="form-grid">
+                <div class="form-field">
+                    <label for="concentracion">Concentracion</label>
+                    <input type="text" th:field="*{concentracion}">
+                </div>
+
+                <div class="form-field">
+                    <label for="genero">Genero</label>
+                    <input type="text" th:field="*{genero}">
+                </div>
+            </div>
+
+            <div class="form-field">
+                <label for="descripcion">Descripcion</label>
+                <input type="text" th:field="*{descripcion}">
+            </div>
+
+            <div class="form-field">
+                <label for="fotoSubida">Portada</label>
+                <input type="file" th:field="*{fotoSubida}">
+            </div>
+
+            <button class="btn btn-primary form-submit" type="submit">Registrar</button>
+        </form>
+    </section>
+</main>
+
+</body>
+</html>

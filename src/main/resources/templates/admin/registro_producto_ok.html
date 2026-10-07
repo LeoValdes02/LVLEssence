@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Producto registrado</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body class="admin-page">
+
+<div th:insert="fragments/general.html :: menu"></div>
+
+<main class="admin-shell">
+    <section class="status-card">
+        <p class="eyebrow">Catalogo actualizado</p>
+        <h1>Producto recibido correctamente</h1>
+        <p>El perfume se ha enviado al sistema. Comprueba la consola si necesitas revisar el registro tecnico.</p>
+        <a class="btn btn-primary" href="gestionarPerfumes">Volver al listado</a>
+    </section>
+</main>
+
+</body>
+</html>

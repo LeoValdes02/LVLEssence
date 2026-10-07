@@ -1,0 +1,42 @@
+{{#.}}
+<!--
+    Con {{#.}} ... {{/.}} indicamos a Mustache.js que el HTML
+    de dentro se aplicara a CADA elemento del array que le pasemos.
+-->
+
+<article class="product-card">
+    <div class="product-media">
+        <img class="imagen-producto" src="mostrar_imagen?id={{id}}" alt="{{nombre}}">
+    </div>
+
+    <div class="product-info">
+        <p class="product-brand">{{marca}}</p>
+        <h2 class="product-name">{{nombre}}</h2>
+        <p class="product-price">{{precio}} EUR</p>
+        <div class="product-actions">
+            <a href="#" class="btn btn-secondary" onclick="mostrar_detalles({{id}})">Ver detalles</a>
+            <input class="quantity-input" type="number" aria-valuemin="1" value="1">
+            <a href="#" class="btn btn-primary">Agregar al carrito</a>
+        </div>
+    </div>
+</article>
+<!--
+
+<div class="product-meta">
+    familiaOlfativa: {{familiaOlfativa}}
+</div>
+<div class="product-meta">
+    mililitros: {{mililitros}}
+</div>
+<div class="product-meta">
+    concentracion: {{concentracion}}
+</div>
+<div class="product-meta">
+    genero: {{genero}}
+</div>
+<div class="product-meta">
+    descripcion: {{descripcion}}
+</div>
+-->
+
+{{/.}}

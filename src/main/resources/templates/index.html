@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Perfumeria Masonica Leo</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com"/>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+          rel="stylesheet"/>
+    <link rel="stylesheet" href="/css/estilos.css"/>
+</head>
+<body>
+<header class="site-header">
+    <div class="topbar">
+        <a class="admin-link" href="admin/inicioAdmin">Acceso a administracion</a>
+    </div>
+
+    <!-- la parte publica sera una SPA Single Page Application-->
+    <!-- El javascript de esta unica pagina gestionará -->
+    <!-- lo que usuario necesite-->
+
+    <div class="main-nav">
+        <a href="#" class="brand" id="inicio">MasonicLeo Parfum</a>
+        <nav class="nav-links" aria-label="Navegacion principal">
+            <a href="#" id="perfumes">PERFUMES</a>
+            <a href="#" id="registrarme">REGISTRARME</a>
+            <a href="#" id="identificarme">IDENTIFICARME</a>
+            <a href="#" id="carrito">CARRITO</a>
+            <a href="#" id="pedidos">VER MIS PEDIDOS</a>
+            <a href="#" id="mis_datos">MIS DATOS</a>
+            <a href="#" id="cerrar_sesion">CERRAR SESION</a>
+        </nav>
+    </div>
+</header>
+
+<main class="page-shell">
+    <div id="contenedor"></div>
+</main>
+
+<script src="librerias_js/jquery.js"></script>
+<script src="librerias_js/mustache.js"></script>
+
+<script>
+    // parte de descarga de plantillas html
+    //plantilla_inicio = $.get("plantillas_html/inicio.html")
+    $.get("plantillas_html/inicio.html").done(function (res) {
+        plantilla_inicio = res;
+    });
+    $.get("plantillas_html/listado_productos.html").done(function (res) {
+        plantilla_productos = res;
+    });
+    $.get("plantillas_html/detalles_producto.html").done(function (res) {
+        plantilla_detalles_producto = res;
+    });
+
+    // parte de atencion a enlaces
+
+    $("#inicio").click(function () {
+        $("#contenedor").html(plantilla_inicio);
+    }); //end inicio
+
+    $("#perfumes").click(function mostrar_perfumes() {
+        //primero pedimos el json de perfumes
+        $.getJSON("restPerfumes/listar").done(function (json) {
+            console.log(json);
+            //vamos a usar el json para listar los productos:
+            let resultado = Mustache.render(plantilla_productos, json);
+            $("#contenedor").html(resultado);
+        });
+    }); //end
+
+    function mostrar_detalles(id) {
+        //alert("mostrar detalles del producto con id: " + id + "y vamos a usar una plantilla de plantillas_html para mostrarlo");
+
+
+
+        $.getJSON("restPerfumes/obtener_perfume", {
+            id: id,
+        }).done(function (json) {
+            console.log(json);
+          resultadoHTml = Mustache.render(plantilla_productos, json);
+          $("# contenedor").html(resultadoHTml);
+        });
+    }
+</script>
+</body>
+</html>
