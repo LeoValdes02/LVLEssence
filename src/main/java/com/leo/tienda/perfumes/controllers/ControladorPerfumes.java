@@ -1,6 +1,7 @@
 package com.leo.tienda.perfumes.controllers;
 
 import com.leo.tienda.perfumes.model.Perfume;
+import com.leo.tienda.perfumes.servicios.ServicioCategorias;
 import com.leo.tienda.perfumes.servicios.ServicioPerfumes;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,8 @@ public class ControladorPerfumes {
     //dicho objeto, es el objeto de la clase que tiene @Service class ServicioVideojuegosImplJPA implements ServicioVideojuegos
     @Autowired
     private ServicioPerfumes servicioPerfumes;
+    @Autowired
+    private ServicioCategorias servicioCategorias;
 
     @RequestMapping("gestionarPerfumes")
     public String gestionarPerfumes(Model model) {
@@ -31,13 +34,18 @@ public class ControladorPerfumes {
         Perfume nuevo = new Perfume();
         nuevo.setPrecio(1);
         model.addAttribute("nuevo", nuevo);
-        return "admin/registro_producto";
+        // necesito obtener las categorias
+        // para meterlas en este model de spring
+        // y que le lleguen al html del return
+        model.addAttribute("categorias", servicioCategorias.ObtenerCategorias());
+        return "admin/registro_producto";//return devuelve htmls aqui
     }
 
     @RequestMapping("guardarPerfume")
     public String guardarPerfume(@Valid @ModelAttribute("nuevo") Perfume nuevo, BindingResult resultadoValidacion, Model model) {
         System.out.println("recibido para registrar: " + nuevo);
         if (resultadoValidacion.hasErrors()) {
+            model.addAttribute("categorias", servicioCategorias.ObtenerCategorias());
             return "admin/registro_producto";
         }
         servicioPerfumes.registrarPerfume(nuevo);
@@ -55,14 +63,14 @@ public class ControladorPerfumes {
     @RequestMapping("ok")
     public String hola(@RequestParam("id") Long id, Model model) {
         System.out.println("id recibido " + id);
-        model.addAttribute("perfumeEditar", servicioPerfumes.obtenerPerfumesPorId(id));
+        prepararFormularioEditar(id, model);
         System.out.println("perfume a editar: " + servicioPerfumes.obtenerPerfumesPorId(id));
         return "admin/editar_producto";
     }
 
     @RequestMapping("editarPerfume")
     public String editarPerfume(@RequestParam("id") Long id, Model model) {
-        model.addAttribute("perfumeEditar", servicioPerfumes.obtenerPerfumesPorId(id));
+        prepararFormularioEditar(id, model);
         return "admin/editar_producto";
     }
 
@@ -77,11 +85,21 @@ public class ControladorPerfumes {
     public String guardaCambiosrPerfume(@Valid @ModelAttribute("perfumeEditar") Perfume perfumeEditar, BindingResult resultadoValidacion, Model model) throws Exception {
 
         if (resultadoValidacion.hasErrors()) {
+            model.addAttribute("categorias", servicioCategorias.ObtenerCategorias());
             return "admin/editar_producto";
         } else {
             servicioPerfumes.guardarCambiosPerfume(perfumeEditar);
             return gestionarPerfumes(model);
         }
+    }
+
+    private void prepararFormularioEditar(Long id, Model model) {
+        Perfume perfumeEditar = servicioPerfumes.obtenerPerfumesPorId(id);
+        if (perfumeEditar.getCategoria() != null) {
+            perfumeEditar.setIdCategoria((int) perfumeEditar.getCategoria().getId());
+        }
+        model.addAttribute("perfumeEditar", perfumeEditar);
+        model.addAttribute("categorias", servicioCategorias.ObtenerCategorias());
     }
 
 

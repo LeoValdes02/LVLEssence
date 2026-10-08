@@ -1,10 +1,14 @@
 package com.leo.tienda.perfumes.serviciosImpl;
 
+import com.leo.tienda.perfumes.constantesSQL.ConstantesSQL;
+import com.leo.tienda.perfumes.model.Categoria;
 import com.leo.tienda.perfumes.model.Perfume;
 import com.leo.tienda.perfumes.servicios.ServicioPerfumes;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
+import org.hibernate.query.sql.internal.NativeQueryImpl;
+import org.hibernate.transform.AliasToEntityMapResultTransformer;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
@@ -21,6 +25,7 @@ public class ServicioPerfumesImplJPA implements ServicioPerfumes {
 
     @Override
     public void registrarPerfume(Perfume p) {
+        asignarCategoriaDesdeFormulario(p);
         //el perfume ahora mismo tiene la fotoSubida, pero
         // en imagenPortada no tiene nada.
         try {
@@ -62,6 +67,7 @@ public class ServicioPerfumesImplJPA implements ServicioPerfumes {
 
     @Override
     public void guardarCambiosPerfume(Perfume perfumeEditar) throws Exception {
+        asignarCategoriaDesdeFormulario(perfumeEditar);
 
 //      para no perder la foto del perfume, debemos ver si el usuario
 //      le ha asignado una nueva foto en el caso contrario le cargamos la anterior
@@ -81,6 +87,23 @@ public class ServicioPerfumesImplJPA implements ServicioPerfumes {
 
     @Override
     public List<Map<String, Object>> obtenerJSONperfumes() {
-        return List.of();
+        return ((NativeQueryImpl) entityManager.createNativeQuery(ConstantesSQL.SQL_OBTENER_PERFUMES_JSON))
+                .setTupleTransformer(AliasToEntityMapResultTransformer.INSTANCE)
+                .getResultList();
+    }
+
+    @Override
+    public Map<String, Object> obtenerJSONPerfumesPorId(Long id) {
+        return (Map<String, Object>) ((NativeQueryImpl) entityManager.createNativeQuery(ConstantesSQL.SQL_OBTENER_PERFUME_JSON))
+                .setParameter("id", id)
+                .setTupleTransformer(AliasToEntityMapResultTransformer.INSTANCE)
+                .getResultList()
+                .get(0);
+    }
+
+    private void asignarCategoriaDesdeFormulario(Perfume perfume) {
+        if (perfume.getIdCategoria() > 0) {
+            perfume.setCategoria(entityManager.find(Categoria.class, perfume.getIdCategoria()));
+        }
     }
 }

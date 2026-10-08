@@ -49,6 +49,10 @@ public class Perfume {
     @ManyToOne
     private Categoria categoria;
 
+    //para gestionar la id del form y para otros usos
+    @Transient
+    private int idCategoria;
+
     public Perfume() {
     }
 
@@ -157,6 +161,14 @@ public class Perfume {
 
     public void setCategoria(Categoria categoria) {
         this.categoria = categoria;
+    }
+
+    public int getIdCategoria() {
+        return idCategoria;
+    }
+
+    public void setIdCategoria(int idCategoria) {
+        this.idCategoria = idCategoria;
     }
 
     @Override

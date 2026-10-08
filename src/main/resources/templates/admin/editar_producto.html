@@ -51,6 +51,17 @@
                 <input type="text" th:field="*{familiaOlfativa}">
             </div>
 
+            <div class="form-field">
+                <label for="idCategoria">Categoria</label>
+                <select th:field="*{idCategoria}">
+                    <option value="0">Selecciona una categoria</option>
+                    <option th:each="categoria : ${categorias}"
+                            th:value="${categoria.id}"
+                            th:text="${categoria.nombre}">
+                    </option>
+                </select>
+            </div>
+
             <div class="form-grid">
                 <div class="form-field">
                     <label for="concentracion">Concentracion</label>

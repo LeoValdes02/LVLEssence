@@ -19,4 +19,6 @@ public interface ServicioPerfumes {
     void guardarCambiosPerfume(@Valid Perfume perfumeEditar) throws Exception;
 
     List<Map<String, Object>> obtenerJSONperfumes();
+
+    Map<String,Object> obtenerJSONPerfumesPorId(Long id);
 }

@@ -1,13 +1,19 @@
 <div>
-    <div>
-        {{marca}}
-        {{nombre}}
+    <div style="text-align: center">
+        <img class="imagen-producto" src="mostrar_imagen?id={{ID}}">
+        {{MARCA}}<br>
+        {{NOMBRE}}<br>
+        {{CATEGORIA}}<br>
+
     </div>
-    <img class="imagen-producto" src="mostrar_imagen?id={{id}}">
+
 
     <div>
-        {{descripcion}}
+        {{DESCRIPCION}}
 
+    </div>
+    <div>
+        {{PRECIO}}€
     </div>
     <div>
         cantidad: <input class="quantity-input" type="number" aria-valuemin="1" value="1">

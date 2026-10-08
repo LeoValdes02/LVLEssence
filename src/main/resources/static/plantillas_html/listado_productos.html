@@ -6,15 +6,16 @@
 
 <article class="product-card">
     <div class="product-media">
-        <img class="imagen-producto" src="mostrar_imagen?id={{id}}" alt="{{nombre}}">
+        <img class="imagen-producto" src="mostrar_imagen?id={{ID}}" alt="{{NOMBRE}}">
     </div>
 
     <div class="product-info">
-        <p class="product-brand">{{marca}}</p>
-        <h2 class="product-name">{{nombre}}</h2>
-        <p class="product-price">{{precio}} EUR</p>
+        <p class="product-brand">{{MARCA}}</p>
+        <h2 class="product-name">{{NOMBRE}}</h2>
+        <p class="product-meta">{{CATEGORIA}}</p>
+        <p class="product-price">{{PRECIO}} EUR</p>
         <div class="product-actions">
-            <a href="#" class="btn btn-secondary" onclick="mostrar_detalles({{id}})">Ver detalles</a>
+            <a href="#" class="btn btn-secondary" onclick="mostrar_detalles({{ID}})">Ver detalles</a>
             <input class="quantity-input" type="number" aria-valuemin="1" value="1">
             <a href="#" class="btn btn-primary">Agregar al carrito</a>
         </div>

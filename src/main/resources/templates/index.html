@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Perfumeria Masonica Leo</title>
+    <title>LVL ESSENCE</title>
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
@@ -21,7 +21,7 @@
     <!-- lo que usuario necesite-->
 
     <div class="main-nav">
-        <a href="#" class="brand" id="inicio">MasonicLeo Parfum</a>
+        <a href="#" class="brand" id="inicio">LVL ESSENCE</a>
         <nav class="nav-links" aria-label="Navegacion principal">
             <a href="#" id="perfumes">PERFUMES</a>
             <a href="#" id="registrarme">REGISTRARME</a>
@@ -72,15 +72,12 @@
 
     function mostrar_detalles(id) {
         //alert("mostrar detalles del producto con id: " + id + "y vamos a usar una plantilla de plantillas_html para mostrarlo");
-
-
-
         $.getJSON("restPerfumes/obtener_perfume", {
             id: id,
         }).done(function (json) {
             console.log(json);
-          resultadoHTml = Mustache.render(plantilla_productos, json);
-          $("# contenedor").html(resultadoHTml);
+          resultadoHTml = Mustache.render(plantilla_detalles_producto, json);
+          $("#contenedor").html(resultadoHTml);
         });
     }
 </script>
