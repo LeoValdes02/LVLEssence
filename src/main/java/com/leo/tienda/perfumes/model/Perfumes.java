@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 @Entity
 @Table(name = "tabla_perfumes")
-public class Perfume {
+public class Perfumes {
 
     // una forma muy comoda e interesante para hacer validaciones
     // es usar un standar que se llama JSR
@@ -53,10 +53,10 @@ public class Perfume {
     @Transient
     private int idCategoria;
 
-    public Perfume() {
+    public Perfumes() {
     }
 
-    public Perfume(String nombre, String marca, double precio, String familiaOlfativa, int mililitros, String concentracion, String genero, String descripcion) {
+    public Perfumes(String nombre, String marca, double precio, String familiaOlfativa, int mililitros, String concentracion, String genero, String descripcion) {
         this.nombre = nombre;
         this.marca = marca;
         this.precio = precio;

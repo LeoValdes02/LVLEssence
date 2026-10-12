@@ -2,7 +2,7 @@ package com.leo.tienda.perfumes.serviciosImpl;
 
 import com.leo.tienda.perfumes.model.Categoria;
 import com.leo.tienda.perfumes.model.Configuracion;
-import com.leo.tienda.perfumes.model.Perfume;
+import com.leo.tienda.perfumes.model.Perfumes;
 import com.leo.tienda.perfumes.servicios.ServicioSetUp;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.NoResultException;
@@ -44,61 +44,61 @@ public class ServicioSetUpImplJPA implements ServicioSetUp {
             entityManager.persist(cAmaderados);
             entityManager.persist(cOrientales);
 
-            Perfume p1 = new Perfume("Sauvage", "Dior", 95.0, "Amaderada aromática", 100, "Eau de Toilette", "Hombre", "Fresco y potente, con bergamota y pimienta");
+            Perfumes p1 = new Perfumes("Sauvage", "Dior", 95.0, "Amaderada aromática", 100, "Eau de Toilette", "Hombre", "Fresco y potente, con bergamota y pimienta");
             p1.setCategoria(cAmaderados);
             p1.setImagenPortada(leerImagenInicial(
                     "http://localhost:8080/imagenes_productos_iniciales/1.jpg"));
             entityManager.persist(p1);
 
-            Perfume p2 = new Perfume("Chanel N5", "Chanel", 135.0, "Floral aldehídica", 100, "Eau de Parfum", "Mujer", "El clásico atemporal de la perfumería");
+            Perfumes p2 = new Perfumes("Chanel N5", "Chanel", 135.0, "Floral aldehídica", 100, "Eau de Parfum", "Mujer", "El clásico atemporal de la perfumería");
             p2.setCategoria(cFlorales);
             p2.setImagenPortada(leerImagenInicial(
                     "http://localhost:8080/imagenes_productos_iniciales/2.jpg"));
             entityManager.persist(p2);
 
-            Perfume p3 = new Perfume("La Vie Est Belle", "Lancome", 90.0, "Floral gourmand", 75, "Eau de Parfum", "Mujer", "Dulce y luminoso, con iris y vainilla");
+            Perfumes p3 = new Perfumes("La Vie Est Belle", "Lancome", 90.0, "Floral gourmand", 75, "Eau de Parfum", "Mujer", "Dulce y luminoso, con iris y vainilla");
             p3.setCategoria(cOrientales);
             p3.setImagenPortada(leerImagenInicial(
                     "http://localhost:8080/imagenes_productos_iniciales/3.jpg"));
             entityManager.persist(p3);
 
-            Perfume p4 = new Perfume("Acqua di Gio", "Giorgio Armani", 80.0, "Acuática cítrica", 100, "Eau de Toilette", "Hombre", "Brisa marina y frescura mediterránea");
+            Perfumes p4 = new Perfumes("Acqua di Gio", "Giorgio Armani", 80.0, "Acuática cítrica", 100, "Eau de Toilette", "Hombre", "Brisa marina y frescura mediterránea");
             p4.setCategoria(cCitricos);
             p4.setImagenPortada(leerImagenInicial(
                     "http://localhost:8080/imagenes_productos_iniciales/4.jpg"));
             entityManager.persist(p4);
 
-            Perfume p5 = new Perfume("Black Opium", "Yves Saint Laurent", 100.0, "Oriental vainilla", 90, "Eau de Parfum", "Mujer", "Café negro y vainilla, nocturno y adictivo");
+            Perfumes p5 = new Perfumes("Black Opium", "Yves Saint Laurent", 100.0, "Oriental vainilla", 90, "Eau de Parfum", "Mujer", "Café negro y vainilla, nocturno y adictivo");
             p5.setCategoria(cOrientales);
             p5.setImagenPortada(leerImagenInicial(
                     "http://localhost:8080/imagenes_productos_iniciales/5.jpg"));
             entityManager.persist(p5);
 
-            Perfume p6 = new Perfume("Invictus", "Paco Rabanne", 85.0, "Amaderada acuática", 100, "Eau de Toilette", "Hombre", "Deportivo y enérgico, con notas marinas");
+            Perfumes p6 = new Perfumes("Invictus", "Paco Rabanne", 85.0, "Amaderada acuática", 100, "Eau de Toilette", "Hombre", "Deportivo y enérgico, con notas marinas");
             p6.setCategoria(cAmaderados);
             p6.setImagenPortada(leerImagenInicial(
                     "http://localhost:8080/imagenes_productos_iniciales/6.jpg"));
             entityManager.persist(p6);
 
-            Perfume p7 = new Perfume("Light Blue", "Dolce & Gabbana", 75.0, "Cítrica floral", 100, "Eau de Toilette", "Mujer", "Limón siciliano y manzana, puro verano");
+            Perfumes p7 = new Perfumes("Light Blue", "Dolce & Gabbana", 75.0, "Cítrica floral", 100, "Eau de Toilette", "Mujer", "Limón siciliano y manzana, puro verano");
             p7.setCategoria(cCitricos);
             p7.setImagenPortada(leerImagenInicial(
                     "http://localhost:8080/imagenes_productos_iniciales/7.jpg"));
             entityManager.persist(p7);
 
-            Perfume p8 = new Perfume("Eros", "Versace", 70.0, "Oriental fougère", 100, "Eau de Toilette", "Hombre", "Menta, manzana verde y vainilla");
+            Perfumes p8 = new Perfumes("Eros", "Versace", 70.0, "Oriental fougère", 100, "Eau de Toilette", "Hombre", "Menta, manzana verde y vainilla");
             p8.setCategoria(cOrientales);
             p8.setImagenPortada(leerImagenInicial(
                     "http://localhost:8080/imagenes_productos_iniciales/8.jpg"));
             entityManager.persist(p8);
 
-            Perfume p9 = new Perfume("Libre", "Yves Saint Laurent", 105.0, "Floral lavanda", 90, "Eau de Parfum", "Mujer", "Lavanda y flor de azahar, libre y atrevido");
+            Perfumes p9 = new Perfumes("Libre", "Yves Saint Laurent", 105.0, "Floral lavanda", 90, "Eau de Parfum", "Mujer", "Lavanda y flor de azahar, libre y atrevido");
             p9.setCategoria(cFlorales);
             p9.setImagenPortada(leerImagenInicial(
                     "http://localhost:8080/imagenes_productos_iniciales/9.jpg"));
             entityManager.persist(p9);
 
-            Perfume p10 = new Perfume("Bleu de Chanel", "Chanel", 120.0, "Amaderada aromática", 100, "Eau de Parfum", "Hombre", "Elegante, con cítricos e incienso");
+            Perfumes p10 = new Perfumes("Bleu de Chanel", "Chanel", 120.0, "Amaderada aromática", 100, "Eau de Parfum", "Hombre", "Elegante, con cítricos e incienso");
             p10.setCategoria(cAmaderados);
             p10.setImagenPortada(leerImagenInicial(
                     "http://localhost:8080/imagenes_productos_iniciales/10.jpg"));

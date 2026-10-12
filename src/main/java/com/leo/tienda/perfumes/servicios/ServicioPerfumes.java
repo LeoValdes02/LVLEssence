@@ -1,6 +1,6 @@
 package com.leo.tienda.perfumes.servicios;
 
-import com.leo.tienda.perfumes.model.Perfume;
+import com.leo.tienda.perfumes.model.Perfumes;
 import jakarta.validation.Valid;
 
 import java.util.List;
@@ -8,15 +8,15 @@ import java.util.Map;
 
 public interface ServicioPerfumes {
 
-    void registrarPerfume(Perfume v);
+    void registrarPerfume(Perfumes v); //
 
-    List<Perfume> obtenerPerfumes();
+    List<Perfumes> obtenerPerfumes();
 
-    Perfume obtenerPerfumesPorId(long id);
+    Perfumes obtenerPerfumesPorId(long id);
 
     void borrarPerfume(long id) throws Exception;
 
-    void guardarCambiosPerfume(@Valid Perfume perfumeEditar) throws Exception;
+    void guardarCambiosPerfume(@Valid Perfumes perfumeEditar) throws Exception;
 
     List<Map<String, Object>> obtenerJSONperfumes();
 

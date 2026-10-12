@@ -1,6 +1,5 @@
 package com.leo.tienda.perfumes.controladoresREST;
 
-import com.leo.tienda.perfumes.model.Perfume;
 import com.leo.tienda.perfumes.servicios.ServicioPerfumes;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
