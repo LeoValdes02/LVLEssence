@@ -11,7 +11,7 @@ import java.util.Map;
 
 //Un servicio REST
 //se le puede llamar tambien API
-//esta archivo seria el API de videojuegos
+//esta archivo seria el API de perfumes
 
 //@RestController no devuelven vistas/htmls sino json
 @RestController

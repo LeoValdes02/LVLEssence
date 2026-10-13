@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar usuario</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+<body class="admin-page">
+
+<div th:insert="fragments/general.html :: menu"></div>
+
+<main class="admin-shell">
+    <section class="form-card">
+        <div class="section-heading">
+            <p class="eyebrow">Administracion</p>
+            <h1>Registrar nuevo usuario</h1>
+            <p>Introduce los datos del nuevo usuario.</p>
+        </div>
+
+        <form class="luxury-form" th:action="@{/admin/guardarUsuario}" th:object="${nuevo}" method="post">
+            <div class="form-field">
+                <label for="email">Email</label>
+                <input type="email" th:field="*{email}">
+                <span class="field-error" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></span>
+            </div>
+
+            <div class="form-field">
+                <label for="pass">Contrasena</label>
+                <input type="password" th:field="*{pass}">
+                <span class="field-error" th:if="${#fields.hasErrors('pass')}" th:errors="*{pass}"></span>
+            </div>
+
+            <div class="form-field">
+                <label for="nombre">Nombre</label>
+                <input type="text" th:field="*{nombre}">
+                <span class="field-error" th:if="${#fields.hasErrors('nombre')}" th:errors="*{nombre}"></span>
+            </div>
+
+            <div class="form-field">
+                <label for="apellidos">Apellidos</label>
+                <input type="text" th:field="*{apellidos}">
+                <span class="field-error" th:if="${#fields.hasErrors('apellidos')}" th:errors="*{apellidos}"></span>
+            </div>
+
+            <div class="form-field">
+                <label for="telefono">Telefono</label>
+                <input type="tel" th:field="*{telefono}">
+                <span class="field-error" th:if="${#fields.hasErrors('telefono')}" th:errors="*{telefono}"></span>
+            </div>
+
+            <button class="btn btn-primary form-submit" type="submit">Registrar</button>
+        </form>
+    </section>
+</main>
+
+</body>
+</html>

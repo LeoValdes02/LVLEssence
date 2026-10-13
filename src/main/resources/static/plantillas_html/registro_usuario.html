@@ -1,0 +1,101 @@
+<section class="auth-section">
+
+    <div class="auth-card">
+
+        <div class="section-heading">
+            <p class="eyebrow">Cuenta</p>
+            <h1>Crear cuenta</h1>
+            <p>Introduce tus datos para registrarte en la tienda.</p>
+        </div>
+
+        <form id="form_registro_usuario">
+
+            <!-- NOMBRE -->
+            <div class="form-group">
+                <label for="nombre">Nombre</label>
+
+                <input
+                        type="text"
+                        id="nombre"
+                        name="nombre"
+                        placeholder="Tu nombre"
+                        autocomplete="given-name"
+                        required
+                >
+            </div>
+
+
+            <!-- APELLIDOS -->
+            <div class="form-group">
+                <label for="apellidos">Apellidos</label>
+
+                <input
+                        type="text"
+                        id="apellidos"
+                        name="apellidos"
+                        placeholder="Tus apellidos"
+                        autocomplete="family-name"
+                        required
+                >
+            </div>
+
+
+            <!-- EMAIL -->
+            <div class="form-group">
+                <label for="email">Correo electrónico</label>
+
+                <input
+                        type="email"
+                        id="email"
+                        name="email"
+                        placeholder="correo@ejemplo.com"
+                        autocomplete="email"
+                        required
+                >
+            </div>
+
+
+            <!-- CONTRASEÑA -->
+            <div class="form-group">
+                <label for="pass">Contraseña</label>
+
+                <input
+                        type="password"
+                        id="pass"
+                        name="pass"
+                        placeholder="Contraseña"
+                        autocomplete="new-password"
+                        required
+                >
+            </div>
+
+
+            <!-- TELÉFONO -->
+            <div class="form-group">
+                <label for="telefono">Teléfono</label>
+
+                <input
+                        type="tel"
+                        id="telefono"
+                        name="telefono"
+                        placeholder="600 000 000"
+                        autocomplete="tel"
+                        required
+                >
+            </div>
+
+
+            <!-- Aquí podremos mostrar después
+                 la respuesta del UsuariosREST -->
+            <div id="mensaje_registro"></div>
+
+
+            <button type="submit" class="btn btn-primary">
+                Registrarme
+            </button>
+
+        </form>
+
+    </div>
+
+</section>
