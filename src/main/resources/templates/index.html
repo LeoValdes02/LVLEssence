@@ -1,85 +1,408 @@
 <!doctype html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+
     <title>LVL ESSENCE</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com"/>
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
-          rel="stylesheet"/>
-    <link rel="stylesheet" href="/css/estilos.css"/>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link
+            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+            rel="stylesheet"
+    >
+
+    <link rel="stylesheet" href="/css/estilos.css">
 </head>
+
 <body>
+
 <header class="site-header">
+
     <div class="topbar">
-        <a class="admin-link" href="admin/inicioAdmin">Acceso a administracion</a>
+        <a class="admin-link" href="/admin/inicioAdmin">
+            Acceso a administracion
+        </a>
     </div>
 
-    <!-- la parte publica sera una SPA Single Page Application-->
-    <!-- El javascript de esta unica pagina gestionará -->
-    <!-- lo que usuario necesite-->
+
+    <!--
+        La parte publica funciona como una SPA sencilla.
+        JavaScript cambia el contenido de #contenedor
+        sin necesidad de cambiar de pagina.
+    -->
 
     <div class="main-nav">
-        <a href="#" class="brand" id="inicio">LVL ESSENCE</a>
+
+        <a href="#" class="brand" id="inicio">
+            LVL ESSENCE
+        </a>
+
         <nav class="nav-links" aria-label="Navegacion principal">
-            <a href="#" id="perfumes">PERFUMES</a>
-            <a href="#" id="registrarme">REGISTRARME</a>
-            <a href="#" id="identificarme">IDENTIFICARME</a>
-            <a href="#" id="carrito">CARRITO</a>
-            <a href="#" id="pedidos">VER MIS PEDIDOS</a>
-            <a href="#" id="mis_datos">MIS DATOS</a>
-            <a href="#" id="cerrar_sesion">CERRAR SESION</a>
+
+            <a href="#" id="perfumes">
+                PERFUMES
+            </a>
+
+            <a href="#" id="registrarme">
+                REGISTRARME
+            </a>
+
+            <a href="#" id="identificarme">
+                IDENTIFICARME
+            </a>
+
+            <a href="#" id="carrito">
+                CARRITO
+            </a>
+
+            <a href="#" id="pedidos">
+                VER MIS PEDIDOS
+            </a>
+
+            <a href="#" id="mis_datos">
+                MIS DATOS
+            </a>
+
+            <a href="#" id="cerrar_sesion">
+                CERRAR SESION
+            </a>
+
         </nav>
+
     </div>
+
 </header>
 
+
 <main class="page-shell">
+
     <div id="contenedor"></div>
+
 </main>
 
-<script src="librerias_js/jquery.js"></script>
-<script src="librerias_js/mustache.js"></script>
+
+<!-- LIBRERIAS -->
+
+<script src="/librerias_js/jquery.js"></script>
+<script src="/librerias_js/mustache.js"></script>
+
 
 <script>
-    // parte de descarga de plantillas html
-    //plantilla_inicio = $.get("plantillas_html/inicio.html")
-    $.get("plantillas_html/inicio.html").done(function (res) {
-        plantilla_inicio = res;
-    });
-    $.get("plantillas_html/listado_productos.html").done(function (res) {
-        plantilla_productos = res;
-    });
-    $.get("plantillas_html/detalles_producto.html").done(function (res) {
-        plantilla_detalles_producto = res;
-    });
 
-    // parte de atencion a enlaces
+    // =========================================================
+    // VARIABLES DONDE GUARDAREMOS LAS PLANTILLAS HTML
+    // =========================================================
 
-    $("#inicio").click(function () {
-        $("#contenedor").html(plantilla_inicio);
-    }); //end inicio
+    let plantilla_inicio;
+    let plantilla_productos;
+    let plantilla_detalles_producto;
+    let plantilla_registro_usuario;
 
-    $("#perfumes").click(function mostrar_perfumes() {
-        //primero pedimos el json de perfumes
-        $.getJSON("restPerfumes/listar").done(function (json) {
-            console.log(json);
-            //vamos a usar el json para listar los productos:
-            let resultado = Mustache.render(plantilla_productos, json);
-            $("#contenedor").html(resultado);
+
+    // =========================================================
+    // DESCARGA DE PLANTILLAS HTML
+    // =========================================================
+
+
+    // PLANTILLA INICIO
+
+    $.get("/plantillas_html/inicio.html")
+        .done(function (res) {
+
+            plantilla_inicio = res;
+
         });
-    }); //end
+
+
+    // PLANTILLA LISTADO DE PERFUMES
+
+    $.get("/plantillas_html/listado_productos.html")
+        .done(function (res) {
+
+            plantilla_productos = res;
+
+        });
+
+
+    // PLANTILLA DETALLES DE UN PERFUME
+
+    $.get("/plantillas_html/detalles_producto.html")
+        .done(function (res) {
+
+            plantilla_detalles_producto = res;
+
+        });
+
+
+    // PLANTILLA REGISTRO DE USUARIO
+
+    $.get("/plantillas_html/registro_usuario.html")
+        .done(function (res) {
+
+            plantilla_registro_usuario = res;
+
+        });
+
+
+    // =========================================================
+    // ENLACE INICIO
+    // =========================================================
+
+    $("#inicio").click(function (e) {
+
+        e.preventDefault();
+
+        $("#contenedor").html(plantilla_inicio);
+
+    });
+
+
+    // =========================================================
+    // ENLACE PERFUMES
+    // =========================================================
+
+    $("#perfumes").click(function (e) {
+
+        e.preventDefault();
+
+
+        // Pedimos al backend el JSON con todos los perfumes
+
+        $.getJSON("/restPerfumes/listar")
+
+            .done(function (json) {
+
+                console.log("Perfumes recibidos:");
+                console.log(json);
+
+
+                // Mustache mezcla:
+                //
+                // plantilla_productos
+                // +
+                // JSON recibido
+                //
+                // y genera HTML
+
+                let resultado = Mustache.render(
+                    plantilla_productos,
+                    json
+                );
+
+
+                // Mostramos el resultado
+
+                $("#contenedor").html(resultado);
+
+            })
+
+            .fail(function (xhr) {
+
+                console.error(
+                    "Error obteniendo los perfumes",
+                    xhr
+                );
+
+            });
+
+    });
+
+
+    // =========================================================
+    // REGISTRO PUBLICO DE USUARIO
+    // =========================================================
+
+
+    // Al pulsar REGISTRARME mostramos el formulario
+
+    $("#registrarme").click(function (e) {
+
+        e.preventDefault();
+
+        $("#contenedor").html(
+            plantilla_registro_usuario
+        );
+
+    });
+
+
+    // =========================================================
+    // ENVIO DEL FORMULARIO DE REGISTRO
+    // =========================================================
+
+
+    /*
+        El formulario se carga dinamicamente dentro de #contenedor.
+
+        Por eso usamos:
+
+        $(document).on(...)
+
+        en vez de:
+
+        $("#form_registro_usuario").submit(...)
+
+        El formulario no existe todavia cuando index.html
+        se carga por primera vez.
+    */
+
+
+    $(document).on(
+        "submit",
+        "#form_registro_usuario",
+        function (e) {
+
+            // Evitamos que el formulario recargue toda la pagina
+
+            e.preventDefault();
+
+
+            // Recuperamos el formulario
+
+            let formulario =
+                document.getElementById(
+                    "form_registro_usuario"
+                );
+
+
+            // Creamos FormData con todos los inputs
+
+            let formData =
+                new FormData(formulario);
+
+
+            console.log(
+                "Enviando formulario de usuario..."
+            );
+
+
+            // Enviamos los datos al UsuariosREST
+
+            $.ajax({
+
+                url: "/restUsuarios/registrarUsuario",
+
+                type: "POST",
+
+                data: formData,
+
+                // Necesario cuando usamos FormData
+
+                processData: false,
+
+                contentType: false
+
+            })
+
+
+                // REGISTRO CORRECTO
+
+                .done(function (respuesta) {
+
+                    console.log(
+                        "Respuesta del servidor:",
+                        respuesta
+                    );
+
+
+                    $("#mensaje_registro").html(
+                        "<p>" +
+                        respuesta +
+                        "</p>"
+                    );
+
+
+                    // Limpiamos formulario
+
+                    formulario.reset();
+
+                })
+
+
+                // ERROR
+
+                .fail(function (xhr) {
+
+                    console.error(
+                        "Error registrando usuario:",
+                        xhr
+                    );
+
+
+                    $("#mensaje_registro").html(
+                        "<p>Ha ocurrido un error durante el registro.</p>"
+                    );
+
+                });
+
+        }
+    );
+
+
+    // =========================================================
+    // MOSTRAR DETALLES DE UN PERFUME
+    // =========================================================
 
     function mostrar_detalles(id) {
-        //alert("mostrar detalles del producto con id: " + id + "y vamos a usar una plantilla de plantillas_html para mostrarlo");
-        $.getJSON("restPerfumes/obtener_perfume", {
-            id: id,
-        }).done(function (json) {
-            console.log(json);
-          resultadoHTml = Mustache.render(plantilla_detalles_producto, json);
-          $("#contenedor").html(resultadoHTml);
-        });
+
+
+        console.log(
+            "Solicitando perfume con id:",
+            id
+        );
+
+
+        $.getJSON(
+            "/restPerfumes/obtener_perfume",
+            {
+                id: id
+            }
+        )
+
+            .done(function (json) {
+
+                console.log(
+                    "Perfume recibido:"
+                );
+
+                console.log(json);
+
+
+                // Renderizamos UN perfume usando
+                // la plantilla de detalles
+
+                let resultadoHtml =
+                    Mustache.render(
+                        plantilla_detalles_producto,
+                        json
+                    );
+
+
+                $("#contenedor").html(
+                    resultadoHtml
+                );
+
+            })
+
+            .fail(function (xhr) {
+
+                console.error(
+                    "Error obteniendo los detalles del perfume:",
+                    xhr
+                );
+
+            });
+
     }
+
+
 </script>
+
+
 </body>
+
 </html>
