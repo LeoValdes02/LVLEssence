@@ -17,7 +17,7 @@ public class Categoria {
 
     @JsonIgnore
     @OneToMany(mappedBy = "categoria")
-    private List<Perfume> perfumes = new ArrayList<Perfume>();
+    private List<Perfumes> perfumes = new ArrayList<Perfumes>();
 
     @Id
     @GeneratedValue
@@ -47,11 +47,11 @@ public class Categoria {
         this.descripcion = descripcion;
     }
 
-    public List<Perfume> getPerfumes() {
+    public List<Perfumes> getPerfumes() {
         return perfumes;
     }
 
-    public void setPerfumes(List<Perfume> perfumes) {
+    public void setPerfumes(List<Perfumes> perfumes) {
         this.perfumes = perfumes;
     }
 

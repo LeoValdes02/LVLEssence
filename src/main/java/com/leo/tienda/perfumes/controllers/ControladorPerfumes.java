@@ -1,6 +1,6 @@
 package com.leo.tienda.perfumes.controllers;
 
-import com.leo.tienda.perfumes.model.Perfume;
+import com.leo.tienda.perfumes.model.Perfumes;
 import com.leo.tienda.perfumes.servicios.ServicioCategorias;
 import com.leo.tienda.perfumes.servicios.ServicioPerfumes;
 import jakarta.validation.Valid;
@@ -26,30 +26,30 @@ public class ControladorPerfumes {
     @RequestMapping("gestionarPerfumes")
     public String gestionarPerfumes(Model model) {
         model.addAttribute("perfumes", servicioPerfumes.obtenerPerfumes());
-        return "admin/gestionar_productos";
+        return "admin/producto/gestionar_productos";
     }
 
     @RequestMapping("registrarPerfume")
     public String registrarPerfume(Model model) {
-        Perfume nuevo = new Perfume();
+        Perfumes nuevo = new Perfumes();
         nuevo.setPrecio(1);
         model.addAttribute("nuevo", nuevo);
         // necesito obtener las categorias
         // para meterlas en este model de spring
         // y que le lleguen al html del return
-        model.addAttribute("categorias", servicioCategorias.ObtenerCategorias());
-        return "admin/registro_producto";//return devuelve htmls aqui
+        model.addAttribute("categorias", servicioCategorias.obtenerCategorias());
+        return "admin/producto/registro_producto";//return devuelve htmls aqui
     }
 
     @RequestMapping("guardarPerfume")
-    public String guardarPerfume(@Valid @ModelAttribute("nuevo") Perfume nuevo, BindingResult resultadoValidacion, Model model) {
+    public String guardarPerfume(@Valid @ModelAttribute("nuevo") Perfumes nuevo, BindingResult resultadoValidacion, Model model) {
         System.out.println("recibido para registrar: " + nuevo);
         if (resultadoValidacion.hasErrors()) {
-            model.addAttribute("categorias", servicioCategorias.ObtenerCategorias());
-            return "admin/registro_producto";
+            model.addAttribute("categorias", servicioCategorias.obtenerCategorias());
+            return "admin/producto/registro_producto";
         }
         servicioPerfumes.registrarPerfume(nuevo);
-        return "admin/registro_producto_ok";
+        return "admin/producto/registro_producto_ok";
     }
 
     @RequestMapping("borrarPerfume")
@@ -65,13 +65,13 @@ public class ControladorPerfumes {
         System.out.println("id recibido " + id);
         prepararFormularioEditar(id, model);
         System.out.println("perfume a editar: " + servicioPerfumes.obtenerPerfumesPorId(id));
-        return "admin/editar_producto";
+        return "admin/producto/editar_producto";
     }
 
     @RequestMapping("editarPerfume")
     public String editarPerfume(@RequestParam("id") Long id, Model model) {
         prepararFormularioEditar(id, model);
-        return "admin/editar_producto";
+        return "admin/producto/editar_producto";
     }
 
 //    el metodo va a atender la ruta guardarCambiosPerfume
@@ -82,11 +82,11 @@ public class ControladorPerfumes {
 //    model en estos metodos es para meterle lo que queramos que le llegue a la vista de vuelta en el result
 
     @RequestMapping("guardaCambiosrPerfume")
-    public String guardaCambiosrPerfume(@Valid @ModelAttribute("perfumeEditar") Perfume perfumeEditar, BindingResult resultadoValidacion, Model model) throws Exception {
+    public String guardaCambiosrPerfume(@Valid @ModelAttribute("perfumeEditar") Perfumes perfumeEditar, BindingResult resultadoValidacion, Model model) throws Exception {
 
         if (resultadoValidacion.hasErrors()) {
-            model.addAttribute("categorias", servicioCategorias.ObtenerCategorias());
-            return "admin/editar_producto";
+            model.addAttribute("categorias", servicioCategorias.obtenerCategorias());
+            return "admin/producto/editar_producto";
         } else {
             servicioPerfumes.guardarCambiosPerfume(perfumeEditar);
             return gestionarPerfumes(model);
@@ -94,13 +94,13 @@ public class ControladorPerfumes {
     }
 
     private void prepararFormularioEditar(Long id, Model model) {
-        Perfume perfumeEditar = servicioPerfumes.obtenerPerfumesPorId(id);
+        Perfumes perfumeEditar = servicioPerfumes.obtenerPerfumesPorId(id);
         if (perfumeEditar.getCategoria() != null) {
             perfumeEditar.setIdCategoria((int) perfumeEditar.getCategoria().getId());
         }
         model.addAttribute("perfumeEditar", perfumeEditar);
-        model.addAttribute("categorias", servicioCategorias.ObtenerCategorias());
+        model.addAttribute("categorias", servicioCategorias.obtenerCategorias());
     }
 
 
-}//end class guardaCambiosrPerfume
+}//end class

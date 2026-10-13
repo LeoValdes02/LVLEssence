@@ -2,7 +2,7 @@ package com.leo.tienda.perfumes.serviciosImpl;
 
 import com.leo.tienda.perfumes.constantesSQL.ConstantesSQL;
 import com.leo.tienda.perfumes.model.Categoria;
-import com.leo.tienda.perfumes.model.Perfume;
+import com.leo.tienda.perfumes.model.Perfumes;
 import com.leo.tienda.perfumes.servicios.ServicioPerfumes;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
@@ -24,7 +24,7 @@ public class ServicioPerfumesImplJPA implements ServicioPerfumes {
     private EntityManager entityManager;
 
     @Override
-    public void registrarPerfume(Perfume p) {
+    public void registrarPerfume(Perfumes p) {
         asignarCategoriaDesdeFormulario(p);
         //el perfume ahora mismo tiene la fotoSubida, pero
         // en imagenPortada no tiene nada.
@@ -41,12 +41,12 @@ public class ServicioPerfumesImplJPA implements ServicioPerfumes {
     public List obtenerPerfumes() {
         // lanzar JPQL
         // la consulta lanzada equivale al sql: select * from tabala_perfumes as p
-        return entityManager.createQuery("select p from Perfume p").getResultList();
+        return entityManager.createQuery("select p from Perfumes p").getResultList();
     }
 
     @Override
-    public Perfume obtenerPerfumesPorId(long id) {
-        return entityManager.find(Perfume.class, id);
+    public Perfumes obtenerPerfumesPorId(long id) {
+        return entityManager.find(Perfumes.class, id);
     }
 
     @Override
@@ -55,7 +55,7 @@ public class ServicioPerfumesImplJPA implements ServicioPerfumes {
         //En JPA la forma mas comun de borrar un registro
         // es pedirlo, comprobar que existe y luego borrarlo
 
-        Perfume perfumeAborrar = entityManager.find(Perfume.class, id);
+        Perfumes perfumeAborrar = entityManager.find(Perfumes.class, id);
         if (perfumeAborrar != null) {
             entityManager.remove(perfumeAborrar);
 
@@ -66,14 +66,14 @@ public class ServicioPerfumesImplJPA implements ServicioPerfumes {
     }
 
     @Override
-    public void guardarCambiosPerfume(Perfume perfumeEditar) throws Exception {
+    public void guardarCambiosPerfume(Perfumes perfumeEditar) throws Exception {
         asignarCategoriaDesdeFormulario(perfumeEditar);
 
 //      para no perder la foto del perfume, debemos ver si el usuario
 //      le ha asignado una nueva foto en el caso contrario le cargamos la anterior
         if (perfumeEditar.getFotoSubida().getSize() == 0) {
-            Perfume original =
-                    entityManager.find(Perfume.class, perfumeEditar.getId());
+            Perfumes original =
+                    entityManager.find(Perfumes.class, perfumeEditar.getId());
             perfumeEditar.setImagenPortada(original.getImagenPortada());
         } else {
             perfumeEditar.setImagenPortada(perfumeEditar.getFotoSubida().getBytes());
@@ -101,7 +101,7 @@ public class ServicioPerfumesImplJPA implements ServicioPerfumes {
                 .get(0);
     }
 
-    private void asignarCategoriaDesdeFormulario(Perfume perfume) {
+    private void asignarCategoriaDesdeFormulario(Perfumes perfume) {
         if (perfume.getIdCategoria() > 0) {
             perfume.setCategoria(entityManager.find(Categoria.class, perfume.getIdCategoria()));
         }
