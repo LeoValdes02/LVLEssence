@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.leo.tienda.perfumes.model.Usuario;
 import com.leo.tienda.perfumes.servicios.ServicioUsuarios;
+import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,6 +40,20 @@ public class UsuariosREST {
 
         return "Te has registrado correctamente";
     }
+
+    @RequestMapping("identificarUsuario")
+    public String identificarUsuario(
+            @RequestParam("email") String email,@RequestParam("pass") String password, HttpServletRequest request ) {
+            Usuario usuario= servicioUsuarios.obtenerUsuarioPorEmailYpass(email, password);
+        if (usuario != null) {
+            request.getSession().setAttribute("usuario_identificado", usuario);
+            return "Te has identificado correctamente";
+        }
+
+        return "Credenciales incorrectas";
+    }
+
+
 }
 
 /*
