@@ -7,6 +7,8 @@ import java.util.List;
 
 public interface ServicioUsuarios {
 
+
+
     List<Usuario> obtenerUsuarios();
 
     void registrarUsuario(Usuario usuario);
@@ -14,6 +16,8 @@ public interface ServicioUsuarios {
     void borrarUsuario(int id) throws Exception;
 
     Usuario obtenerUsuarioPorId(int id);
+
+    Usuario obtenerUsuarioPorEmailYpass(String email, String password);
 
     void guardarCambiosUsuario(@Valid Usuario usuarioEditar) throws Exception;
 }

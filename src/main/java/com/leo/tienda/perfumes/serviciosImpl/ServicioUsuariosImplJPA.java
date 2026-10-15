@@ -42,6 +42,24 @@ public class ServicioUsuariosImplJPA implements ServicioUsuarios {
     }
 
     @Override
+    public Usuario obtenerUsuarioPorEmailYpass(String email, String pass) {
+
+        List<Usuario> resultados = entityManager.createQuery(
+                        "SELECT u FROM Usuario u WHERE u.email = :email AND u.pass = :pass",
+                        Usuario.class
+                )
+                .setParameter("email", email)
+                .setParameter("pass", pass)
+                .getResultList();
+
+        if (resultados.isEmpty()) {
+            return null;
+        }
+
+        return resultados.get(0);
+    }
+
+    @Override
     public void guardarCambiosUsuario(Usuario usuarioEditar) throws Exception {
         entityManager.merge(usuarioEditar);
     }

@@ -96,7 +96,7 @@
     // =========================================================
     // VARIABLES DONDE GUARDAREMOS LAS PLANTILLAS HTML
     // =========================================================
-
+    let plantilla_identificar_usuario;
     let plantilla_inicio;
     let plantilla_productos;
     let plantilla_detalles_producto;
@@ -147,6 +147,14 @@
 
         });
 
+    // PLANTILLA IDENTIFICAR USUARIO
+
+    $.get("/plantillas_html/identificar_usuario.html")
+        .done(function (res) {
+
+            plantilla_identificar_usuario = res;
+
+        });
 
     // =========================================================
     // ENLACE INICIO
@@ -341,6 +349,73 @@
 
         }
     );
+
+    // =========================================================
+    // IDENTIFICION PUBLICA DE USUARIO
+    // =========================================================
+
+
+    // Al pulsar IDENTIFICARME mostramos el formulario
+
+    $("#identificarme").click(function (e) {
+
+        e.preventDefault();
+
+        $("#contenedor").html(
+            plantilla_identificar_usuario
+        );
+
+    });
+
+    $(document).on("submit", "#form_identificar_usuario", function (e) {
+        e.preventDefault();
+
+        let formulario = document.getElementById("form_identificar_usuario");
+        let formData = new FormData(formulario);
+
+        $.ajax({
+            url: "/restUsuarios/identificarUsuario",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false
+        })
+            // SI EL SERVIDOR RESPONDE CORRECTAMENTE
+            .done(function (respuesta) {
+
+                console.log("Respuesta del servidor:", respuesta);
+
+                if (respuesta === "Te has identificado correctamente") {
+
+                    $("#mensaje_identificacion").text(
+                        "Bienvenido a LVL ESSENCE. Has iniciado sesión correctamente."
+                    );
+
+                    formulario.reset();
+
+                } else {
+
+                    $("#mensaje_identificacion").text(
+                        "Credenciales incorrectas. Comprueba tu correo y contraseña."
+                    );
+
+                }
+
+            })
+
+            // SI FALLA LA PETICIÓN AL SERVIDOR
+            .fail(function (xhr) {
+
+                console.error("Error durante la identificación:", xhr);
+
+                $("#mensaje_identificacion").text(
+                    "Ha ocurrido un error al conectar con el servidor."
+                );
+
+            });
+
+    });
+
 
 
     // =========================================================
