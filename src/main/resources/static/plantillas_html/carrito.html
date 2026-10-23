@@ -1,0 +1,52 @@
+
+<section class="auth-section">
+    <div class="auth-card">
+
+        <div class="section-heading">
+            <p class="eyebrow">Tu selección</p>
+            <h1>Carrito de compra</h1>
+            <p>Revisa los perfumes y sus cantidades.</p>
+        </div>
+
+        {{#productos}}
+        <article class="product-card" style="margin-bottom: 16px;">
+            <div class="product-info">
+                <h2 class="product-name">{{nombre}}</h2>
+                <p class="product-brand">{{marca}}</p>
+                <p class="product-price">{{precio}} EUR / unidad</p>
+
+                <div class="form-group">
+                    <label for="cantidad_carrito_{{id}}">Cantidad</label>
+
+                    <input
+                            type="number"
+                            id="cantidad_carrito_{{id}}"
+                            class="cantidad-carrito"
+                            data-id="{{id}}"
+                            min="1"
+                            step="1"
+                            value="{{cantidad}}"
+                    >
+                </div>
+
+                <p>Subtotal: {{subtotal}} EUR</p>
+
+                <button
+                        type="button"
+                        class="btn btn-danger borrar-carrito"
+                        data-id="{{id}}">
+                    Eliminar perfume
+                </button>
+            </div>
+        </article>
+        {{/productos}}
+
+        {{^productos}}
+        <p>Tu carrito está vacío.</p>
+        {{/productos}}
+
+        <p class="product-price">Total: {{total}} EUR</p>
+
+        <p>La finalización del pedido se conectará en la fase de checkout.</p>
+    </div>
+</section>

@@ -1,376 +1,177 @@
+
 <!doctype html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>LVL ESSENCE</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-    <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
-            rel="stylesheet"
-    >
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+          rel="stylesheet">
 
     <link rel="stylesheet" href="/css/estilos.css">
 </head>
-
 <body>
 
 <header class="site-header">
-
     <div class="topbar">
         <a class="admin-link" href="/admin/inicioAdmin">
             Acceso a administracion
         </a>
     </div>
 
-
-    <!--
-        La parte publica funciona como una SPA sencilla.
-        JavaScript cambia el contenido de #contenedor
-        sin necesidad de cambiar de pagina.
-    -->
-
     <div class="main-nav">
-
-        <a href="#" class="brand" id="inicio">
-            LVL ESSENCE
-        </a>
+        <a href="#" class="brand" id="inicio">LVL ESSENCE</a>
 
         <nav class="nav-links" aria-label="Navegacion principal">
-
-            <a href="#" id="perfumes">
-                PERFUMES
-            </a>
-
-            <a href="#" id="registrarme">
-                REGISTRARME
-            </a>
-
-            <a href="#" id="identificarme">
-                IDENTIFICARME
-            </a>
-
-            <a href="#" id="carrito">
-                CARRITO
-            </a>
-
-            <a href="#" id="pedidos">
-                VER MIS PEDIDOS
-            </a>
-
-            <a href="#" id="mis_datos">
-                MIS DATOS
-            </a>
-
-            <a href="#" id="cerrar_sesion">
-                CERRAR SESION
-            </a>
-
+            <a href="#" id="perfumes">PERFUMES</a>
+            <a href="#" id="registrarme">REGISTRARME</a>
+            <a href="#" id="identificarme">IDENTIFICARME</a>
+            <a href="#" id="carrito">CARRITO</a>
+            <a href="#" id="pedidos">VER MIS PEDIDOS</a>
+            <a href="#" id="mis_datos">MIS DATOS</a>
+            <a href="#" id="cerrar_sesion">CERRAR SESION</a>
         </nav>
-
     </div>
-
 </header>
 
-
 <main class="page-shell">
-
     <div id="contenedor"></div>
-
 </main>
-
-
-<!-- LIBRERIAS -->
 
 <script src="/librerias_js/jquery.js"></script>
 <script src="/librerias_js/mustache.js"></script>
 
-
 <script>
+    // =====================================================
+    // PLANTILLAS HTML
+    // =====================================================
 
-    // =========================================================
-    // VARIABLES DONDE GUARDAREMOS LAS PLANTILLAS HTML
-    // =========================================================
-    let plantilla_identificar_usuario;
     let plantilla_inicio;
     let plantilla_productos;
     let plantilla_detalles_producto;
     let plantilla_registro_usuario;
-
-
-    // =========================================================
-    // DESCARGA DE PLANTILLAS HTML
-    // =========================================================
-
-
-    // PLANTILLA INICIO
+    let plantilla_identificar_usuario;
 
     $.get("/plantillas_html/inicio.html")
         .done(function (res) {
-
             plantilla_inicio = res;
-
         });
-
-
-    // PLANTILLA LISTADO DE PERFUMES
 
     $.get("/plantillas_html/listado_productos.html")
         .done(function (res) {
-
             plantilla_productos = res;
-
         });
-
-
-    // PLANTILLA DETALLES DE UN PERFUME
 
     $.get("/plantillas_html/detalles_producto.html")
         .done(function (res) {
-
             plantilla_detalles_producto = res;
-
         });
-
-
-    // PLANTILLA REGISTRO DE USUARIO
 
     $.get("/plantillas_html/registro_usuario.html")
         .done(function (res) {
-
             plantilla_registro_usuario = res;
-
         });
-
-    // PLANTILLA IDENTIFICAR USUARIO
 
     $.get("/plantillas_html/identificar_usuario.html")
         .done(function (res) {
-
             plantilla_identificar_usuario = res;
-
         });
 
-    // =========================================================
-    // ENLACE INICIO
-    // =========================================================
+
+    // =====================================================
+    // INICIO Y PERFUMES
+    // =====================================================
 
     $("#inicio").click(function (e) {
-
         e.preventDefault();
-
         $("#contenedor").html(plantilla_inicio);
-
     });
-
-
-    // =========================================================
-    // ENLACE PERFUMES
-    // =========================================================
 
     $("#perfumes").click(function (e) {
-
         e.preventDefault();
-
-
-        // Pedimos al backend el JSON con todos los perfumes
-
-        $.getJSON("/restPerfumes/listar")
-
-            .done(function (json) {
-
-                console.log("Perfumes recibidos:");
-                console.log(json);
-
-
-                // Mustache mezcla:
-                //
-                // plantilla_productos
-                // +
-                // JSON recibido
-                //
-                // y genera HTML
-
-                let resultado = Mustache.render(
-                    plantilla_productos,
-                    json
-                );
-
-
-                // Mostramos el resultado
-
-                $("#contenedor").html(resultado);
-
-            })
-
-            .fail(function (xhr) {
-
-                console.error(
-                    "Error obteniendo los perfumes",
-                    xhr
-                );
-
-            });
-
+        mostrar_perfumes();
     });
 
+    function mostrar_perfumes() {
+        $.getJSON("/restPerfumes/listar")
+            .done(function (json) {
+                let resultado = Mustache.render(
+                    plantilla_productos, json
+                );
+                $("#contenedor").html(resultado);
+            })
+            .fail(function (xhr) {
+                console.error("Error listando perfumes", xhr);
+            });
+    }
 
-    // =========================================================
-    // REGISTRO PUBLICO DE USUARIO
-    // =========================================================
+    function mostrar_detalles(id) {
+        $.getJSON("/restPerfumes/obtener_perfume", {id: id})
+            .done(function (json) {
+                let resultado = Mustache.render(
+                    plantilla_detalles_producto, json
+                );
+                $("#contenedor").html(resultado);
+            })
+            .fail(function (xhr) {
+                console.error("Error obteniendo detalles", xhr);
+            });
+    }
 
 
-    // Al pulsar REGISTRARME mostramos el formulario
+    // =====================================================
+    // REGISTRO PÚBLICO
+    // =====================================================
 
     $("#registrarme").click(function (e) {
+        e.preventDefault();
+        $("#contenedor").html(plantilla_registro_usuario);
+    });
 
+    $(document).on("submit", "#form_registro_usuario", function (e) {
         e.preventDefault();
 
-        $("#contenedor").html(
-            plantilla_registro_usuario
-        );
+        let formulario = this;
+        let formData = new FormData(formulario);
 
+        $.ajax({
+            url: "/restUsuarios/registrarUsuario",
+            type: "POST",
+            data: formData,
+            processData: false,
+            contentType: false
+        })
+            .done(function (respuesta) {
+                $("#mensaje_registro").text(respuesta);
+                formulario.reset();
+            })
+            .fail(function (xhr) {
+                console.error(xhr);
+                $("#mensaje_registro").text(
+                    "Ha ocurrido un error durante el registro."
+                );
+            });
     });
 
 
-    // =========================================================
-    // ENVIO DEL FORMULARIO DE REGISTRO
-    // =========================================================
-
-
-    /*
-        El formulario se carga dinamicamente dentro de #contenedor.
-
-        Por eso usamos:
-
-        $(document).on(...)
-
-        en vez de:
-
-        $("#form_registro_usuario").submit(...)
-
-        El formulario no existe todavia cuando index.html
-        se carga por primera vez.
-    */
-
-
-    $(document).on(
-        "submit",
-        "#form_registro_usuario",
-        function (e) {
-
-            // Evitamos que el formulario recargue toda la pagina
-
-            e.preventDefault();
-
-
-            // Recuperamos el formulario
-
-            let formulario =
-                document.getElementById(
-                    "form_registro_usuario"
-                );
-
-
-            // Creamos FormData con todos los inputs
-
-            let formData =
-                new FormData(formulario);
-
-
-            console.log(
-                "Enviando formulario de usuario..."
-            );
-
-
-            // Enviamos los datos al UsuariosREST
-
-            $.ajax({
-
-                url: "/restUsuarios/registrarUsuario",
-
-                type: "POST",
-
-                data: formData,
-
-                // Necesario cuando usamos FormData
-
-                processData: false,
-
-                contentType: false
-
-            })
-
-
-                // REGISTRO CORRECTO
-
-                .done(function (respuesta) {
-
-                    console.log(
-                        "Respuesta del servidor:",
-                        respuesta
-                    );
-
-
-                    $("#mensaje_registro").html(
-                        "<p>" +
-                        respuesta +
-                        "</p>"
-                    );
-
-
-                    // Limpiamos formulario
-
-                    formulario.reset();
-
-                })
-
-
-                // ERROR
-
-                .fail(function (xhr) {
-
-                    console.error(
-                        "Error registrando usuario:",
-                        xhr
-                    );
-
-
-                    $("#mensaje_registro").html(
-                        "<p>Ha ocurrido un error durante el registro.</p>"
-                    );
-
-                });
-
-        }
-    );
-
-    // =========================================================
-    // IDENTIFICION PUBLICA DE USUARIO
-    // =========================================================
-
-
-    // Al pulsar IDENTIFICARME mostramos el formulario
+    // =====================================================
+    // IDENTIFICACIÓN PÚBLICA
+    // =====================================================
 
     $("#identificarme").click(function (e) {
-
         e.preventDefault();
-
-        $("#contenedor").html(
-            plantilla_identificar_usuario
-        );
-
+        $("#contenedor").html(plantilla_identificar_usuario);
     });
 
     $(document).on("submit", "#form_identificar_usuario", function (e) {
         e.preventDefault();
 
-        let formulario = document.getElementById("form_identificar_usuario");
+        let formulario = this;
         let formData = new FormData(formulario);
 
         $.ajax({
@@ -380,104 +181,162 @@
             processData: false,
             contentType: false
         })
-            // SI EL SERVIDOR RESPONDE CORRECTAMENTE
             .done(function (respuesta) {
-
-                console.log("Respuesta del servidor:", respuesta);
-
                 if (respuesta === "Te has identificado correctamente") {
-
                     $("#mensaje_identificacion").text(
-                        "Bienvenido a LVL ESSENCE. Has iniciado sesión correctamente."
+                        "Bienvenido a LVL ESSENCE. Has iniciado sesión."
                     );
-
                     formulario.reset();
-
                 } else {
-
                     $("#mensaje_identificacion").text(
-                        "Credenciales incorrectas. Comprueba tu correo y contraseña."
+                        "Credenciales incorrectas."
                     );
-
                 }
-
             })
-
-            // SI FALLA LA PETICIÓN AL SERVIDOR
             .fail(function (xhr) {
-
-                console.error("Error durante la identificación:", xhr);
-
+                console.error(xhr);
                 $("#mensaje_identificacion").text(
-                    "Ha ocurrido un error al conectar con el servidor."
+                    "Error de conexión durante la identificación."
                 );
-
             });
-
     });
 
 
+    // =====================================================
+    // AÑADIR PERFUMES AL CARRITO
+    // =====================================================
 
-    // =========================================================
-    // MOSTRAR DETALLES DE UN PERFUME
-    // =========================================================
+    function agregarProductoCarrito(idPerfume) {
 
-    function mostrar_detalles(id) {
-
-
-        console.log(
-            "Solicitando perfume con id:",
-            id
+        let input = document.getElementById(
+            "cantidad_" + idPerfume
         );
 
+        let cantidad = input ? Number(input.value) : 1;
 
-        $.getJSON(
-            "/restPerfumes/obtener_perfume",
-            {
-                id: id
-            }
-        )
+        if (!Number.isInteger(cantidad) || cantidad < 1) {
+            alert("Debes indicar una cantidad válida.");
+            return;
+        }
 
-            .done(function (json) {
-
-                console.log(
-                    "Perfume recibido:"
-                );
-
-                console.log(json);
-
-
-                // Renderizamos UN perfume usando
-                // la plantilla de detalles
-
-                let resultadoHtml =
-                    Mustache.render(
-                        plantilla_detalles_producto,
-                        json
-                    );
-
-
-                $("#contenedor").html(
-                    resultadoHtml
-                );
-
+        $.post("/restCarrito/agregarProducto", {
+            id: idPerfume,
+            cantidad: cantidad
+        })
+            .done(function (respuesta) {
+                alert(respuesta);
             })
-
             .fail(function (xhr) {
-
-                console.error(
-                    "Error obteniendo los detalles del perfume:",
-                    xhr
-                );
-
+                if (xhr.status === 401) {
+                    alert("Debes identificarte antes de comprar.");
+                } else {
+                    alert("No se pudo añadir el perfume.");
+                    console.error(xhr);
+                }
             });
-
     }
 
 
+    // =====================================================
+    // MOSTRAR EL CARRITO
+    // =====================================================
+
+    $("#carrito").click(function (e) {
+        e.preventDefault();
+        mostrarCarrito();
+    });
+
+    function mostrarCarrito() {
+
+        $.getJSON("/restCarrito/obtenerProductos")
+            .done(function (productos) {
+
+                let total = productos.reduce(function (suma, p) {
+                    return suma + Number(p.subtotal);
+                }, 0);
+
+                $.get("/plantillas_html/carrito.html")
+                    .done(function (plantilla) {
+
+                        let resultado = Mustache.render(
+                            plantilla,
+                            {
+                                productos: productos,
+                                total: total.toFixed(2)
+                            }
+                        );
+
+                        $("#contenedor").html(resultado);
+                    })
+                    .fail(function (xhr) {
+                        console.error("Error cargando carrito.html", xhr);
+                    });
+            })
+            .fail(function (xhr) {
+                if (xhr.status === 401) {
+                    alert("Debes identificarte para ver tu carrito.");
+                } else {
+                    console.error("Error obteniendo carrito", xhr);
+                }
+            });
+    }
+
+
+    // =====================================================
+    // BORRAR UN PERFUME DEL CARRITO
+    // =====================================================
+
+    $(document).on("click", ".borrar-carrito", function (e) {
+        e.preventDefault();
+
+        let idPerfume = $(this).data("id");
+
+        if (!confirm("¿Eliminar este perfume del carrito?")) {
+            return;
+        }
+
+        $.post("/restCarrito/borrarProducto", {
+            id: idPerfume
+        })
+            .done(function () {
+                mostrarCarrito();
+            })
+            .fail(function (xhr) {
+                alert("No se pudo eliminar el perfume.");
+                console.error(xhr);
+            });
+    });
+
+
+    // =====================================================
+    // MODIFICAR CANTIDAD
+    // =====================================================
+
+    $(document).on("change", ".cantidad-carrito", function () {
+
+        let idPerfume = $(this).data("id");
+        let cantidad = Number($(this).val());
+
+        if (!Number.isInteger(cantidad) || cantidad < 1) {
+            alert("La cantidad mínima es 1.");
+            mostrarCarrito();
+            return;
+        }
+
+        $.post("/restCarrito/cambiarCantidad", {
+            id: idPerfume,
+            cantidad: cantidad
+        })
+            .done(function () {
+                mostrarCarrito();
+            })
+            .fail(function (xhr) {
+                alert("No se pudo modificar la cantidad.");
+                console.error(xhr);
+                mostrarCarrito();
+            });
+    });
+
 </script>
-
-
 </body>
-
 </html>

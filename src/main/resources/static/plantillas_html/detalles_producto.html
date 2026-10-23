@@ -1,23 +1,38 @@
-<div>
-    <div style="text-align: center">
-        <img class="imagen-producto" src="mostrar_imagen?id={{ID}}">
-        {{MARCA}}<br>
-        {{NOMBRE}}<br>
-        {{CATEGORIA}}<br>
 
+<section class="auth-section">
+    <div class="auth-card">
+
+        <div class="section-heading">
+            <p class="eyebrow">{{MARCA}}</p>
+            <h1>{{NOMBRE}}</h1>
+            <p>{{CATEGORIA}}</p>
+        </div>
+
+        <img
+                class="imagen-producto"
+                src="/mostrar_imagen?id={{ID}}"
+                alt="{{NOMBRE}}">
+
+        <p>{{DESCRIPCION}}</p>
+        <p class="product-price">{{PRECIO}} EUR</p>
+
+        <div class="form-group">
+            <label for="cantidad_{{ID}}">Cantidad</label>
+
+            <input
+                    class="quantity-input"
+                    type="number"
+                    id="cantidad_{{ID}}"
+                    min="1"
+                    step="1"
+                    value="1">
+        </div>
+
+        <button
+                class="btn btn-primary"
+                type="button"
+                onclick="agregarProductoCarrito({{ID}})">
+            Agregar al carrito
+        </button>
     </div>
-
-
-    <div>
-        {{DESCRIPCION}}
-
-    </div>
-    <div>
-        {{PRECIO}}€
-    </div>
-    <div>
-        cantidad: <input class="quantity-input" type="number" aria-valuemin="1" value="1">
-        <a href="#" class="btn btn-primary">Agregar al carrito</a>
-
-    </div>
-</div>
+</section>
