@@ -1,0 +1,63 @@
+<section class="auth-section">
+    <div class="auth-card">
+
+        <div class="section-heading">
+            <p class="eyebrow">LVL ESSENCE</p>
+            <h1>Resumen del pedido</h1>
+            <p>Paso 4 de 4 - Confirmación</p>
+        </div>
+
+        <h2>Perfumes seleccionados</h2>
+
+        {{#perfumes}}
+        <article class="product-card"
+                 style="margin-bottom: 16px;">
+            <div class="product-info">
+                <h3>{{nombre}}</h3>
+                <p>Marca: {{marca}}</p>
+                <p>Precio: {{precio}} EUR</p>
+                <p>Cantidad: {{cantidad}}</p>
+                <p>Subtotal: {{subtotal}} EUR</p>
+            </div>
+        </article>
+        {{/perfumes}}
+
+        {{^perfumes}}
+        <p>El carrito está vacío.</p>
+        {{/perfumes}}
+
+        <p class="product-price">
+            Total: {{total}} EUR
+        </p>
+
+        <h2>Datos de envío</h2>
+
+        <p>Nombre: {{nombreCompleto}}</p>
+        <p>Dirección: {{direccion}}</p>
+        <p>Provincia: {{provincia}}</p>
+        <p>Ciudad: {{ciudad}}</p>
+        <p>Código postal: {{codigoPostal}}</p>
+        <p>Instrucciones: {{instruccionesEntrega}}</p>
+
+        <h2>Pago simulado</h2>
+
+        <p>Tipo: {{tipoTarjeta}}</p>
+        <p>Titular ficticio: {{titularTarjeta}}</p>
+        <p>Email de facturación: {{emailFacturacion}}</p>
+
+        <h2>Personalización</h2>
+
+        <p>
+            Envoltorio de regalo: {{envoltorioRegaloTexto}}
+        </p>
+
+        <p id="mensaje_checkout_4" role="status"></p>
+
+        <button type="button"
+                id="boton_confirmar_pedido"
+                class="btn btn-primary">
+            Confirmar pedido
+        </button>
+
+    </div>
+</section>

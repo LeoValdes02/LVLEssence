@@ -9,14 +9,22 @@
         </div>
 
         {{#productos}}
-        <article class="product-card" style="margin-bottom: 16px;">
+        <article class="product-card"
+                 style="margin-bottom: 16px;">
+
             <div class="product-info">
+
                 <h2 class="product-name">{{nombre}}</h2>
                 <p class="product-brand">{{marca}}</p>
-                <p class="product-price">{{precio}} EUR / unidad</p>
+
+                <p class="product-price">
+                    {{precio}} EUR / unidad
+                </p>
 
                 <div class="form-group">
-                    <label for="cantidad_carrito_{{id}}">Cantidad</label>
+                    <label for="cantidad_carrito_{{id}}">
+                        Cantidad
+                    </label>
 
                     <input
                             type="number"
@@ -25,8 +33,7 @@
                             data-id="{{id}}"
                             min="1"
                             step="1"
-                            value="{{cantidad}}"
-                    >
+                            value="{{cantidad}}">
                 </div>
 
                 <p>Subtotal: {{subtotal}} EUR</p>
@@ -37,6 +44,7 @@
                         data-id="{{id}}">
                     Eliminar perfume
                 </button>
+
             </div>
         </article>
         {{/productos}}
@@ -45,8 +53,18 @@
         <p>Tu carrito está vacío.</p>
         {{/productos}}
 
-        <p class="product-price">Total: {{total}} EUR</p>
+        <p class="product-price">
+            Total: {{total}} EUR
+        </p>
 
-        <p>La finalización del pedido se conectará en la fase de checkout.</p>
+        {{#tieneProductos}}
+        <button
+                type="button"
+                id="realizar_pedido"
+                class="btn btn-primary">
+            Realizar pedido
+        </button>
+        {{/tieneProductos}}
+
     </div>
 </section>

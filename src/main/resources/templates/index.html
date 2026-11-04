@@ -1,19 +1,18 @@
-
 <!doctype html>
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
     <title>LVL ESSENCE</title>
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
 
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
           rel="stylesheet">
 
-    <link rel="stylesheet" href="/css/estilos.css">
+    <link href="/css/estilos.css" rel="stylesheet">
 </head>
 <body>
 
@@ -25,9 +24,9 @@
     </div>
 
     <div class="main-nav">
-        <a href="#" class="brand" id="inicio">LVL ESSENCE</a>
+        <a class="brand" href="#" id="inicio">LVL ESSENCE</a>
 
-        <nav class="nav-links" aria-label="Navegacion principal">
+        <nav aria-label="Navegacion principal" class="nav-links">
             <a href="#" id="perfumes">PERFUMES</a>
             <a href="#" id="registrarme">REGISTRARME</a>
             <a href="#" id="identificarme">IDENTIFICARME</a>
@@ -262,7 +261,8 @@
                             plantilla,
                             {
                                 productos: productos,
-                                total: total.toFixed(2)
+                                total: total.toFixed(2),
+                                tieneProductos: productos.length > 0
                             }
                         );
 
@@ -335,6 +335,212 @@
                 console.error(xhr);
                 mostrarCarrito();
             });
+    });
+
+    // ================================================
+    // PASO 1 - DATOS DE ENVÍO
+    // ================================================
+
+
+    $(document).on("submit", "#form_check_out_1", function (e) {
+
+        e.preventDefault();
+
+        let datosFormulario = $(this).serialize();
+
+        console.log("Datos enviados:", datosFormulario);
+
+        $.post("/restPedido/procesarPaso1", datosFormulario)
+
+            .done(function (respuesta) {
+
+                if (respuesta === "ok") {
+
+                    $.get("/plantillas_html/check_out_2.html")
+                        .done(function (plantilla) {
+                            $("#contenedor").html(plantilla);
+                        });
+
+                } else {
+
+                    $("#mensaje_checkout_1").text(
+                        "No se pudieron guardar los datos."
+                    );
+                }
+
+            })
+
+            .fail(function (xhr) {
+
+                console.error("Error paso 1:", xhr);
+
+                $("#mensaje_checkout_1").text(
+                    "Revisa los datos introducidos."
+                );
+
+            });
+
+    });
+
+
+    // ================================================
+    // PASO 2 - PAGO SIMULADO
+    // ================================================
+
+    $(document).on("submit", "#form_check_out_2", function (e) {
+
+        e.preventDefault();
+
+        $.post(
+            "/restPedido/procesarPaso2",
+            $(this).serialize()
+        )
+            .done(function (respuesta) {
+
+                if (respuesta !== "ok") {
+                    $("#mensaje_checkout_2").text(
+                        "No se pudieron guardar los datos."
+                    );
+                    return;
+                }
+
+                $.get("/plantillas_html/check_out_3.html")
+                    .done(function (plantilla) {
+                        $("#contenedor").html(plantilla);
+                    })
+                    .fail(function () {
+                        $("#mensaje_checkout_2").text(
+                            "No se pudo cargar el paso 3."
+                        );
+                    });
+
+            })
+            .fail(function (xhr) {
+                mostrarErrorCheckout(xhr, "#mensaje_checkout_2");
+            });
+    });
+
+
+    // ================================================
+    // PASO 3 - ENVOLTORIO DE REGALO
+    // ================================================
+
+    $(document).on("submit", "#form_check_out_3", function (e) {
+
+        e.preventDefault();
+
+        $.post(
+            "/restPedido/procesarPaso3",
+            $(this).serialize()
+        )
+            .done(function (resumen) {
+
+                if (!resumen.perfumes ||
+                    resumen.perfumes.length === 0) {
+
+                    $("#mensaje_checkout_3").text(
+                        "El carrito está vacío."
+                    );
+                    return;
+                }
+
+                $.get("/plantillas_html/check_out_4.html")
+                    .done(function (plantilla) {
+
+                        let html = Mustache.render(
+                            plantilla,
+                            resumen
+                        );
+
+                        $("#contenedor").html(html);
+                    })
+                    .fail(function () {
+                        $("#mensaje_checkout_3").text(
+                            "No se pudo cargar el resumen."
+                        );
+                    });
+
+            })
+            .fail(function (xhr) {
+                mostrarErrorCheckout(xhr, "#mensaje_checkout_3");
+            });
+    });
+
+
+    // ================================================
+    // PASO 4 - CONFIRMACIÓN DEL PEDIDO
+    // ================================================
+
+    $(document).on("click", "#boton_confirmar_pedido", function (e) {
+
+        e.preventDefault();
+
+        let boton = $(this);
+        boton.prop("disabled", true);
+
+        $.post("/restPedido/procesarPaso4")
+            .done(function (respuesta) {
+
+                if (respuesta === "ok") {
+
+                    $("#contenedor").html(
+                        '<section class="auth-section">' +
+                        '<div class="auth-card">' +
+                        '<h1>¡Pedido confirmado!</h1>' +
+                        '<p>Tu compra de prueba se ha registrado.</p>' +
+                        '<p>Gracias por elegir LVL ESSENCE.</p>' +
+                        '</div>' +
+                        '</section>'
+                    );
+
+                } else {
+                    $("#mensaje_checkout_4").text(
+                        "No se pudo confirmar el pedido."
+                    );
+
+                    boton.prop("disabled", false);
+                }
+            })
+            .fail(function (xhr) {
+
+                mostrarErrorCheckout(xhr, "#mensaje_checkout_4");
+
+                boton.prop("disabled", false);
+            });
+    });
+
+
+    $(document).on("click", "#realizar_pedido", function (e) {
+
+        e.preventDefault();
+
+        console.log("Botón REALIZAR PEDIDO pulsado");
+
+        $.getJSON("/restCarrito/obtenerProductos")
+
+            .done(function (productos) {
+
+                if (productos.length === 0) {
+                    alert("Tu carrito está vacío.");
+                    return;
+                }
+
+                $.get("/plantillas_html/check_out_1.html")
+
+                    .done(function (plantilla) {
+                        $("#contenedor").html(plantilla);
+                    })
+
+                    .fail(function () {
+                        alert("Error al cargar el paso 1.");
+                    });
+            })
+
+            .fail(function (xhr) {
+                console.error("Error del carrito:", xhr);
+                alert("No se pudo acceder al checkout.");
+            });
+
     });
 
 </script>

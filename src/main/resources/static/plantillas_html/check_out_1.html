@@ -1,0 +1,67 @@
+
+<section class="auth-section">
+    <div class="auth-card">
+
+        <div class="section-heading">
+            <p class="eyebrow">LVL ESSENCE</p>
+            <h1>Datos de envío</h1>
+            <p>Paso 1 de 4</p>
+        </div>
+
+        <form id="form_check_out_1">
+
+            <div class="form-group">
+                <label for="campo_nombre">Nombre completo</label>
+                <input type="text" id="campo_nombre"
+                       name="nombre" required>
+            </div>
+
+            <div class="form-group">
+                <label for="campo_direccion">Dirección</label>
+                <input type="text" id="campo_direccion"
+                       name="direccion" required>
+            </div>
+
+            <div class="form-group">
+                <label for="campo_provincia">Provincia</label>
+                <input type="text" id="campo_provincia"
+                       name="provincia" required>
+            </div>
+
+            <div class="form-group">
+                <label for="campo_ciudad">Ciudad</label>
+                <input type="text" id="campo_ciudad"
+                       name="ciudad" required>
+            </div>
+
+            <div class="form-group">
+                <label for="campo_codigo_postal">Código postal</label>
+                <input type="text" id="campo_codigo_postal"
+                       name="codigoPostal"
+                       inputmode="numeric"
+                       pattern="[0-9]{5}"
+                       maxlength="5" required>
+            </div>
+
+            <div class="form-group">
+                <label for="campo_instrucciones">
+                    Instrucciones de entrega (opcional)
+                </label>
+
+                <textarea id="campo_instrucciones"
+                          name="instruccionesEntrega"
+                          maxlength="500"
+                          rows="3"
+                          placeholder="Por ejemplo: llamar al timbre">
+                </textarea>
+            </div>
+
+            <p id="mensaje_checkout_1" role="status"></p>
+
+            <button type="submit" class="btn btn-primary">
+                Continuar al pago
+            </button>
+
+        </form>
+    </div>
+</section>

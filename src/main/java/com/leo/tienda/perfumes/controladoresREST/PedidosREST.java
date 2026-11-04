@@ -20,7 +20,6 @@ public class PedidosREST {
     @Autowired
     private ServicioPedidos servicioPedidos;
 
-    // Obtener el usuario identificado
     private int obtenerIdUsuario(HttpServletRequest request) {
 
         HttpSession sesion = request.getSession(false);
@@ -45,12 +44,19 @@ public class PedidosREST {
         return usuario.getId();
     }
 
-    // PASO 1 - DATOS DE ENVÍO
+    // PASO 1 - ENVÍO
     @PostMapping("/procesarPaso1")
     public String procesarPaso1(
             @RequestParam("nombre") String nombreCompleto,
             @RequestParam("direccion") String direccion,
             @RequestParam("provincia") String provincia,
+            @RequestParam("ciudad") String ciudad,
+            @RequestParam("codigoPostal") String codigoPostal,
+            @RequestParam(
+                    value = "instruccionesEntrega",
+                    required = false,
+                    defaultValue = ""
+            ) String instruccionesEntrega,
             HttpServletRequest request) {
 
         int idUsuario = obtenerIdUsuario(request);
@@ -60,6 +66,9 @@ public class PedidosREST {
                     nombreCompleto,
                     direccion,
                     provincia,
+                    ciudad,
+                    codigoPostal,
+                    instruccionesEntrega,
                     idUsuario
             );
 
@@ -72,11 +81,12 @@ public class PedidosREST {
         }
     }
 
-    // PASO 2 - DATOS DE PAGO SIMULADO
+    // PASO 2 - PAGO SIMULADO
     @PostMapping("/procesarPaso2")
-    public ResumenPedido procesarPaso2(
+    public String procesarPaso2(
             @RequestParam("tarjeta") String tipoTarjeta,
             @RequestParam("titular") String titularTarjeta,
+            @RequestParam("emailFacturacion") String emailFacturacion,
             HttpServletRequest request) {
 
         int idUsuario = obtenerIdUsuario(request);
@@ -85,10 +95,11 @@ public class PedidosREST {
             servicioPedidos.procesarPaso2(
                     titularTarjeta,
                     tipoTarjeta,
+                    emailFacturacion,
                     idUsuario
             );
 
-            return servicioPedidos.obtenerResumenPedido(idUsuario);
+            return "ok";
 
         } catch (IllegalArgumentException e) {
             throw new ResponseStatusException(
@@ -97,9 +108,32 @@ public class PedidosREST {
         }
     }
 
-    // PASO 3 - CONFIRMACIÓN
+    // PASO 3 - ENVOLTORIO DE REGALO
     @PostMapping("/procesarPaso3")
-    public String procesarPaso3(HttpServletRequest request) {
+    public ResumenPedido procesarPaso3(
+            @RequestParam("envoltorioRegalo") String respuesta,
+            HttpServletRequest request) {
+
+        int idUsuario = obtenerIdUsuario(request);
+
+        if (!respuesta.equals("si") && !respuesta.equals("no")) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Respuesta no válida"
+            );
+        }
+
+        servicioPedidos.procesarPaso3(
+                respuesta.equals("si"),
+                idUsuario
+        );
+
+        return servicioPedidos.obtenerResumenPedido(idUsuario);
+    }
+
+    // PASO 4 - CONFIRMAR PEDIDO
+    @PostMapping("/procesarPaso4")
+    public String procesarPaso4(HttpServletRequest request) {
 
         int idUsuario = obtenerIdUsuario(request);
 

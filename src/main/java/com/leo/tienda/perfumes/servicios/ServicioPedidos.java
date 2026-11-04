@@ -15,21 +15,32 @@ public interface ServicioPedidos {
 
     void actualizarEstadoPedido(long id, String estado);
 
-    // Checkout
+    // Checkout: paso 1
     void procesarPaso1(
             String nombreCompleto,
             String direccion,
             String provincia,
+            String ciudad,
+            String codigoPostal,
+            String instruccionesEntrega,
             int idUsuario
     );
 
+    // Checkout: paso 2
     void procesarPaso2(
             String titularTarjeta,
             String tipoTarjeta,
+            String emailFacturacion,
             int idUsuario
     );
 
-    // Nuevo en el paso 3
+    // Checkout: nuevo paso 3
+    void procesarPaso3(
+            boolean envoltorioRegalo,
+            int idUsuario
+    );
+
+    // Resumen y confirmación
     ResumenPedido obtenerResumenPedido(int idUsuario);
 
     void confirmarPedido(int idUsuario);

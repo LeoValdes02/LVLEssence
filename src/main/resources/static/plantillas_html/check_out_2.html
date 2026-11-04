@@ -1,0 +1,62 @@
+
+<section class="auth-section">
+    <div class="auth-card">
+
+        <div class="section-heading">
+            <p class="eyebrow">LVL ESSENCE</p>
+            <h1>Datos de pago</h1>
+            <p>Paso 2 de 4</p>
+        </div>
+
+        <p>
+            Pago simulado para esta práctica.
+            No se realizará ningún cobro.
+            No introduzcas datos reales de tarjeta.
+        </p>
+
+        <form id="form_check_out_2">
+
+            <div class="form-group">
+                <label for="tipo_tarjeta">
+                    Tipo de tarjeta de prueba
+                </label>
+
+                <select id="tipo_tarjeta" name="tarjeta" required>
+                    <option value="">Seleccionar</option>
+                    <option value="visa_demo">Visa (simulada)</option>
+                    <option value="mastercard_demo">
+                        Mastercard (simulada)
+                    </option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="titular_tarjeta">
+                    Titular ficticio
+                </label>
+
+                <input type="text" id="titular_tarjeta"
+                       name="titular"
+                       placeholder="Cliente de prueba" required>
+            </div>
+
+            <div class="form-group">
+                <label for="email_facturacion">
+                    Email de facturación
+                </label>
+
+                <input type="email"
+                       id="email_facturacion"
+                       name="emailFacturacion"
+                       required>
+            </div>
+
+            <p id="mensaje_checkout_2" role="status"></p>
+
+            <button type="submit" class="btn btn-primary">
+                Continuar
+            </button>
+
+        </form>
+    </div>
+</section>

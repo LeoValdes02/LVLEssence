@@ -28,10 +28,17 @@ public class Pedido {
     private String nombreCompleto;
     private String direccion;
     private String provincia;
+    private String ciudad;
+    private String codigoPostal;
+
+    @Column(length = 500)
+    private String instruccionesEntrega;
 
     // DATOS DE PAGO - PASO 2
     private String titularTarjeta;
     private String tipoTarjeta;
+    private String emailFacturacion;
+    private Boolean envoltorioRegalo;
 
     public Pedido() {
     }
@@ -108,4 +115,48 @@ public class Pedido {
     public void setTipoTarjeta(String tipoTarjeta) {
         this.tipoTarjeta = tipoTarjeta;
     }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public String getCodigoPostal() {
+        return codigoPostal;
+    }
+
+    public void setCodigoPostal(String codigoPostal) {
+        this.codigoPostal = codigoPostal;
+    }
+
+    public String getInstruccionesEntrega() {
+        return instruccionesEntrega;
+    }
+
+    public void setInstruccionesEntrega(String instruccionesEntrega) {
+        this.instruccionesEntrega = instruccionesEntrega;
+    }
+
+    public String getEmailFacturacion() {
+        return emailFacturacion;
+    }
+
+    public void setEmailFacturacion(String emailFacturacion) {
+        this.emailFacturacion = emailFacturacion;
+    }
+
+    public Boolean getEnvoltorioRegalo() {
+        return envoltorioRegalo;
+    }
+
+    public void setEnvoltorioRegalo(Boolean envoltorioRegalo) {
+        this.envoltorioRegalo = envoltorioRegalo;
+    }
+
+
 }
+
+

@@ -66,47 +66,79 @@ public class ServicioPedidosImplJPA implements ServicioPedidos {
         pedido.setEstado(estado);
     }
 
-
     // =================================================
     // CHECKOUT - PASO 1: DATOS DE ENVÍO
     // =================================================
-
     @Override
     public void procesarPaso1(
             String nombreCompleto,
             String direccion,
             String provincia,
+            String ciudad,
+            String codigoPostal,
+            String instruccionesEntrega,
             int idUsuario) {
 
         validarTexto(nombreCompleto, "Nombre completo");
         validarTexto(direccion, "Dirección");
         validarTexto(provincia, "Provincia");
+        validarTexto(ciudad, "Ciudad");
+        validarTexto(codigoPostal, "Código postal");
+
+        if (!codigoPostal.matches("\\d{5}")) {
+            throw new IllegalArgumentException(
+                    "El código postal debe tener 5 dígitos"
+            );
+        }
 
         Pedido pedido = obtenerPedidoActual(idUsuario);
 
         pedido.setNombreCompleto(nombreCompleto);
         pedido.setDireccion(direccion);
         pedido.setProvincia(provincia);
+
+        pedido.setCiudad(ciudad);
+        pedido.setCodigoPostal(codigoPostal);
+
+        pedido.setInstruccionesEntrega(
+                instruccionesEntrega == null ? "" : instruccionesEntrega
+        );
     }
-
-
-    // =================================================
-    // CHECKOUT - PASO 2: DATOS DE PAGO
-    // =================================================
 
     @Override
     public void procesarPaso2(
             String titularTarjeta,
             String tipoTarjeta,
+            String emailFacturacion,
             int idUsuario) {
 
         validarTexto(titularTarjeta, "Titular");
         validarTexto(tipoTarjeta, "Tipo de tarjeta");
+        validarTexto(emailFacturacion, "Email de facturación");
+
+        if (!emailFacturacion.matches(
+                "^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$")) {
+
+            throw new IllegalArgumentException(
+                    "Email de facturación no válido"
+            );
+        }
 
         Pedido pedido = obtenerPedidoActual(idUsuario);
 
         pedido.setTitularTarjeta(titularTarjeta);
         pedido.setTipoTarjeta(tipoTarjeta);
+        pedido.setEmailFacturacion(emailFacturacion);
+    }
+
+    @Override
+    public void procesarPaso3(
+            boolean envoltorioRegalo,
+            int idUsuario) {
+
+        Pedido pedido = obtenerPedidoActual(idUsuario);
+
+        pedido.setEnvoltorioRegalo(envoltorioRegalo);
     }
 
 
@@ -125,6 +157,20 @@ public class ServicioPedidosImplJPA implements ServicioPedidos {
 
         resumen.setTitularTarjeta(pedido.getTitularTarjeta());
         resumen.setTipoTarjeta(pedido.getTipoTarjeta());
+        resumen.setCiudad(pedido.getCiudad());
+        resumen.setCodigoPostal(pedido.getCodigoPostal());
+        resumen.setInstruccionesEntrega(
+                pedido.getInstruccionesEntrega()
+        );
+
+        resumen.setEmailFacturacion(
+                pedido.getEmailFacturacion()
+        );
+
+        resumen.setEnvoltorioRegaloTexto(
+                Boolean.TRUE.equals(pedido.getEnvoltorioRegalo())
+                        ? "Sí" : "No"
+        );
 
         // Recuperar los perfumes que hay en el carrito
         List<Map<String, Object>> perfumes =
@@ -161,11 +207,15 @@ public class ServicioPedidosImplJPA implements ServicioPedidos {
         if (pedido.getNombreCompleto() == null ||
                 pedido.getDireccion() == null ||
                 pedido.getProvincia() == null ||
+                pedido.getCiudad() == null ||
+                pedido.getCodigoPostal() == null ||
                 pedido.getTitularTarjeta() == null ||
-                pedido.getTipoTarjeta() == null) {
+                pedido.getTipoTarjeta() == null ||
+                pedido.getEmailFacturacion() == null ||
+                pedido.getEnvoltorioRegalo() == null) {
 
             throw new IllegalStateException(
-                    "Debes completar los datos del pedido"
+                    "Debes completar todos los pasos del checkout"
             );
         }
 

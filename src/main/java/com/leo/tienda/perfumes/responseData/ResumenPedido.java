@@ -10,6 +10,11 @@ public class ResumenPedido {
     private String nombreCompleto;
     private String direccion;
     private String provincia;
+    private String ciudad;
+    private String codigoPostal;
+    private String instruccionesEntrega;
+    private String emailFacturacion;
+    private String envoltorioRegaloTexto;
 
     // Datos de pago simulado
     private String titularTarjeta;
@@ -74,5 +79,45 @@ public class ResumenPedido {
 
     public void setTotal(double total) {
         this.total = total;
+    }
+
+    public String getCiudad() {
+        return ciudad;
+    }
+
+    public void setCiudad(String ciudad) {
+        this.ciudad = ciudad;
+    }
+
+    public String getCodigoPostal() {
+        return codigoPostal;
+    }
+
+    public void setCodigoPostal(String codigoPostal) {
+        this.codigoPostal = codigoPostal;
+    }
+
+    public String getInstruccionesEntrega() {
+        return instruccionesEntrega;
+    }
+
+    public void setInstruccionesEntrega(String instruccionesEntrega) {
+        this.instruccionesEntrega = instruccionesEntrega;
+    }
+
+    public String getEmailFacturacion() {
+        return emailFacturacion;
+    }
+
+    public void setEmailFacturacion(String emailFacturacion) {
+        this.emailFacturacion = emailFacturacion;
+    }
+
+    public String getEnvoltorioRegaloTexto() {
+        return envoltorioRegaloTexto;
+    }
+
+    public void setEnvoltorioRegaloTexto(String envoltorioRegaloTexto) {
+        this.envoltorioRegaloTexto = envoltorioRegaloTexto;
     }
 }
