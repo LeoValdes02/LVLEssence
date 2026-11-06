@@ -23,6 +23,7 @@
         <a class="btn btn-primary" href="registrarPerfume">Nuevo producto</a>
     </section>
 
+    <p th:if="${error}" th:text="${error}" role="alert"></p>
     <section class="admin-product-grid">
         <article class="admin-product-card" th:each="p : ${perfumes}">
             <img th:src="@{${ '../mostrar_imagen?id=' + p.id }}" alt="Imagen del perfume"/>
@@ -54,7 +55,7 @@
                     </div>
                 </dl>
 
-                <a class="btn btn-danger" th:href="@{/admin/borrarPerfume(id=${p.id})}" onclick="return confirm('Estas seguro?')">Borrar</a>
+                <form method="post" th:action="@{/admin/borrarPerfume}" onsubmit="return confirm('¿Eliminar este perfume?')"><input type="hidden" name="id" th:value="${p.id}"><button class="btn btn-danger" type="submit">Borrar</button></form>
                 <br>
                 <a class="btn btn-danger" th:href="@{/admin/editarPerfume(id=${p.id})}">Editar</a>
                 <br>

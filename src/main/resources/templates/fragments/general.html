@@ -2,20 +2,45 @@
 <html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Administracion</title>
+    <title>Administración</title>
 </head>
+
 <body>
 
 <div th:fragment="menu" class="admin-header">
+
     <div class="admin-topbar">
-        <a class="admin-link" href="../">Volver a la parte publica</a>
+        <a class="admin-link" th:href="@{/}">
+            Volver a la parte pública
+        </a>
     </div>
-    <nav class="admin-nav" aria-label="Navegacion de administracion">
-        <a href="gestionarPerfumes">Gestionar perfumes</a>
-        <a href="gestionarUsuarios">Gestionar usuarios</a>
-        <a href="gestionarCategorias">Gestionar categorias</a>
-        <a href="">Gestionar pedidos</a>
+
+    <nav class="admin-nav"
+         aria-label="Navegación de administración">
+
+        <a th:href="@{/admin/gestionarPerfumes}">
+            Gestionar perfumes
+        </a>
+
+        <a th:href="@{/admin/gestionarUsuarios}">
+            Gestionar usuarios
+        </a>
+
+        <a th:href="@{/admin/gestionarCategorias}">
+            Gestionar categorías
+        </a>
+
+        <a th:href="@{/admin/gestionarPedidos}">
+            Gestionar pedidos
+        </a>
+        <form method="post" th:action="@{/admin/cerrarSesion}">
+            <button type="submit" class="btn btn-secondary">
+                Cerrar sesión
+            </button>
+        </form>
+
     </nav>
+
 </div>
 
 </body>

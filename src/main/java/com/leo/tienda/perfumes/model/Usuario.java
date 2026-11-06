@@ -18,8 +18,11 @@ public class Usuario {
     @Email(message = "Debes indicar un email valido")
     private String email;
 
-    @NotBlank(message = "Debes indicar una contrasena")
     private String pass;
+
+    private Boolean passCodificada;
+    public Boolean getPassCodificada() { return passCodificada; }
+    public void setPassCodificada(Boolean passCodificada) { this.passCodificada = passCodificada; }
 
     @NotBlank(message = "Debes indicar un nombre")
     private String nombre;

@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -20,13 +22,13 @@ public class ControladorCategorias {
     @Autowired
     private ServicioCategorias servicioCategorias;
 
-    @RequestMapping("gestionarCategorias")
+    @GetMapping("gestionarCategorias")
     public String gestionarCategorias(Model model) {
         model.addAttribute("categorias", servicioCategorias.obtenerCategorias());
         return "admin/categoria/gestionar_categorias";
     }
 
-    @RequestMapping("registrarCategoria")
+    @GetMapping("registrarCategoria")
     public String registrarCategoria(Model model) {
         Categoria nuevo = new Categoria();
         nuevo.setDescripcion("");
@@ -38,7 +40,7 @@ public class ControladorCategorias {
         return "admin/categoria/registro_categoria";//return devuelve htmls aqui
     }
 
-    @RequestMapping("guardarCategoria")
+    @PostMapping("guardarCategoria")
     public String guardarCategoria(@Valid @ModelAttribute("nuevo") Categoria nuevo, BindingResult resultadoValidacion, Model model) {
         System.out.println("recibido para registrar: " + nuevo);
         if (resultadoValidacion.hasErrors()) {
@@ -49,11 +51,12 @@ public class ControladorCategorias {
         return "admin/categoria/registro_categoria_ok";
     }
 
-    @RequestMapping("borrarCategoria")
+    @PostMapping("borrarCategoria")
     public String borrarCategoria(@RequestParam("id") Long id, Model model) throws Exception {
         //repaso: model es una variable donde meto lo que quiera que le llegue a la vista indicada en el return
         System.out.println("id recibida para borrar registro: " + id);
-        servicioCategorias.borrarCategoria(id);
+        try { servicioCategorias.borrarCategoria(id); }
+        catch (IllegalStateException | IllegalArgumentException e) { model.addAttribute("error", e.getMessage()); }
         return gestionarCategorias(model);
     }
 
@@ -66,7 +69,7 @@ public class ControladorCategorias {
     }*/
     // se puede borrar este de aqui el metodo hola
 
-    @RequestMapping("editarCategoria")
+    @GetMapping("editarCategoria")
     public String editarCategoria(@RequestParam("id") Long id, Model model) {
         prepararFormularioEditar(id, model);
         return "admin/categoria/editar_categoria";
@@ -79,7 +82,7 @@ public class ControladorCategorias {
 //    Perfume perfumeEditar es un objeto metido en el form
 //    model en estos metodos es para meterle lo que queramos que le llegue a la vista de vuelta en el result
 
-    @RequestMapping("guardaCambiosCategoria")
+    @PostMapping("guardaCambiosCategoria")
     public String guardaCambiosCategoria(@Valid @ModelAttribute("categoriaEditar") Categoria categoriaEditar, BindingResult resultadoValidacion, Model model) throws Exception {
 
         if (resultadoValidacion.hasErrors()) {

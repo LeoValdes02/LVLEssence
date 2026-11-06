@@ -30,7 +30,7 @@
 
             <div class="form-field">
                 <label for="pass">Contrasena</label>
-                <input type="password" th:field="*{pass}">
+                <input type="password" id="pass" name="pass" value="" autocomplete="new-password" placeholder="Dejar vacío para conservar">
                 <span class="field-error" th:if="${#fields.hasErrors('pass')}" th:errors="*{pass}"></span>
             </div>
 

@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Detalles del pedido - LVL ESSENCE</title>
+
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+
+<body class="admin-page">
+
+<div th:insert="~{fragments/general :: menu}"></div>
+
+<main class="admin-shell">
+
+    <section class="section-heading admin-heading">
+        <div>
+            <p class="eyebrow">Administración</p>
+
+            <h1>
+                Pedido #<span th:text="${pedido.id}"></span>
+            </h1>
+
+            <p>
+                Estado:
+                <strong th:text="${pedido.estado}"></strong>
+            </p>
+        </div>
+
+        <a class="btn btn-primary"
+           th:href="@{/admin/gestionarPedidos}">
+            Volver a pedidos
+        </a>
+    </section>
+
+    <!-- DATOS DE ENVÍO -->
+    <section class="admin-welcome">
+        <h2>Datos de envío</h2>
+
+        <dl class="product-details">
+
+            <div>
+                <dt>Nombre completo</dt>
+                <dd th:text="${pedido.nombreCompleto}"></dd>
+            </div>
+
+            <div>
+                <dt>Dirección</dt>
+                <dd th:text="${pedido.direccion}"></dd>
+            </div>
+
+            <div>
+                <dt>Provincia</dt>
+                <dd th:text="${pedido.provincia}"></dd>
+            </div>
+
+            <div>
+                <dt>Ciudad</dt>
+                <dd th:text="${pedido.ciudad}"></dd>
+            </div>
+
+            <div>
+                <dt>Código postal</dt>
+                <dd th:text="${pedido.codigoPostal}"></dd>
+            </div>
+
+            <div class="full-detail">
+                <dt>Instrucciones de entrega</dt>
+                <dd th:text="${pedido.instruccionesEntrega}">
+                </dd>
+            </div>
+
+        </dl>
+    </section>
+
+    <!-- DATOS DE PAGO -->
+    <section class="admin-welcome"
+             style="margin-top: 24px;">
+
+        <h2>Datos de pago simulado</h2>
+
+        <dl class="product-details">
+
+            <div>
+                <dt>Tipo de tarjeta</dt>
+                <dd th:text="${pedido.tipoTarjeta}"></dd>
+            </div>
+
+            <div>
+                <dt>Titular ficticio</dt>
+                <dd th:text="${pedido.titularTarjeta}"></dd>
+            </div>
+
+            <div class="full-detail">
+                <dt>Email de facturación</dt>
+                <dd th:text="${pedido.emailFacturacion}">
+                </dd>
+            </div>
+
+        </dl>
+    </section>
+
+    <!-- PERSONALIZACIÓN -->
+    <section class="admin-welcome"
+             style="margin-top: 24px;">
+
+        <h2>Personalización del pedido</h2>
+
+        <dl class="product-details">
+
+            <div>
+                <dt>Envoltorio de regalo</dt>
+                <dd th:text="${pedido.envoltorioRegalo == null
+                    ? 'Sin responder'
+                    : (pedido.envoltorioRegalo ? 'Sí' : 'No')}">
+                </dd>
+            </div>
+
+        </dl>
+    </section>
+
+    <!-- PERFUMES COMPRADOS -->
+    <section style="margin-top: 32px;">
+
+        <h2>Perfumes del pedido</h2>
+
+        <p th:if="${#lists.isEmpty(pedido.productosPedido)}">
+            Este pedido todavía no tiene productos.
+        </p>
+
+        <div style="overflow-x: auto; margin-top: 16px;">
+
+            <table th:unless="${#lists.isEmpty(
+                         pedido.productosPedido)}">
+
+                <thead>
+                <tr>
+                    <th>Perfume</th>
+                    <th>Marca</th>
+                    <th>Precio/unidad</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                </tr>
+                </thead>
+
+                <tbody>
+                <tr th:each="linea : ${pedido.productosPedido}">
+
+                    <td th:text="${linea.perfume.nombre}">
+                    </td>
+
+                    <td th:text="${linea.perfume.marca}">
+                    </td>
+
+                    <td>
+                            <span th:text="${linea.precioAplicable}">
+                            </span> €
+                            <small th:if="${linea.precioUnitario == null}">(estimación: precio actual)</small>
+                    </td>
+
+                    <td th:text="${linea.cantidad}"></td>
+
+                    <td>
+                            <span th:text="${linea.precioAplicable
+                                         * linea.cantidad}">
+                            </span> €
+                    </td>
+
+                </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <p class="product-price">
+            Total calculado:
+            <span th:text="${total}"></span> €
+        </p>
+
+        <p>
+            Las líneas sin precio histórico muestran una estimación basada en el precio actual.
+        </p>
+
+    </section>
+
+</main>
+
+</body>
+</html>

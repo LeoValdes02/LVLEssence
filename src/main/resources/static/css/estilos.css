@@ -31,6 +31,10 @@
     --transition: 0.25s ease;
 }
 
+#form_check_out_1 { display: grid; gap: 1rem; }
+#form_check_out_1 .form-group { display: grid; gap: .4rem; }
+#form_check_out_1 textarea { width: 100%; resize: vertical; }
+
 * {
     box-sizing: border-box;
 }

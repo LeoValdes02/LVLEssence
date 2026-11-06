@@ -254,6 +254,7 @@ public class ServicioPedidosImplJPA implements ServicioPedidos {
             productoPedido.setCantidad(
                     productoCarrito.getCantidad()
             );
+            productoPedido.setPrecioUnitario(java.math.BigDecimal.valueOf(productoCarrito.getPerfume().getPrecio()).setScale(2, java.math.RoundingMode.HALF_UP));
 
             entityManager.persist(productoPedido);
 

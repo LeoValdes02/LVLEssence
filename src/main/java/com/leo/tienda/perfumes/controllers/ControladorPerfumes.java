@@ -10,6 +10,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
@@ -23,13 +25,13 @@ public class ControladorPerfumes {
     @Autowired
     private ServicioCategorias servicioCategorias;
 
-    @RequestMapping("gestionarPerfumes")
+    @GetMapping("gestionarPerfumes")
     public String gestionarPerfumes(Model model) {
         model.addAttribute("perfumes", servicioPerfumes.obtenerPerfumes());
         return "admin/producto/gestionar_productos";
     }
 
-    @RequestMapping("registrarPerfume")
+    @GetMapping("registrarPerfume")
     public String registrarPerfume(Model model) {
         Perfumes nuevo = new Perfumes();
         nuevo.setPrecio(1);
@@ -41,7 +43,7 @@ public class ControladorPerfumes {
         return "admin/producto/registro_producto";//return devuelve htmls aqui
     }
 
-    @RequestMapping("guardarPerfume")
+    @PostMapping("guardarPerfume")
     public String guardarPerfume(@Valid @ModelAttribute("nuevo") Perfumes nuevo, BindingResult resultadoValidacion, Model model) {
         System.out.println("recibido para registrar: " + nuevo);
         if (resultadoValidacion.hasErrors()) {
@@ -52,15 +54,16 @@ public class ControladorPerfumes {
         return "admin/producto/registro_producto_ok";
     }
 
-    @RequestMapping("borrarPerfume")
+    @PostMapping("borrarPerfume")
     public String borrarPerfume(@RequestParam("id") Long id, Model model) throws Exception {
         //repaso: model es una variable donde meto lo que quiera que le llegue a la vista indicada en el return
         System.out.println("id recibida para borrar registro: " + id);
-        servicioPerfumes.borrarPerfume(id);
+        try { servicioPerfumes.borrarPerfume(id); }
+        catch (IllegalStateException | IllegalArgumentException e) { model.addAttribute("error", e.getMessage()); }
         return gestionarPerfumes(model);
     }
 
-    @RequestMapping("ok")
+    @GetMapping("ok")
     public String hola(@RequestParam("id") Long id, Model model) {
         System.out.println("id recibido " + id);
         prepararFormularioEditar(id, model);
@@ -68,7 +71,7 @@ public class ControladorPerfumes {
         return "admin/producto/editar_producto";
     }
 
-    @RequestMapping("editarPerfume")
+    @GetMapping("editarPerfume")
     public String editarPerfume(@RequestParam("id") Long id, Model model) {
         prepararFormularioEditar(id, model);
         return "admin/producto/editar_producto";
@@ -81,7 +84,7 @@ public class ControladorPerfumes {
 //    Perfume perfumeEditar es un objeto metido en el form
 //    model en estos metodos es para meterle lo que queramos que le llegue a la vista de vuelta en el result
 
-    @RequestMapping("guardaCambiosrPerfume")
+    @PostMapping("guardaCambiosrPerfume")
     public String guardaCambiosrPerfume(@Valid @ModelAttribute("perfumeEditar") Perfumes perfumeEditar, BindingResult resultadoValidacion, Model model) throws Exception {
 
         if (resultadoValidacion.hasErrors()) {

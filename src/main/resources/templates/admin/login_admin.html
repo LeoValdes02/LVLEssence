@@ -1,17 +1,51 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Acceso administrador - LVL ESSENCE</title>
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
 </head>
-<body>
 
-<div>No puedes acceder a administracion hasta que te identifiques:</div>
-<form action="admin/gestionarPerfumes">
-    pass <input type="text" name="pass-login-admin"> <br>
-    <input type="submit" value="ACEPTAR">
-</form>
+<body class="admin-page">
 
+<main class="auth-section">
+
+    <div class="auth-card">
+
+        <div class="section-heading">
+            <p class="eyebrow">LVL ESSENCE</p>
+            <h1>Acceso administrativo</h1>
+            <p>Introduce la contraseña de administración.</p>
+        </div>
+
+        <form method="post"
+              th:action="@{/loginAdmin}">
+
+            <div class="form-group">
+                <label for="passwordAdmin">Contraseña</label>
+
+                <input
+                        type="password"
+                        id="passwordAdmin"
+                        name="pass-login-admin"
+                        autocomplete="current-password"
+                        required>
+            </div>
+
+            <p th:if="${param.error != null}"
+               role="alert">
+                Contraseña incorrecta.
+            </p>
+
+            <button type="submit" class="btn btn-primary">
+                Entrar en administración
+            </button>
+
+        </form>
+
+    </div>
+
+</main>
 
 </body>
 </html>

@@ -33,10 +33,12 @@ public class ServicioCategoriasImplJPA implements ServicioCategorias {
 
         Categoria categoriaAborrar = entityManager.find(Categoria.class, id);
         if (categoriaAborrar != null) {
+            Long productos = entityManager.createQuery("select count(p) from Perfumes p where p.categoria.id = :id", Long.class).setParameter("id", id).getSingleResult();
+            if (productos > 0) throw new IllegalStateException("No se puede borrar una categoría con perfumes asociados.");
             entityManager.remove(categoriaAborrar);
 
         } else {
-            throw new Exception("id no encontrado");
+            throw new IllegalArgumentException("Categoría no encontrada");
         }
 
     }

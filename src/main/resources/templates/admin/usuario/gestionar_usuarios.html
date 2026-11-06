@@ -6,7 +6,8 @@
     <title>Gestionar usuarios</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+          rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/estilos.css}">
 </head>
 <body class="admin-page">
@@ -22,6 +23,12 @@
         </div>
         <a class="btn btn-primary" th:href="@{/admin/registrarUsuario}">Nuevo usuario</a>
     </section>
+
+    <p th:if="${error}" th:text="${error}" role="alert"
+       style="color: #ff6464;"></p>
+
+    <p th:if="${mensaje}" th:text="${mensaje}"
+       role="status"></p>
 
     <section class="admin-product-grid">
         <article class="admin-product-card" th:each="u : ${usuarios}">
@@ -39,7 +46,17 @@
                     </div>
                 </dl>
 
-                <a class="btn btn-danger" th:href="@{/admin/borrarUsuario(id=${u.id})}" onclick="return confirm('Estas seguro?')">Borrar</a>
+
+                <form th:action="@{/admin/borrarUsuario}"
+                      method="post"
+                      onsubmit="return confirm('¿Seguro que quieres borrar este usuario?')">
+
+                    <input type="hidden" name="id" th:value="${u.id}">
+
+                    <button type="submit" class="btn btn-danger">
+                        Borrar
+                    </button>
+                </form>
                 <br>
                 <a class="btn btn-danger" th:href="@{/admin/editarUsuario(id=${u.id})}">Editar</a>
                 <br>

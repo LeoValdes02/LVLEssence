@@ -57,10 +57,13 @@ public class ServicioPerfumesImplJPA implements ServicioPerfumes {
 
         Perfumes perfumeAborrar = entityManager.find(Perfumes.class, id);
         if (perfumeAborrar != null) {
+            Long pedidos = entityManager.createQuery("select count(p) from ProductoPedido p where p.perfume.id = :id", Long.class).setParameter("id", id).getSingleResult();
+            Long carritos = entityManager.createQuery("select count(p) from ProductoCarrito p where p.perfume.id = :id", Long.class).setParameter("id", id).getSingleResult();
+            if (pedidos > 0 || carritos > 0) throw new IllegalStateException("No se puede borrar un perfume incluido en pedidos o carritos.");
             entityManager.remove(perfumeAborrar);
 
         } else {
-            throw new Exception("id no encontrado");
+            throw new IllegalArgumentException("Perfume no encontrado");
         }
 
     }

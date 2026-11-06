@@ -10,12 +10,18 @@ import jakarta.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
 @RequestMapping("/restPedido")
 public class PedidosREST {
+
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<java.util.Map<String, String>> error(ResponseStatusException ex) {
+        return ResponseEntity.status(ex.getStatusCode()).body(java.util.Map.of("message", ex.getReason() == null ? "No se pudo completar la operación" : ex.getReason()));
+    }
 
     @Autowired
     private ServicioPedidos servicioPedidos;

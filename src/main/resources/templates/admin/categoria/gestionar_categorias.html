@@ -23,6 +23,7 @@
         <a class="btn btn-primary" href="/admin/registrarCategoria">Nueva categoria</a>
     </section>
 
+    <p th:if="${error}" th:text="${error}" role="alert"></p>
     <section class="admin-product-grid">
         <article class="admin-product-card" th:each="c : ${categorias}">
             <div class="admin-product-info">
@@ -35,7 +36,7 @@
                     </div>
                 </dl>
 
-                <a class="btn btn-danger" th:href="@{/admin/borrarCategoria(id=${c.id})}" onclick="return confirm('Estas seguro?')">Borrar</a>
+                <form method="post" th:action="@{/admin/borrarCategoria}" onsubmit="return confirm('¿Eliminar esta categoría?')"><input type="hidden" name="id" th:value="${c.id}"><button class="btn btn-danger" type="submit">Borrar</button></form>
                 <br>
                 <a class="btn btn-danger" th:href="@{/admin/editarCategoria(id=${c.id})}">Editar</a>
                 <br>

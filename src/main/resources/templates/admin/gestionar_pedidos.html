@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Gestionar pedidos - LVL ESSENCE</title>
+
+    <link rel="stylesheet" th:href="@{/css/estilos.css}">
+</head>
+
+<body class="admin-page">
+
+<div th:insert="~{fragments/general :: menu}"></div>
+
+<main class="admin-shell">
+
+    <section class="section-heading admin-heading">
+        <div>
+            <p class="eyebrow">Administración</p>
+            <h1>Gestionar pedidos</h1>
+            <p>Compras registradas en LVL ESSENCE.</p>
+        </div>
+    </section>
+
+    <p th:if="${#lists.isEmpty(pedidos)}">
+        Todavía no hay pedidos registrados.
+    </p>
+
+    <section class="admin-product-grid">
+
+        <article class="admin-product-card"
+                 style="grid-template-columns: 1fr;"
+                 th:each="p : ${pedidos}">
+
+            <div class="admin-product-info">
+
+                <p class="eyebrow">
+                    Pedido #<span th:text="${p.id}"></span>
+                </p>
+
+                <h2 th:text="${p.nombreCompleto != null
+                    ? p.nombreCompleto : 'Pedido en proceso'}">
+                </h2>
+
+                <dl class="product-details">
+
+                    <div>
+                        <dt>Estado</dt>
+                        <dd th:text="${p.estado}"></dd>
+                    </div>
+
+                    <div>
+                        <dt>Cliente</dt>
+                        <dd th:text="${p.usuario.email}"></dd>
+                    </div>
+
+                    <div>
+                        <dt>Ciudad</dt>
+                        <dd th:text="${p.ciudad}"></dd>
+                    </div>
+
+                    <div>
+                        <dt>Código postal</dt>
+                        <dd th:text="${p.codigoPostal}"></dd>
+                    </div>
+
+                    <div class="full-detail">
+                        <dt>Instrucciones de entrega</dt>
+                        <dd th:text="${p.instruccionesEntrega}">
+                        </dd>
+                    </div>
+
+                    <div class="full-detail">
+                        <dt>Email de facturación</dt>
+                        <dd th:text="${p.emailFacturacion}">
+                        </dd>
+                    </div>
+
+                    <div class="full-detail">
+                        <dt>Envoltorio de regalo</dt>
+                        <dd th:text="${p.envoltorioRegalo == null
+                            ? 'Sin responder'
+                            : (p.envoltorioRegalo ? 'Sí' : 'No')}">
+                        </dd>
+                    </div>
+
+                </dl>
+
+                <a class="btn btn-primary"
+                   th:href="@{/admin/verDetallesPedido(id=${p.id})}">
+                    Ver detalles
+                </a>
+
+            </div>
+        </article>
+
+    </section>
+
+</main>
+
+</body>
+</html>

@@ -1,8 +1,10 @@
 <!doctype html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    <meta name="csrf-token" th:content="${_csrf.token}">
+    <meta name="csrf-header" th:content="${_csrf.headerName}">
 
     <title>LVL ESSENCE</title>
 
@@ -34,6 +36,7 @@
             <a href="#" id="pedidos">VER MIS PEDIDOS</a>
             <a href="#" id="mis_datos">MIS DATOS</a>
             <a href="#" id="cerrar_sesion">CERRAR SESION</a>
+            <span id="cliente_identificado"></span>
         </nav>
     </div>
 </header>
@@ -46,6 +49,30 @@
 <script src="/librerias_js/mustache.js"></script>
 
 <script>
+    $.ajaxSetup({beforeSend: function (xhr, settings) {
+        if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type)) {
+            xhr.setRequestHeader(document.querySelector('meta[name="csrf-header"]').content,
+                document.querySelector('meta[name="csrf-token"]').content);
+        }
+    }});
+    function actualizarSesion() {
+        $.getJSON('/restUsuarios/sesion').done(function (usuario) {
+            $('#identificarme, #registrarme').toggle(!usuario.identificado);
+            $('#cerrar_sesion').toggle(usuario.identificado);
+            $('#cliente_identificado').text(usuario.identificado ? 'Hola, ' + usuario.nombre : '');
+        });
+    }
+    actualizarSesion();
+    $('#cerrar_sesion').on('click', function (e) {
+        e.preventDefault();
+        $.post('/restUsuarios/cerrarSesion').done(function () {
+            actualizarSesion(); $('#contenedor').empty();
+        });
+    });
+    function mostrarErrorCheckout(xhr, selector) {
+        const mensajes = {400: 'Revisa los datos obligatorios y su formato.', 401: 'Inicia sesión para continuar.', 403: 'La sesión de seguridad ha caducado. Actualiza la página.', 409: 'Completa todos los pasos y comprueba que el carrito no esté vacío.'};
+        $(selector).text((xhr.responseJSON && xhr.responseJSON.message) || mensajes[xhr.status] || 'No se pudo completar la operación.');
+    }
     // =====================================================
     // PLANTILLAS HTML
     // =====================================================
@@ -150,10 +177,20 @@
                 formulario.reset();
             })
             .fail(function (xhr) {
-                console.error(xhr);
-                $("#mensaje_registro").text(
-                    "Ha ocurrido un error durante el registro."
-                );
+
+                if (xhr.status === 409) {
+
+                    $("#mensaje_registro").text(
+                        "Este correo electrónico ya está registrado."
+                    );
+
+                } else {
+
+                    $("#mensaje_registro").text(
+                        "No se pudo completar el registro."
+                    );
+                }
+
             });
     });
 
@@ -186,6 +223,7 @@
                         "Bienvenido a LVL ESSENCE. Has iniciado sesión."
                     );
                     formulario.reset();
+                    actualizarSesion();
                 } else {
                     $("#mensaje_identificacion").text(
                         "Credenciales incorrectas."
@@ -193,9 +231,8 @@
                 }
             })
             .fail(function (xhr) {
-                console.error(xhr);
                 $("#mensaje_identificacion").text(
-                    "Error de conexión durante la identificación."
+                    xhr.status === 401 ? "Correo o contraseña incorrectos." : "Error de conexión durante la identificación."
                 );
             });
     });
@@ -348,7 +385,6 @@
 
         let datosFormulario = $(this).serialize();
 
-        console.log("Datos enviados:", datosFormulario);
 
         $.post("/restPedido/procesarPaso1", datosFormulario)
 
@@ -372,11 +408,7 @@
 
             .fail(function (xhr) {
 
-                console.error("Error paso 1:", xhr);
-
-                $("#mensaje_checkout_1").text(
-                    "Revisa los datos introducidos."
-                );
+                mostrarErrorCheckout(xhr, "#mensaje_checkout_1");
 
             });
 
