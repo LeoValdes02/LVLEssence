@@ -1,5 +1,6 @@
 package com.leo.tienda.perfumes.controllers;
 
+import com.leo.tienda.perfumes.constantesPedidos.EstadosPedido;
 import com.leo.tienda.perfumes.model.Pedido;
 import com.leo.tienda.perfumes.model.ProductoPedido;
 import com.leo.tienda.perfumes.servicios.ServicioPedidos;
@@ -9,9 +10,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -57,7 +60,26 @@ public class ControladorPedidos {
 
         model.addAttribute("pedido", pedido);
         model.addAttribute("total", total);
+        model.addAttribute("estadosDisponibles",
+                EstadosPedido.destinosAdministracion(pedido.getEstado()));
 
         return "admin/pedidos_detalle";
+    }
+
+    // Cambiar estado: solo POST (interceptor de admin + protección CSRF de Spring Security).
+    @PostMapping("/actualizarEstadoPedido")
+    public String actualizarEstadoPedido(@RequestParam("id") long id,
+                                         @RequestParam("estado") String estado,
+                                         RedirectAttributes redirectAttributes) {
+        try {
+            servicioPedidos.actualizarEstadoPedido(id, estado);
+            redirectAttributes.addFlashAttribute("mensaje", "Estado del pedido actualizado correctamente.");
+        } catch (IllegalArgumentException | IllegalStateException ex) {
+            redirectAttributes.addFlashAttribute("error", ex.getMessage());
+        }
+
+        // PRG: redirección para evitar que actualizar la página repita el POST.
+        redirectAttributes.addAttribute("id", id);
+        return "redirect:/admin/verDetallesPedido";
     }
 }

@@ -1,9 +1,22 @@
 package com.leo.tienda.perfumes.constantesSQL;
 
 public class ConstantesSQL {
-    public final static String SQL_OBTENER_PERFUMES_JSON =
-            "select tp.id, tp.nombre, tp.marca, tp.precio, c.nombre as categoria from TABLA_PERFUMES as tp left join CATEGORIA as c on tp.categoria_id = c.id";
+    // Mantener PRECIO como precio final para que las plantillas existentes sigan funcionando.
+    // La expresión ROUND reproduce el redondeo a dos decimales de PrecioPerfume.
+    private static final String CAMPOS_COMUNES =
+            "tp.id, tp.nombre, tp.marca, " +
+            "ROUND(tp.precio * (100 - COALESCE(tp.descuento_porcentaje, 0)) / 100.0, 2) AS PRECIO, " +
+            "tp.precio AS PRECIO_ORIGINAL, " +
+            "COALESCE(tp.descuento_porcentaje, 0) AS DESCUENTO_PORCENTAJE, " +
+            "CASE WHEN COALESCE(tp.descuento_porcentaje, 0) > 0 THEN TRUE ELSE FALSE END AS TIENE_DESCUENTO, " +
+            "c.nombre AS CATEGORIA ";
 
-    public final static String SQL_OBTENER_PERFUME_JSON =
-            "select tp.id, tp.nombre, tp.marca, tp.precio, tp.descripcion, c.nombre as categoria from TABLA_PERFUMES as tp left join CATEGORIA as c on tp.categoria_id = c.id where tp.id = :id";
+    public static final String SQL_OBTENER_PERFUMES_JSON =
+            "SELECT " + CAMPOS_COMUNES +
+            "FROM TABLA_PERFUMES tp LEFT JOIN CATEGORIA c ON tp.categoria_id = c.id";
+
+    public static final String SQL_OBTENER_PERFUME_JSON =
+            "SELECT " + CAMPOS_COMUNES + ", tp.descripcion AS DESCRIPCION " +
+            "FROM TABLA_PERFUMES tp LEFT JOIN CATEGORIA c ON tp.categoria_id = c.id " +
+            "WHERE tp.id = :id";
 }

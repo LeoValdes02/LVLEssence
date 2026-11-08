@@ -60,10 +60,31 @@ public class ServicioPedidosImplJPA implements ServicioPedidos {
             );
         }
 
-        // Comprobar que el estado sea uno de los permitidos
-        EstadosPedido.valueOf(estado);
+        // El servicio comprueba la transición, aunque alguien manipule el formulario.
+        final EstadosPedido destino;
+        try {
+            destino = EstadosPedido.valueOf(estado);
+        } catch (IllegalArgumentException | NullPointerException ex) {
+            throw new IllegalArgumentException("Estado de pedido no válido");
+        }
 
-        pedido.setEstado(estado);
+        EstadosPedido actual = EstadosPedido.valueOf(pedido.getEstado());
+        if (actual == EstadosPedido.EnProceso) {
+            throw new IllegalStateException(
+                    "Un pedido en proceso solo se completa desde el checkout");
+        }
+
+        // Guardar sin cambios es una operación válida, pero no modifica la BD.
+        if (actual == destino) {
+            return;
+        }
+
+        if (!EstadosPedido.destinosAdministracion(pedido.getEstado()).contains(destino)) {
+            throw new IllegalStateException(
+                    "No se permite cambiar de " + actual + " a " + destino);
+        }
+
+        pedido.setEstado(destino.name());
     }
 
     // =================================================
@@ -254,7 +275,7 @@ public class ServicioPedidosImplJPA implements ServicioPedidos {
             productoPedido.setCantidad(
                     productoCarrito.getCantidad()
             );
-            productoPedido.setPrecioUnitario(java.math.BigDecimal.valueOf(productoCarrito.getPerfume().getPrecio()).setScale(2, java.math.RoundingMode.HALF_UP));
+            productoPedido.setPrecioUnitario(productoCarrito.getPerfume().getPrecioFinal());
 
             entityManager.persist(productoPedido);
 

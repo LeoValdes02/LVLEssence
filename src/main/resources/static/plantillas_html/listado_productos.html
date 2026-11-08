@@ -16,6 +16,9 @@
         <p class="product-brand">{{MARCA}}</p>
         <h2 class="product-name">{{NOMBRE}}</h2>
         <p class="product-meta">{{CATEGORIA}}</p>
+        {{#TIENE_DESCUENTO}}
+        <div class="precio-anterior"><s>{{PRECIO_ORIGINAL}} EUR</s> <span class="oferta-insignia">-{{DESCUENTO_PORCENTAJE}}%</span></div>
+        {{/TIENE_DESCUENTO}}
         <p class="product-price">{{PRECIO}} EUR</p>
 
         <div class="product-actions">

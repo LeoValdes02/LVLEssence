@@ -15,7 +15,11 @@
             <div class="product-info">
                 <h3>{{nombre}}</h3>
                 <p>Marca: {{marca}}</p>
-                <p>Precio: {{precio}} EUR</p>
+                {{#enOferta}}
+                <p class="precio-anterior"><s>{{precioOriginal}} EUR</s>
+                    <span class="oferta-insignia">-{{descuentoPorcentaje}}%</span></p>
+                {{/enOferta}}
+                <p>Precio final: {{precio}} EUR</p>
                 <p>Cantidad: {{cantidad}}</p>
                 <p>Subtotal: {{subtotal}} EUR</p>
             </div>

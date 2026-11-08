@@ -1,0 +1,17 @@
+catalogo_rest OK []
+admin_paginacion OK []
+ofertas OK []
+estados OK []
+precio_historico OK []
+inicio_y_modal OK []
+paginas_legales OK []
+animaciones OK []
+idiomas OK []
+seguridad OK []
+page contacto OK
+page sobre_nosotros OK
+page privacidad OK
+page devoluciones OK
+page terminos OK
+existing test classes 8 test annotations 18
+H2 mem on all test classes True

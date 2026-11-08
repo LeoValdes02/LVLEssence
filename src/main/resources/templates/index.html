@@ -19,54 +19,136 @@
 <body>
 
 <header class="site-header">
-    <div class="topbar">
-        <a class="admin-link" href="/admin/inicioAdmin">
-            Acceso a administracion
-        </a>
-    </div>
-
     <div class="main-nav">
-        <a class="brand" href="#" id="inicio">LVL ESSENCE</a>
+        <a class="brand" href="#inicio" id="inicio" data-ruta="inicio" aria-label="LVL ESSENCE, ir al inicio">LVL ESSENCE</a>
 
-        <nav aria-label="Navegacion principal" class="nav-links">
-            <a href="#" id="perfumes">PERFUMES</a>
-            <a href="#" id="registrarme">REGISTRARME</a>
-            <a href="#" id="identificarme">IDENTIFICARME</a>
-            <a href="#" id="carrito">CARRITO</a>
-            <a href="#" id="pedidos">VER MIS PEDIDOS</a>
-            <a href="#" id="mis_datos">MIS DATOS</a>
-            <a href="#" id="cerrar_sesion">CERRAR SESION</a>
-            <span id="cliente_identificado"></span>
+        <nav aria-label="Navegación principal" class="nav-links">
+            <a href="#perfumes" id="perfumes" data-ruta="perfumes">Perfumes</a>
+            <a href="#identificarme" id="identificarme" data-ruta="identificarme">Iniciar sesión</a>
+            <a href="#registrarme" id="registrarme" data-ruta="registrarme">Registrarme</a>
+            <a href="#contacto" id="contacto" data-ruta="contacto">Contacto</a>
+            <a href="#sobre-nosotros" id="sobre_nosotros" data-ruta="sobre-nosotros">Sobre nosotros</a>
         </nav>
+
+        <div class="nav-utilidades">
+            <button type="button" id="abrir_modal_idioma" class="selector-idioma"
+                    aria-label="Cambiar idioma" title="Cambiar idioma" aria-haspopup="dialog"
+                    aria-controls="modal_idioma">
+                <svg viewBox="0 0 24 24" width="19" height="19" fill="none" stroke="currentColor"
+                     stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c-5 5-5 13 0 18M12 3c5 5 5 13 0 18"/>
+                </svg>
+                <span id="etiqueta_idioma" data-no-traducir>ES</span>
+            </button>
+            <a class="nav-icono" href="#carrito" id="carrito" data-ruta="carrito" title="Ver carrito" aria-label="Ver carrito">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 8h14l-1 12H6L5 8Z"/><path d="M9 9V6a3 3 0 0 1 6 0v3"/></svg>
+            </a>
+            <details class="cuenta-menu" id="menu_usuario" hidden>
+                <summary aria-label="Abrir opciones de cuenta" title="Mi cuenta">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="4"/><path d="M4 21c0-4.5 3.5-7 8-7s8 2.5 8 7"/></svg>
+                    <span class="sr-only">Mi cuenta</span>
+                </summary>
+                <div class="cuenta-desplegable">
+                    <p id="cliente_identificado" class="cuenta-saludo"></p>
+                    <a href="#pedidos" id="pedidos" data-ruta="pedidos">Mis pedidos</a>
+                    <a href="#mis-datos" id="mis_datos" data-ruta="mis-datos">Mis datos</a>
+                    <a href="#cerrar" id="cerrar_sesion">Cerrar sesión</a>
+                </div>
+            </details>
+        </div>
     </div>
 </header>
 
-<main class="page-shell">
-    <div id="contenedor"></div>
+<main class="page-shell" id="contenido-principal">
+    <div id="contenedor" aria-live="polite"></div>
 </main>
+
+<footer class="site-footer">
+    <div class="footer-interior">
+        <div>
+            <strong class="footer-marca">LVL ESSENCE</strong>
+            <p>Una experiencia de perfumería selecta.</p>
+        </div>
+        <nav aria-label="Información legal y de contacto" class="footer-enlaces">
+            <a href="#contacto" data-ruta="contacto">Contacto</a>
+            <a href="#sobre-nosotros" data-ruta="sobre-nosotros">Sobre nosotros</a>
+            <a href="#privacidad" data-ruta="privacidad">Política de privacidad</a>
+            <a href="#devoluciones" data-ruta="devoluciones">Política de devoluciones</a>
+            <a href="#terminos" data-ruta="terminos">Términos y servicios</a>
+            <a href="/loginAdmin" class="footer-admin">Administración</a>
+        </nav>
+    </div>
+    <p class="footer-nota">Proyecto académico en desarrollo. Los textos legales son borradores pendientes de revisión.</p>
+</footer>
+
+<dialog id="modal_idioma" class="modal-idioma" aria-labelledby="titulo-modal-idioma">
+    <div class="modal-idioma-contenido">
+        <p class="eyebrow">LVL ESSENCE</p>
+        <h2 id="titulo-modal-idioma">Elige tu idioma</h2>
+        <p>Selecciona el idioma de la tienda.</p>
+        <div class="modal-idioma-opciones" role="group" aria-label="Idioma">
+            <button type="button" class="opcion-idioma" data-idioma="es" data-no-traducir
+                    aria-pressed="true" lang="es">Español <span>ES</span></button>
+            <button type="button" class="opcion-idioma" data-idioma="en" data-no-traducir
+                    aria-pressed="false" lang="en">English <span>EN</span></button>
+        </div>
+        <button type="button" id="cerrar_modal_idioma" class="btn btn-secondary">Cerrar</button>
+    </div>
+</dialog>
 
 <script src="/librerias_js/jquery.js"></script>
 <script src="/librerias_js/mustache.js"></script>
+<script src="/javascript/i18n.js"></script>
 
 <script>
+    // Fase 5: selección ES/EN. No altera rutas, modelos, datos ni llamadas REST.
+    LVLI18n.iniciar();
+    const dialogoIdioma = document.getElementById('modal_idioma');
+    document.getElementById('abrir_modal_idioma').addEventListener('click', function () {
+        dialogoIdioma.showModal();
+    });
+    document.getElementById('cerrar_modal_idioma').addEventListener('click', function () {
+        dialogoIdioma.close();
+    });
+    document.querySelectorAll('.opcion-idioma').forEach(function (boton) {
+        boton.addEventListener('click', function () {
+            LVLI18n.establecerIdioma(boton.dataset.idioma);
+            dialogoIdioma.close();
+        });
+    });
+    dialogoIdioma.addEventListener('click', function (evento) {
+        if (evento.target === dialogoIdioma) dialogoIdioma.close();
+    });
+
     $.ajaxSetup({beforeSend: function (xhr, settings) {
         if (!/^(GET|HEAD|OPTIONS|TRACE)$/i.test(settings.type)) {
             xhr.setRequestHeader(document.querySelector('meta[name="csrf-header"]').content,
                 document.querySelector('meta[name="csrf-token"]').content);
         }
     }});
+    let nombreClienteActual = '';
+    function actualizarSaludo() {
+        $('#cliente_identificado').text(nombreClienteActual
+            ? (LVLI18n.idioma() === 'en' ? 'Hello, ' : 'Hola, ') + nombreClienteActual : '');
+    }
+    document.addEventListener('lvl:idioma-cambiado', actualizarSaludo);
     function actualizarSesion() {
         $.getJSON('/restUsuarios/sesion').done(function (usuario) {
             $('#identificarme, #registrarme').toggle(!usuario.identificado);
-            $('#cerrar_sesion').toggle(usuario.identificado);
-            $('#cliente_identificado').text(usuario.identificado ? 'Hola, ' + usuario.nombre : '');
+            $('#menu_usuario').prop('hidden', !usuario.identificado);
+            nombreClienteActual = usuario.identificado ? usuario.nombre : '';
+            actualizarSaludo();
         });
     }
     actualizarSesion();
     $('#cerrar_sesion').on('click', function (e) {
         e.preventDefault();
         $.post('/restUsuarios/cerrarSesion').done(function () {
-            actualizarSesion(); $('#contenedor').empty();
+            $('#menu_usuario').prop('open', false);
+            actualizarSesion();
+            irARuta('inicio');
+        }).fail(function () {
+            alert(LVLI18n.t('No se pudo cerrar la sesión. Inténtalo de nuevo.'));
         });
     });
     function mostrarErrorCheckout(xhr, selector) {
@@ -79,18 +161,24 @@
 
     let plantilla_inicio;
     let plantilla_productos;
+    let plantilla_catalogo_filtros;
     let plantilla_detalles_producto;
     let plantilla_registro_usuario;
     let plantilla_identificar_usuario;
 
-    $.get("/plantillas_html/inicio.html")
+    const cargaPlantillaInicio = $.get("/plantillas_html/inicio.html")
         .done(function (res) {
             plantilla_inicio = res;
         });
 
-    $.get("/plantillas_html/listado_productos.html")
+    const cargaPlantillaProductos = $.get("/plantillas_html/listado_productos.html")
         .done(function (res) {
             plantilla_productos = res;
+        });
+
+    const cargaPlantillaCatalogo = $.get("/plantillas_html/catalogo_filtros.html")
+        .done(function (res) {
+            plantilla_catalogo_filtros = res;
         });
 
     $.get("/plantillas_html/detalles_producto.html")
@@ -98,12 +186,12 @@
             plantilla_detalles_producto = res;
         });
 
-    $.get("/plantillas_html/registro_usuario.html")
+    const cargaPlantillaRegistro = $.get("/plantillas_html/registro_usuario.html")
         .done(function (res) {
             plantilla_registro_usuario = res;
         });
 
-    $.get("/plantillas_html/identificar_usuario.html")
+    const cargaPlantillaIdentificacion = $.get("/plantillas_html/identificar_usuario.html")
         .done(function (res) {
             plantilla_identificar_usuario = res;
         });
@@ -113,28 +201,244 @@
     // INICIO Y PERFUMES
     // =====================================================
 
-    $("#inicio").click(function (e) {
-        e.preventDefault();
-        $("#contenedor").html(plantilla_inicio);
-    });
+    // El enrutador de abajo decide qué vista mostrar, incluida la portada.
 
-    $("#perfumes").click(function (e) {
-        e.preventDefault();
-        mostrar_perfumes();
-    });
+    // =====================================================
+    // CATÁLOGO FILTRABLE - FASE 1.2
+    // =====================================================
 
-    function mostrar_perfumes() {
-        $.getJSON("/restPerfumes/listar")
-            .done(function (json) {
-                let resultado = Mustache.render(
-                    plantilla_productos, json
-                );
-                $("#contenedor").html(resultado);
+    const filtrosCatalogo = {
+        texto: "",
+        categoriaId: "",
+        precioMin: "",
+        precioMax: "",
+        orden: "nombreAsc"
+    };
+    let peticionCatalogo = null;
+    let numeroPeticionCatalogo = 0;
+    let paginaCatalogoActual = 1;
+
+    // Conservamos el nombre que ya invoca el enlace PERFUMES.
+    function mostrar_perfumes(incluirHero = false) {
+        const vistaSolicitada = idNavegacion;
+        numeroPeticionCatalogo++;
+        if (peticionCatalogo && peticionCatalogo.readyState !== 4) {
+            peticionCatalogo.abort();
+        }
+        const plantillas = incluirHero
+            ? $.when(cargaPlantillaInicio, cargaPlantillaProductos, cargaPlantillaCatalogo)
+            : $.when(cargaPlantillaProductos, cargaPlantillaCatalogo);
+
+        plantillas.done(function () {
+            if (vistaSolicitada !== idNavegacion) return;
+            // En la portada, el catálogo empieza justo después del Hero.
+            $('#contenedor').html((incluirHero ? plantilla_inicio : '') + plantilla_catalogo_filtros);
+            if (incluirHero) {
+                $('#catalogo_inicio .catalogo-encabezado h1').replaceWith(function () {
+                    return $('<h2>').text($(this).text());
+                });
+            }
+            $('#filtro_texto').val(filtrosCatalogo.texto);
+            $('#filtro_precio_min').val(filtrosCatalogo.precioMin);
+            $('#filtro_precio_max').val(filtrosCatalogo.precioMax);
+            $('#filtro_orden').val(filtrosCatalogo.orden);
+            cargarCategoriasCatalogo();
+            cargarPaginaCatalogo(1);
+        }).fail(function () {
+            if (vistaSolicitada !== idNavegacion) return;
+            $('#contenedor').html('<p role="alert">No se pudo cargar el catálogo. Actualiza la página e inténtalo de nuevo.</p>');
+        });
+    }
+
+    function mostrar_inicio() {
+        mostrar_perfumes(true);
+    }
+
+    function cargarCategoriasCatalogo() {
+        const selector = $("#filtro_categoria");
+        $.getJSON("/restPerfumes/categorias")
+            .done(function (categorias) {
+                // El servidor devuelve ID y nombre, nunca solo el texto.
+                // Se utiliza Option para no insertar HTML no fiable.
+                categorias.forEach(function (categoria) {
+                    selector.append(new Option(categoria.nombre, categoria.id));
+                });
+                selector.val(filtrosCatalogo.categoriaId);
             })
-            .fail(function (xhr) {
-                console.error("Error listando perfumes", xhr);
+            .fail(function () {
+                selector.prop("disabled", true);
+                $("#catalogo_ayuda_categorias").text(
+                    "Las categorías no están disponibles ahora."
+                );
             });
     }
+
+    function mostrarErrorCatalogo(mensaje) {
+        $("#mensaje_filtros_catalogo").text(mensaje);
+    }
+
+    function renderizarPaginacionCatalogo(datos) {
+        const zona = $("#catalogo_paginacion");
+        zona.empty();
+        if (datos.totalPaginas <= 1) return;
+
+        function anadirBoton(texto, pagina, deshabilitado, actual, descripcion) {
+            const boton = $("<button>", {
+                type: "button",
+                class: "catalogo-page-btn" + (actual ? " is-active" : ""),
+                text: texto,
+                disabled: deshabilitado
+            });
+            boton.attr("data-pagina", pagina);
+            boton.attr("aria-label", descripcion);
+            if (actual) boton.attr("aria-current", "page");
+            zona.append(boton);
+        }
+
+        const pagina = datos.pagina;
+        const ultima = datos.totalPaginas;
+        anadirBoton("Anterior", pagina - 1, pagina <= 1, false, "Página anterior");
+
+        // Hasta cinco números visibles en vez de generar cientos de botones.
+        let inicio = Math.max(1, pagina - 2);
+        let fin = Math.min(ultima, inicio + 4);
+        inicio = Math.max(1, fin - 4);
+        for (let n = inicio; n <= fin; n++) {
+            anadirBoton(String(n), n, false, n === pagina, "Ir a la página " + n);
+        }
+        anadirBoton("Siguiente", pagina + 1, pagina >= ultima, false, "Página siguiente");
+    }
+
+    function cargarPaginaCatalogo(pagina, enSegundoPlano = false) {
+        if (!$("#catalogo_resultados").length) return;
+        paginaCatalogoActual = pagina;
+
+        numeroPeticionCatalogo++;
+        const idPeticion = numeroPeticionCatalogo;
+        if (peticionCatalogo && peticionCatalogo.readyState !== 4) {
+            peticionCatalogo.abort();
+        }
+
+        if (!enSegundoPlano) {
+            $("#catalogo_resultados").empty();
+            $("#catalogo_paginacion").empty();
+            $("#catalogo_total").text("Cargando perfumes...");
+            mostrarErrorCatalogo("");
+        }
+
+        const parametros = {
+            texto: filtrosCatalogo.texto,
+            orden: filtrosCatalogo.orden,
+            pagina: pagina
+        };
+        if (filtrosCatalogo.categoriaId !== "") parametros.categoriaId = filtrosCatalogo.categoriaId;
+        if (filtrosCatalogo.precioMin !== "") parametros.precioMin = filtrosCatalogo.precioMin;
+        if (filtrosCatalogo.precioMax !== "") parametros.precioMax = filtrosCatalogo.precioMax;
+
+        peticionCatalogo = $.getJSON("/restPerfumes/buscar", parametros)
+            .done(function (datos) {
+                if (idPeticion !== numeroPeticionCatalogo || !$("#catalogo_resultados").length) return;
+                const total = Number(datos.total);
+                // Si se agotó la página por cambios de catálogo, retroceder a la última.
+                if (datos.totalPaginas > 0 && pagina > datos.totalPaginas) {
+                    cargarPaginaCatalogo(datos.totalPaginas);
+                    return;
+                }
+                $("#catalogo_total").text(total + (total === 1 ? " perfume encontrado" : " perfumes encontrados"));
+
+                if (!datos.perfumes.length) {
+                    $("#catalogo_resultados").html(
+                        '<p class="catalogo-vacio">No hay perfumes con esos filtros. Prueba con otros criterios.</p>'
+                    );
+                    return;
+                }
+
+                // La tarjeta antigua usa campos MAYÚSCULOS; la API nueva,
+                // minúsculos. Reutilizamos la plantilla y sus botones de carrito.
+                const perfumesTarjetas = datos.perfumes.map(function (perfume) {
+                    return {
+                        ID: perfume.id,
+                        NOMBRE: perfume.nombre,
+                        MARCA: perfume.marca,
+                        CATEGORIA: perfume.categoria || "Sin categoría",
+                        PRECIO: Number(perfume.precio).toFixed(2).replace(".", ","),
+                        PRECIO_ORIGINAL: Number(perfume.precioOriginal).toFixed(2).replace(".", ","),
+                        DESCUENTO_PORCENTAJE: perfume.descuentoPorcentaje,
+                        TIENE_DESCUENTO: perfume.descuentoPorcentaje > 0
+                    };
+                });
+                $("#catalogo_resultados").html(
+                    Mustache.render(plantilla_productos, perfumesTarjetas)
+                );
+                renderizarPaginacionCatalogo(datos);
+            })
+            .fail(function (xhr, estado) {
+                if (estado === "abort" || idPeticion !== numeroPeticionCatalogo || !$("#catalogo_resultados").length) return;
+                $("#catalogo_total").text("No se pudo cargar el catálogo");
+                mostrarErrorCatalogo(xhr.status === 400
+                    ? "Revisa los filtros: los precios deben ser válidos y el mínimo no puede superar al máximo."
+                    : "Error al consultar los perfumes. Inténtalo de nuevo.");
+            });
+    }
+
+    $(document).on("submit", "#form_filtros_catalogo", function (e) {
+        e.preventDefault();
+        const precioMin = $("#filtro_precio_min").val().trim();
+        const precioMax = $("#filtro_precio_max").val().trim();
+        const min = precioMin === "" ? null : Number(precioMin);
+        const max = precioMax === "" ? null : Number(precioMax);
+        if ((min !== null && (!Number.isFinite(min) || min < 0)) ||
+            (max !== null && (!Number.isFinite(max) || max < 0)) ||
+            (min !== null && max !== null && min > max)) {
+            mostrarErrorCatalogo("Introduce precios válidos: el mínimo no puede superar al máximo.");
+            return;
+        }
+
+        filtrosCatalogo.texto = $("#filtro_texto").val().trim();
+        filtrosCatalogo.categoriaId = $("#filtro_categoria").val() || "";
+        filtrosCatalogo.precioMin = precioMin;
+        filtrosCatalogo.precioMax = precioMax;
+        filtrosCatalogo.orden = $("#filtro_orden").val();
+        cargarPaginaCatalogo(1); // Nuevo filtro = empezar por primera página.
+    });
+
+    $(document).on("click", "#limpiar_filtros_catalogo", function () {
+        Object.assign(filtrosCatalogo, {
+            texto: "", categoriaId: "", precioMin: "", precioMax: "", orden: "nombreAsc"
+        });
+        $("#form_filtros_catalogo")[0].reset();
+        cargarPaginaCatalogo(1);
+    });
+
+    $(document).on("click", ".catalogo-page-btn", function () {
+        if ($(this).prop("disabled")) return;
+        const pagina = Number($(this).attr("data-pagina"));
+        if (Number.isInteger(pagina) && pagina > 0) {
+            cargarPaginaCatalogo(pagina);
+            document.getElementById("catalogo_inicio")?.scrollIntoView({behavior: "smooth", block: "start"});
+        }
+    });
+
+    // Actualización suave cada 60 s mientras el catálogo o carrito están abiertos.
+    // No se refrescan formularios ni el resumen del checkout mientras se están rellenando.
+    setInterval(function () {
+        if (document.visibilityState !== "visible") return;
+        if ($("#catalogo_resultados").length) {
+            cargarPaginaCatalogo(paginaCatalogoActual, true);
+        } else if ($("#detalle_precio_actual").length) {
+            const id = Number($("#detalle_precio_actual").attr("data-id"));
+            $.getJSON("/restPerfumes/obtener_perfume", {id: id})
+                .done(function (datos) {
+                    if (!$("#detalle_precio_actual[data-id='" + id + "']").length) return;
+                    $("#detalle_importe_final").text(Number(datos.PRECIO).toFixed(2).replace(".", ","));
+                    $("#detalle_importe_original").text(Number(datos.PRECIO_ORIGINAL).toFixed(2).replace(".", ","));
+                    $("#detalle_porciento").text("-" + datos.DESCUENTO_PORCENTAJE + "%");
+                    $("#detalle_precio_original").prop("hidden", !datos.TIENE_DESCUENTO);
+                });
+        } else if ($("#carrito_vista_actual").length && !$(".cantidad-carrito:focus").length) {
+            mostrarCarrito();
+        }
+    }, 60000);
 
     function mostrar_detalles(id) {
         $.getJSON("/restPerfumes/obtener_perfume", {id: id})
@@ -153,11 +457,6 @@
     // =====================================================
     // REGISTRO PÚBLICO
     // =====================================================
-
-    $("#registrarme").click(function (e) {
-        e.preventDefault();
-        $("#contenedor").html(plantilla_registro_usuario);
-    });
 
     $(document).on("submit", "#form_registro_usuario", function (e) {
         e.preventDefault();
@@ -198,11 +497,6 @@
     // =====================================================
     // IDENTIFICACIÓN PÚBLICA
     // =====================================================
-
-    $("#identificarme").click(function (e) {
-        e.preventDefault();
-        $("#contenedor").html(plantilla_identificar_usuario);
-    });
 
     $(document).on("submit", "#form_identificar_usuario", function (e) {
         e.preventDefault();
@@ -251,7 +545,7 @@
         let cantidad = input ? Number(input.value) : 1;
 
         if (!Number.isInteger(cantidad) || cantidad < 1) {
-            alert("Debes indicar una cantidad válida.");
+            alert(LVLI18n.t("Debes indicar una cantidad válida."));
             return;
         }
 
@@ -260,13 +554,13 @@
             cantidad: cantidad
         })
             .done(function (respuesta) {
-                alert(respuesta);
+                alert(LVLI18n.t(respuesta));
             })
             .fail(function (xhr) {
                 if (xhr.status === 401) {
-                    alert("Debes identificarte antes de comprar.");
+                    alert(LVLI18n.t("Debes identificarte antes de comprar."));
                 } else {
-                    alert("No se pudo añadir el perfume.");
+                    alert(LVLI18n.t("No se pudo añadir el perfume."));
                     console.error(xhr);
                 }
             });
@@ -276,11 +570,6 @@
     // =====================================================
     // MOSTRAR EL CARRITO
     // =====================================================
-
-    $("#carrito").click(function (e) {
-        e.preventDefault();
-        mostrarCarrito();
-    });
 
     function mostrarCarrito() {
 
@@ -311,7 +600,7 @@
             })
             .fail(function (xhr) {
                 if (xhr.status === 401) {
-                    alert("Debes identificarte para ver tu carrito.");
+                    alert(LVLI18n.t("Debes identificarte para ver tu carrito."));
                 } else {
                     console.error("Error obteniendo carrito", xhr);
                 }
@@ -328,7 +617,7 @@
 
         let idPerfume = $(this).data("id");
 
-        if (!confirm("¿Eliminar este perfume del carrito?")) {
+        if (!confirm(LVLI18n.t("¿Eliminar este perfume del carrito?"))) {
             return;
         }
 
@@ -339,7 +628,7 @@
                 mostrarCarrito();
             })
             .fail(function (xhr) {
-                alert("No se pudo eliminar el perfume.");
+                alert(LVLI18n.t("No se pudo eliminar el perfume."));
                 console.error(xhr);
             });
     });
@@ -355,7 +644,7 @@
         let cantidad = Number($(this).val());
 
         if (!Number.isInteger(cantidad) || cantidad < 1) {
-            alert("La cantidad mínima es 1.");
+            alert(LVLI18n.t("La cantidad mínima es 1."));
             mostrarCarrito();
             return;
         }
@@ -368,7 +657,7 @@
                 mostrarCarrito();
             })
             .fail(function (xhr) {
-                alert("No se pudo modificar la cantidad.");
+                alert(LVLI18n.t("No se pudo modificar la cantidad."));
                 console.error(xhr);
                 mostrarCarrito();
             });
@@ -553,7 +842,7 @@
             .done(function (productos) {
 
                 if (productos.length === 0) {
-                    alert("Tu carrito está vacío.");
+                    alert(LVLI18n.t("Tu carrito está vacío."));
                     return;
                 }
 
@@ -564,17 +853,97 @@
                     })
 
                     .fail(function () {
-                        alert("Error al cargar el paso 1.");
+                        alert(LVLI18n.t("Error al cargar el paso 1."));
                     });
             })
 
             .fail(function (xhr) {
                 console.error("Error del carrito:", xhr);
-                alert("No se pudo acceder al checkout.");
+                alert(LVLI18n.t("No se pudo acceder al checkout."));
             });
 
     });
 
+    // =====================================================
+    // NAVEGACIÓN PÚBLICA - FASE 4
+    // =====================================================
+    let idNavegacion = 0;
+    const paginasInformativas = {
+        'contacto': '/plantillas_html/contacto.html',
+        'sobre-nosotros': '/plantillas_html/sobre_nosotros.html',
+        'privacidad': '/plantillas_html/privacidad.html',
+        'devoluciones': '/plantillas_html/devoluciones.html',
+        'terminos': '/plantillas_html/terminos.html'
+    };
+
+    function irARuta(ruta) {
+        $('#menu_usuario').prop('open', false);
+        if (location.hash === '#' + ruta) {
+            navegarDesdeHash();
+        } else {
+            location.hash = ruta;
+        }
+    }
+
+    function navegarDesdeHash() {
+        idNavegacion++;
+        const vistaSolicitada = idNavegacion;
+        const ruta = decodeURIComponent(location.hash.slice(1)) || 'inicio';
+        $('#menu_usuario').prop('open', false);
+
+        if (ruta === 'inicio') {
+            mostrar_inicio();
+        } else if (ruta === 'perfumes') {
+            mostrar_perfumes();
+        } else if (ruta === 'registrarme') {
+            cargaPlantillaRegistro.done(function () {
+                if (idNavegacion === vistaSolicitada) $('#contenedor').html(plantilla_registro_usuario);
+            });
+        } else if (ruta === 'identificarme') {
+            cargaPlantillaIdentificacion.done(function () {
+                if (idNavegacion === vistaSolicitada) $('#contenedor').html(plantilla_identificar_usuario);
+            });
+        } else if (ruta === 'carrito') {
+            mostrarCarrito();
+        } else if (paginasInformativas[ruta]) {
+            $.get(paginasInformativas[ruta]).done(function (contenido) {
+                if (idNavegacion === vistaSolicitada) $('#contenedor').html(contenido);
+            }).fail(function () {
+                if (idNavegacion === vistaSolicitada) $('#contenedor').html('<p role="alert">No se pudo cargar esta página.</p>');
+            });
+        } else if (ruta === 'pedidos' || ruta === 'mis-datos') {
+            // En el proyecto recibido estos enlaces existían, pero no tenían controlador público.
+            // Conservamos el acceso en el menú sin fingir que existe una consulta de datos.
+            $('#contenedor').html(
+                '<section class="pagina-informativa"><p class="eyebrow">Área de cliente</p>' +
+                '<h1>' + (ruta === 'pedidos' ? 'Mis pedidos' : 'Mis datos') + '</h1>' +
+                '<p>Esta sección está pendiente de implementación en la tienda pública.</p>' +
+                '<a class="btn btn-secondary" href="#perfumes" data-ruta="perfumes">Volver al catálogo</a></section>'
+            );
+        } else {
+            irARuta('inicio');
+        }
+    }
+
+    // Si se pulsa un enlace a la vista actual, hashchange no se dispara.
+    $(document).on('click', 'a[data-ruta]', function (e) {
+        const ruta = $(this).attr('data-ruta');
+        if (location.hash === '#' + ruta) {
+            e.preventDefault();
+            navegarDesdeHash();
+        }
+    });
+
+    $(document).on('click', '#explorar_catalogo', function (e) {
+        e.preventDefault();
+        document.getElementById('catalogo_inicio')?.scrollIntoView({behavior: 'smooth', block: 'start'});
+    });
+
+    window.addEventListener('hashchange', navegarDesdeHash);
+    navegarDesdeHash(); // Portada con Hero + perfumes también al abrir / por primera vez.
+
 </script>
+<!-- Fase 6: animaciones progresivas, sin dependencias externas. -->
+<script src="/javascript/animaciones.js" defer></script>
 </body>
 </html>

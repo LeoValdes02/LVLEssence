@@ -678,3 +678,443 @@ tr:hover td {
         width: 100%;
     }
 }
+
+/* ==========================================================
+   FASE 1.2 · Buscador, filtros y paginación del catálogo
+   ========================================================== */
+.catalogo-layout {
+    grid-column: 1 / -1; /* #contenedor es una cuadrícula: ocuparla toda */
+    width: 100%;
+    min-width: 0;
+}
+.catalogo-encabezado {
+    margin: 0 0 1.7rem;
+    text-align: center;
+}
+.catalogo-encabezado h1 {
+    margin-top: .4rem;
+    font-size: clamp(2rem, 4vw, 3.4rem);
+}
+.catalogo-subtitulo {
+    margin-top: .8rem;
+    color: var(--text-muted);
+}
+.catalogo-filtros {
+    display: grid;
+    grid-template-columns: minmax(190px, 1.6fr) repeat(4, minmax(110px, 1fr));
+    align-items: end;
+    gap: 1rem;
+    padding: 1.4rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    box-shadow: var(--shadow-soft);
+}
+.catalogo-campo {
+    display: flex;
+    flex-direction: column;
+    gap: .45rem;
+    min-width: 0;
+}
+.catalogo-campo label {
+    color: var(--text-muted);
+    font-size: .75rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: .04em;
+}
+.catalogo-campo input,
+.catalogo-campo select {
+    width: 100%;
+    min-width: 0;
+    min-height: 2.8rem;
+}
+.catalogo-ayuda { color: var(--danger-text); font-size: .72rem; }
+.catalogo-filtro-acciones {
+    grid-column: 1 / -1;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: .75rem;
+}
+.catalogo-estado {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: .5rem;
+    margin: 1.6rem 0 1rem;
+    color: var(--text-muted);
+    font-size: .85rem;
+}
+.catalogo-mensaje-error:not(:empty) {
+    margin-bottom: 1rem;
+    color: var(--danger-text);
+}
+.catalogo-resultados {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    align-items: stretch;
+    gap: var(--space-lg);
+}
+.catalogo-vacio {
+    grid-column: 1 / -1;
+    padding: 2.5rem 1rem;
+    border: 1px dashed var(--border);
+    border-radius: var(--radius-md);
+    color: var(--text-muted);
+    text-align: center;
+}
+.catalogo-paginacion {
+    display: flex;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: .5rem;
+    margin-top: 2rem;
+}
+.catalogo-page-btn {
+    min-height: 2.65rem;
+    min-width: 2.65rem;
+    padding: .55rem .85rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    color: var(--text);
+    font: inherit;
+    font-size: .85rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: border-color var(--transition), background var(--transition);
+}
+.catalogo-page-btn:hover:not(:disabled) {
+    border-color: var(--accent);
+    color: var(--accent);
+}
+.catalogo-page-btn.is-active {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: var(--bg);
+}
+.catalogo-page-btn:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+}
+@media (max-width: 960px) {
+    .catalogo-filtros {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .catalogo-buscador { grid-column: 1 / -1; }
+}
+@media (max-width: 600px) {
+    .catalogo-filtros { grid-template-columns: 1fr; padding: 1rem; }
+    .catalogo-buscador { grid-column: auto; }
+    .catalogo-filtro-acciones { justify-content: stretch; }
+    .catalogo-filtro-acciones .btn { flex: 1; }
+    .catalogo-resultados { grid-template-columns: 1fr; }
+}
+
+/* ==========================================================
+   FASE 1.3 · Búsqueda y paginación en administración
+   Reutiliza los controles y páginas del catálogo público.
+   ========================================================== */
+.admin-catalogo-filtros {
+    margin-top: 1.75rem;
+    grid-template-columns: minmax(190px, 1.6fr) repeat(4, minmax(110px, 1fr));
+}
+.admin-catalogo-alerta {
+    margin-top: 1rem;
+    color: var(--danger-text);
+    font-weight: 700;
+}
+.admin-catalogo-mensaje {
+    margin-top: 1rem;
+    color: var(--accent);
+    font-weight: 700;
+}
+.admin-catalogo-acciones {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .6rem;
+    align-items: center;
+}
+.admin-catalogo-acciones form { margin: 0; }
+.admin-page .catalogo-paginacion a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+}
+@media (max-width: 960px) {
+    .admin-catalogo-filtros { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media (max-width: 600px) {
+    .admin-catalogo-filtros { grid-template-columns: 1fr; }
+    .admin-catalogo-filtros .catalogo-buscador { grid-column: auto; }
+}
+
+/* ==========================================================
+   FASE 3 · Ofertas porcentuales
+   ========================================================== */
+.precio-anterior, .precio-original {
+    color: var(--text-muted);
+    font-size: .86rem;
+    margin: .35rem 0;
+}
+.precio-anterior s, .precio-original s { opacity: .88; }
+.oferta-insignia {
+    display: inline-flex;
+    align-items: center;
+    border-radius: 999px;
+    padding: .2rem .55rem;
+    margin-left: .4rem;
+    background: #92333a;
+    color: #fff;
+    font-size: .77rem;
+    font-weight: 800;
+    letter-spacing: .01em;
+}
+.admin-descuentos-lote {
+    padding: 1.1rem 1.35rem;
+    margin-bottom: 1.5rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    background: var(--surface);
+    display: flex;
+    flex-direction: column;
+    gap: .7rem;
+}
+.admin-descuentos-lote label { font-weight: 700; }
+.admin-descuentos-controles {
+    display: flex;
+    flex-wrap: wrap;
+    gap: .65rem;
+    align-items: center;
+}
+.admin-descuentos-controles input[type="number"] {
+    max-width: 6.5rem;
+    min-height: 2.7rem;
+}
+.admin-descuentos-lote small { color: var(--text-muted); }
+.admin-seleccion-oferta {
+    display: flex;
+    align-items: center;
+    gap: .45rem;
+    margin-bottom: .7rem;
+    font-size: .88rem;
+    font-weight: 700;
+}
+.admin-seleccion-oferta input[type="checkbox"] {
+    width: 1.05rem;
+    height: 1.05rem;
+}
+@media (max-width: 600px) {
+    .admin-descuentos-controles .btn { width: 100%; }
+}
+
+
+/* ==========================================================
+   FASE 4 · Portada, navegación y páginas informativas
+   ========================================================== */
+#contenedor > .pagina-informativa { grid-column: 1 / -1; }
+.catalogo-encabezado h2 {
+    color: var(--text);
+    font-family: var(--font-title);
+    font-size: clamp(2rem, 4vw, 3rem);
+}
+#catalogo_inicio { scroll-margin-top: 8rem; }
+.main-nav { gap: 1.25rem; }
+.nav-links { flex: 1 1 auto; }
+.nav-utilidades { display: flex; align-items: center; gap: 0.5rem; flex: 0 0 auto; }
+.nav-icono, .cuenta-menu summary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.65rem;
+    height: 2.65rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    color: var(--text);
+    cursor: pointer;
+    background: var(--surface-2);
+    transition: color var(--transition), border-color var(--transition);
+}
+.nav-icono:hover, .cuenta-menu summary:hover { color: var(--accent); border-color: var(--accent); }
+.cuenta-menu { position: relative; }
+.cuenta-menu[hidden] { display: none !important; }
+.cuenta-menu summary { list-style: none; }
+.cuenta-menu summary::-webkit-details-marker { display: none; }
+.cuenta-desplegable {
+    position: absolute;
+    top: calc(100% + .7rem);
+    right: 0;
+    width: min(240px, 86vw);
+    z-index: 30;
+    padding: .6rem;
+    border: 1px solid var(--border);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lift);
+    background: var(--surface);
+}
+.cuenta-desplegable a { display: block; padding: .65rem .8rem; border-radius: var(--radius-sm); font-size: .88rem; }
+.cuenta-desplegable a:hover { color: var(--accent); background: var(--surface-2); }
+.cuenta-saludo { padding: .5rem .8rem; color: var(--accent); font-weight: 700; border-bottom: 1px solid var(--border); }
+.sr-only {
+    position: absolute;
+    width: 1px; height: 1px; padding: 0; margin: -1px;
+    overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border: 0;
+}
+.site-footer { border-top: 1px solid var(--border); background: var(--surface); }
+.footer-interior {
+    display: flex; justify-content: space-between; gap: 2rem; flex-wrap: wrap;
+    width: min(1160px, calc(100% - 2rem)); margin: 0 auto; padding: 2rem 0 1.25rem;
+}
+.footer-marca { display: inline-block; margin-bottom: .4rem; color: var(--accent); font: 700 1.35rem var(--font-title); }
+.footer-interior p, .footer-nota { font-size: .82rem; color: var(--text-muted); }
+.footer-enlaces { display: flex; flex-wrap: wrap; justify-content: flex-end; gap: .65rem 1.2rem; max-width: 650px; }
+.footer-enlaces a { font-size: .85rem; color: var(--text-muted); }
+.footer-enlaces a:hover { color: var(--accent); }
+.footer-nota { width: min(1160px, calc(100% - 2rem)); margin: 0 auto; padding: .9rem 0 1.25rem; border-top: 1px solid var(--border); }
+.pagina-informativa {
+    width: 100%;
+    min-height: 50vh;
+    padding: clamp(1.5rem, 4vw, 3rem);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    background: var(--surface);
+    box-shadow: var(--shadow-soft);
+}
+.pagina-informativa h1 { max-width: 24ch; font-size: clamp(2.1rem, 5vw, 3.6rem); }
+.pagina-informativa h2 { font-size: 1.5rem; margin: 1.8rem 0 .7rem; }
+.pagina-informativa > p, .pagina-informativa > ul, .pagina-informativa section { max-width: 750px; margin-top: 1rem; }
+.pagina-informativa p, .pagina-informativa li { color: var(--text-muted); }
+.pagina-informativa ul { padding-left: 1.3rem; }
+.pagina-informativa .btn { margin-top: 1.5rem; }
+.aviso-borrador { padding: 1rem 1.25rem; border-left: 3px solid var(--accent); background: var(--surface-2); border-radius: var(--radius-sm); }
+@media (max-width: 860px) {
+    .main-nav { flex-direction: row; align-items: center; flex-wrap: wrap; }
+    .nav-links { flex: 1 0 100%; order: 3; justify-content: flex-start; }
+    .nav-utilidades { margin-left: auto; }
+}
+@media (max-width: 640px) {
+    .nav-links { gap: .2rem .9rem; }
+    .nav-links a { font-size: .72rem; }
+    .footer-enlaces { justify-content: flex-start; }
+    .pagina-informativa { padding: 1.25rem; }
+}
+
+
+/* Fase 5 · Selector de idioma discreto y modal premium */
+.nav-utilidades { display: flex; align-items: center; gap: .7rem; }
+.selector-idioma {
+    display: inline-flex; align-items: center; justify-content: center; gap: .4rem;
+    background: transparent; border: 1px solid var(--border); border-radius: var(--radius-sm);
+    color: var(--text); font: 700 .77rem var(--font-body); letter-spacing: .06em;
+    cursor: pointer; min-height: 40px; padding: .45rem .6rem;
+    transition: border-color var(--transition), color var(--transition);
+}
+.selector-idioma:hover, .selector-idioma:focus-visible { border-color: var(--accent); color: var(--accent); }
+.modal-idioma {
+    width: min(420px, calc(100vw - 2rem)); max-height: calc(100vh - 2rem);
+    margin: auto; padding: 0; border: 1px solid var(--border); border-radius: var(--radius-lg);
+    color: var(--text); background: var(--surface); box-shadow: var(--shadow-lift);
+}
+.modal-idioma::backdrop { background: rgba(0,0,0,.76); backdrop-filter: blur(3px); }
+.modal-idioma-contenido { display: grid; gap: 1rem; padding: clamp(1.25rem,4vw,2rem); }
+.modal-idioma-contenido h2 { font-size: clamp(1.35rem,3vw,1.9rem); }
+.modal-idioma-contenido > p:not(.eyebrow) { color: var(--text-muted); }
+.modal-idioma-opciones { display: grid; gap: .7rem; margin: .4rem 0; }
+.opcion-idioma {
+    width: 100%; display: flex; justify-content: space-between; align-items: center;
+    padding: 1rem 1.1rem; background: var(--surface-2); color: var(--text);
+    border: 1px solid var(--border); border-radius: var(--radius-sm);
+    font: 600 .95rem var(--font-body); cursor: pointer;
+}
+.opcion-idioma span { color: var(--text-muted); font-size: .75rem; letter-spacing: .09em; }
+.opcion-idioma:hover, .opcion-idioma:focus-visible, .opcion-idioma[aria-pressed="true"] {
+    border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent);
+}
+.modal-idioma-contenido > .btn { justify-self: end; }
+
+
+/* ==============================================================
+   FASE 6 · Movimiento premium (solo la tienda publica)
+   El contenido permanece visible si JavaScript no funciona.
+   ============================================================== */
+@media (prefers-reduced-motion: no-preference) {
+    html.lvl-motion-enabled .lvl-entrada {
+        opacity: 0;
+        transform: translate3d(0, 20px, 0);
+        transition-property: opacity, transform;
+        transition-duration: 620ms, 700ms;
+        transition-timing-function: ease-out, cubic-bezier(.2, .75, .25, 1);
+        transition-delay: var(--lvl-delay, 0ms);
+    }
+
+    html.lvl-motion-enabled .lvl-entrada.lvl-visible {
+        opacity: 1;
+        transform: translate3d(0, 0, 0);
+    }
+
+    /* El movimiento de entrada no debe anular el hover existente. */
+    html.lvl-motion-enabled .product-card.lvl-entrada.lvl-visible:hover {
+        transform: translateY(-5px);
+    }
+
+    /* Aparicion delicada de los menus, sin mover el contenido de la pagina. */
+    .cuenta-menu[open] .cuenta-desplegable {
+        animation: lvl-menu-aparece 190ms ease-out both;
+    }
+    .modal-idioma[open] .modal-idioma-contenido {
+        animation: lvl-modal-aparece 220ms ease-out both;
+    }
+    @keyframes lvl-menu-aparece {
+        from { opacity: 0; transform: translateY(-7px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes lvl-modal-aparece {
+        from { opacity: 0; transform: translateY(9px) scale(.985); }
+        to   { opacity: 1; transform: translateY(0) scale(1); }
+    }
+}
+
+/* Refinamiento de las tarjetas: solo dispositivos con raton/trackpad. */
+@media (hover: hover) and (pointer: fine) {
+    .product-card .imagen-producto {
+        transition: transform 480ms cubic-bezier(.2, .7, .2, 1);
+    }
+    .product-card:hover .imagen-producto {
+        transform: scale(1.055);
+    }
+}
+
+/* El teclado sigue teniendo una referencia visual clara. */
+.product-card:focus-within {
+    border-color: var(--accent);
+    box-shadow: var(--shadow-lift);
+}
+.product-card .btn:focus-visible,
+.catalogo-page-btn:focus-visible,
+.selector-idioma:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+}
+
+/* Accesibilidad: no ocultar tarjetas ni imponer movimientos a quien los desactive. */
+@media (prefers-reduced-motion: reduce) {
+    html.lvl-motion-enabled .lvl-entrada,
+    html.lvl-motion-enabled .lvl-entrada.lvl-visible {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+    .cuenta-menu[open] .cuenta-desplegable,
+    .modal-idioma[open] .modal-idioma-contenido {
+        animation: none;
+    }
+    .product-card .imagen-producto,
+    .product-card:hover .imagen-producto {
+        transform: none;
+        transition: none;
+    }
+    #catalogo_inicio { scroll-behavior: auto; }
+}

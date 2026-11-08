@@ -1,5 +1,5 @@
 
-<section class="auth-section">
+<section class="auth-section" id="carrito_vista_actual">
     <div class="auth-card">
 
         <div class="section-heading">
@@ -17,9 +17,11 @@
                 <h2 class="product-name">{{nombre}}</h2>
                 <p class="product-brand">{{marca}}</p>
 
-                <p class="product-price">
-                    {{precio}} EUR / unidad
-                </p>
+                {{#enOferta}}
+                <p class="precio-anterior"><s>{{precioOriginal}} EUR</s>
+                    <span class="oferta-insignia">-{{descuentoPorcentaje}}%</span></p>
+                {{/enOferta}}
+                <p class="product-price">{{precio}} EUR / unidad</p>
 
                 <div class="form-group">
                     <label for="cantidad_carrito_{{id}}">

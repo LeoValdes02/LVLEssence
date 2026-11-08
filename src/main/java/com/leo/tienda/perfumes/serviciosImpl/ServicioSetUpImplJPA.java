@@ -238,7 +238,7 @@ public class ServicioSetUpImplJPA implements ServicioSetUp {
             productoPedido.setPedido(pedido);
             productoPedido.setPerfume(perfumes.get(i));
             productoPedido.setCantidad(i == 0 ? 2 : 1);
-            productoPedido.setPrecioUnitario(java.math.BigDecimal.valueOf(perfumes.get(i).getPrecio()).setScale(2, java.math.RoundingMode.HALF_UP));
+            productoPedido.setPrecioUnitario(perfumes.get(i).getPrecioFinal());
 
             entityManager.persist(productoPedido);
         }

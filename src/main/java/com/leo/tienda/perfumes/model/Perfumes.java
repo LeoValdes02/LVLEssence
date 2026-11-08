@@ -2,6 +2,8 @@ package com.leo.tienda.perfumes.model;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+import java.math.BigDecimal;
+import com.leo.tienda.perfumes.precios.PrecioPerfume;
 import org.springframework.web.multipart.MultipartFile;
 
 @Entity
@@ -24,6 +26,13 @@ public class Perfumes {
     @Min(value = 1, message = "Precio minimo 1 euro")
     @Max(value = 9999, message = "Precio minimo 1 euro")
     private double precio;
+
+    // Integer (no int): los perfumes anteriores pueden tener NULL tras añadir la columna.
+    // En toda lectura, NULL equivale a no tener descuento.
+    @Min(value = 0, message = "El descuento no puede ser negativo")
+    @Max(value = 100, message = "El descuento no puede superar el 100 %")
+    @Column(name = "descuento_porcentaje")
+    private Integer descuentoPorcentaje = 0;
     private String familiaOlfativa;
     private int mililitros;
     private String concentracion;
@@ -89,6 +98,24 @@ public class Perfumes {
 
     public void setPrecio(double precio) {
         this.precio = precio;
+    }
+
+    public int getDescuentoPorcentaje() {
+        return descuentoPorcentaje == null ? 0 : descuentoPorcentaje;
+    }
+
+    public void setDescuentoPorcentaje(Integer descuentoPorcentaje) {
+        this.descuentoPorcentaje = descuentoPorcentaje == null ? 0 : descuentoPorcentaje;
+    }
+
+    @Transient
+    public BigDecimal getPrecioFinal() {
+        return PrecioPerfume.calcular(precio, getDescuentoPorcentaje());
+    }
+
+    @Transient
+    public boolean isEnOferta() {
+        return getDescuentoPorcentaje() > 0;
     }
 
     public String getFamiliaOlfativa() {

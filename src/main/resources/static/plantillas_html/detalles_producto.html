@@ -13,8 +13,15 @@
                 src="/mostrar_imagen?id={{ID}}"
                 alt="{{NOMBRE}}">
 
-        <p>{{DESCRIPCION}}</p>
-        <p class="product-price">{{PRECIO}} EUR</p>
+        <p data-no-traducir>{{DESCRIPCION}}</p>
+        <div id="detalle_precio_actual" data-id="{{ID}}">
+            <div id="detalle_precio_original" class="precio-anterior"
+                 {{^TIENE_DESCUENTO}}hidden{{/TIENE_DESCUENTO}}>
+                <s><span id="detalle_importe_original">{{PRECIO_ORIGINAL}}</span> EUR</s>
+                <span id="detalle_porciento" class="oferta-insignia">-{{DESCUENTO_PORCENTAJE}}%</span>
+            </div>
+            <p class="product-price"><span id="detalle_importe_final">{{PRECIO}}</span> EUR</p>
+        </div>
 
         <div class="form-group">
             <label for="cantidad_{{ID}}">Cantidad</label>

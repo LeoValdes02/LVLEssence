@@ -36,6 +36,37 @@
         </a>
     </section>
 
+    <!-- CAMBIO DE ESTADO: los pedidos EnProceso se gestionan desde el checkout. -->
+    <section class="admin-welcome" style="margin-top: 24px;">
+        <h2>Gestionar estado del pedido</h2>
+
+        <p th:if="${mensaje}" th:text="${mensaje}" role="status"></p>
+        <p th:if="${error}" th:text="${error}" role="alert" class="field-error"></p>
+
+        <p>Estado actual: <strong th:text="${pedido.estado}"></strong></p>
+
+        <form class="luxury-form" method="post"
+              th:if="${!#lists.isEmpty(estadosDisponibles)}"
+              th:action="@{/admin/actualizarEstadoPedido}">
+            <input type="hidden" name="id" th:value="${pedido.id}">
+            <!-- Thymeleaf + Spring Security incluye el token CSRF en formularios POST. -->
+            <div class="form-field">
+                <label for="estadoPedido">Nuevo estado</label>
+                <select id="estadoPedido" name="estado" required>
+                    <option value="" selected disabled>Selecciona el nuevo estado</option>
+                    <option th:each="opcion : ${estadosDisponibles}"
+                            th:value="${opcion.name()}"
+                            th:text="${opcion.name()}"></option>
+                </select>
+            </div>
+            <button class="btn btn-primary" type="submit">Guardar estado</button>
+        </form>
+
+        <p th:if="${#lists.isEmpty(estadosDisponibles)}">
+            Este pedido sigue en proceso de compra. Solo puede completarse desde el checkout.
+        </p>
+    </section>
+
     <!-- DATOS DE ENVÍO -->
     <section class="admin-welcome">
         <h2>Datos de envío</h2>

@@ -47,6 +47,15 @@
             </div>
 
             <div class="form-field">
+                <label for="descuentoPorcentaje">Descuento sobre el precio original (%)</label>
+                <input type="number" min="0" max="100" step="1"
+                       th:field="*{descuentoPorcentaje}" required>
+                <small>0 = sin oferta. El descuento se aplica al catálogo y al carrito.</small>
+                <span class="field-error" th:if="${#fields.hasErrors('descuentoPorcentaje')}"
+                      th:errors="*{descuentoPorcentaje}"></span>
+            </div>
+
+            <div class="form-field">
                 <label for="familiaOlfativa">Familia olfativa</label>
                 <input type="text" th:field="*{familiaOlfativa}">
             </div>

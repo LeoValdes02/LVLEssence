@@ -3,34 +3,124 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gestionar perfumes</title>
+    <title>Gestionar perfumes — LVL ESSENCE</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+          rel="stylesheet">
     <link rel="stylesheet" th:href="@{/css/estilos.css}">
 </head>
 <body class="admin-page">
 
-<div th:insert="fragments/general.html :: menu"></div>
+<div th:insert="~{fragments/general :: menu}"></div>
 
 <main class="admin-shell">
     <section class="section-heading admin-heading">
         <div>
-            <p class="eyebrow">Catalogo</p>
+            <p class="eyebrow">Catálogo</p>
             <h1>Gestionar perfumes</h1>
-            <p>Listado de productos disponibles para revisar, editar o eliminar.</p>
+            <p>Busca, filtra, edita o elimina los productos de la tienda.</p>
         </div>
-        <a class="btn btn-primary" href="registrarPerfume">Nuevo producto</a>
+        <a class="btn btn-primary" th:href="@{/admin/registrarPerfume}">Nuevo producto</a>
     </section>
 
-    <p th:if="${error}" th:text="${error}" role="alert"></p>
-    <section class="admin-product-grid">
+    <!-- GET: solo consulta datos, no modifica perfumes. -->
+    <form id="filtros-admin-perfumes" class="catalogo-filtros admin-catalogo-filtros"
+          method="get" th:action="@{/admin/gestionarPerfumes}">
+        <div class="catalogo-campo catalogo-buscador">
+            <label for="admin-texto">Nombre</label>
+            <input id="admin-texto" type="search" name="texto" th:value="${texto}"
+                   placeholder="Buscar perfume" maxlength="100">
+        </div>
+        <div class="catalogo-campo">
+            <label for="admin-categoria">Categoría</label>
+            <select id="admin-categoria" name="categoriaId">
+                <option value="">Todas</option>
+                <option th:each="c : ${categorias}"
+                        th:value="${c.id}" th:text="${c.nombre}"
+                        th:selected="${categoriaId != null and categoriaId == c.id}">Categoría</option>
+            </select>
+        </div>
+        <div class="catalogo-campo">
+            <label for="admin-precio-min">Precio mínimo (€)</label>
+            <input id="admin-precio-min" type="number" name="precioMin" min="0" step="0.01"
+                   th:value="${precioMin}" placeholder="0">
+        </div>
+        <div class="catalogo-campo">
+            <label for="admin-precio-max">Precio máximo (€)</label>
+            <input id="admin-precio-max" type="number" name="precioMax" min="0" step="0.01"
+                   th:value="${precioMax}" placeholder="Sin límite">
+        </div>
+        <div class="catalogo-campo">
+            <label for="admin-orden">Ordenar por</label>
+            <select id="admin-orden" name="orden">
+                <option value="nombreAsc" th:selected="${orden == 'nombreAsc'}">Nombre A-Z</option>
+                <option value="nombreDesc" th:selected="${orden == 'nombreDesc'}">Nombre Z-A</option>
+                <option value="precioAsc" th:selected="${orden == 'precioAsc'}">Precio: menor a mayor</option>
+                <option value="precioDesc" th:selected="${orden == 'precioDesc'}">Precio: mayor a menor</option>
+                <option value="recientes" th:selected="${orden == 'recientes'}">Últimos añadidos</option>
+            </select>
+        </div>
+        <!-- Sin campo pagina: toda búsqueda nueva empieza en la página 1. -->
+        <div class="catalogo-filtro-acciones">
+            <a class="btn btn-secondary" th:href="@{/admin/gestionarPerfumes}">Limpiar filtros</a>
+            <button class="btn btn-primary" type="submit">Buscar perfumes</button>
+        </div>
+    </form>
+
+    <p th:if="${error}" th:text="${error}" role="alert" class="admin-catalogo-alerta"></p>
+    <p th:if="${mensaje}" th:text="${mensaje}" role="status" class="admin-catalogo-mensaje"></p>
+
+    <div class="catalogo-estado" aria-live="polite">
+        <span th:text="|${total} perfumes encontrados|">0 perfumes encontrados</span>
+        <span th:if="${total > 0}" th:text="|Mostrando ${desde}–${hasta}|">Mostrando 1–10</span>
+    </div>
+
+    <p class="catalogo-vacio" th:if="${#lists.isEmpty(perfumes)}">
+        No hay perfumes con estos filtros. Prueba con otros criterios.
+    </p>
+
+    <form id="admin-descuentos-lote" method="post" th:action="@{/admin/aplicarDescuento}"
+          class="admin-descuentos-lote">
+        <!-- El token CSRF se incluye automáticamente mediante Thymeleaf/Spring Security. -->
+        <input type="hidden" name="texto" th:value="${texto}">
+        <input type="hidden" name="categoriaId" th:value="${categoriaId}">
+        <input type="hidden" name="precioMin" th:value="${precioMin}">
+        <input type="hidden" name="precioMax" th:value="${precioMax}">
+        <input type="hidden" name="orden" th:value="${orden}">
+        <input type="hidden" name="pagina" th:value="${paginaActual}">
+        <label for="descuento-lote">Aplicar oferta a los perfumes marcados en esta página:</label>
+        <div class="admin-descuentos-controles">
+            <input type="number" id="descuento-lote" name="porcentajeDescuento"
+                   min="0" max="100" value="10" step="1" required aria-label="Descuento porcentual">
+            <span>%</span>
+            <button type="submit" class="btn btn-primary"
+                    onclick="return confirm('¿Aplicar este porcentaje a los perfumes seleccionados?');">
+                Aplicar descuento
+            </button>
+        </div>
+        <small>Pon 0 % para quitar una oferta. Solo se aplicará a los productos seleccionados.</small>
+    </form>
+
+    <section class="admin-product-grid" aria-label="Perfumes encontrados">
         <article class="admin-product-card" th:each="p : ${perfumes}">
-            <img th:src="@{${ '../mostrar_imagen?id=' + p.id }}" alt="Imagen del perfume"/>
+            <img th:src="@{/mostrar_imagen(id=${p.id})}"
+                 th:alt="|Imagen de ${p.nombre}|" loading="lazy">
             <div class="admin-product-info">
+                <label class="admin-seleccion-oferta">
+                    <input type="checkbox" name="ids" th:value="${p.id}" form="admin-descuentos-lote">
+                    Seleccionar para oferta
+                </label>
                 <p class="product-brand" th:text="${p.marca}"></p>
                 <h2 th:text="${p.nombre}"></h2>
-                <p class="product-price"><span th:text="${p.precio}"></span> EUR</p>
+                <div class="precio-oferta-admin">
+                    <span th:if="${p.enOferta}" class="oferta-insignia"
+                          th:text="|-${p.descuentoPorcentaje}%|">-20%</span>
+                    <p th:if="${p.enOferta}" class="precio-original">
+                        <span th:text="${p.precio}"></span> EUR (original)
+                    </p>
+                    <p class="product-price"><span th:text="${p.precioFinal}"></span> EUR</p>
+                </div>
 
                 <dl class="product-details">
                     <div>
@@ -42,28 +132,54 @@
                         <dd th:text="${p.mililitros}"></dd>
                     </div>
                     <div>
-                        <dt>Concentracion</dt>
+                        <dt>Concentración</dt>
                         <dd th:text="${p.concentracion}"></dd>
                     </div>
                     <div>
-                        <dt>Genero</dt>
+                        <dt>Género</dt>
                         <dd th:text="${p.genero}"></dd>
                     </div>
                     <div class="full-detail">
-                        <dt>Descripcion</dt>
+                        <dt>Descripción</dt>
                         <dd th:text="${p.descripcion}"></dd>
                     </div>
                 </dl>
 
-                <form method="post" th:action="@{/admin/borrarPerfume}" onsubmit="return confirm('¿Eliminar este perfume?')"><input type="hidden" name="id" th:value="${p.id}"><button class="btn btn-danger" type="submit">Borrar</button></form>
-                <br>
-                <a class="btn btn-danger" th:href="@{/admin/editarPerfume(id=${p.id})}">Editar</a>
-                <br>
+                <div class="admin-catalogo-acciones">
+                    <a class="btn btn-secondary" th:href="@{/admin/editarPerfume(id=${p.id})}">Editar</a>
 
-
+                    <!-- POST y token CSRF de Thymeleaf/Spring Security. Conservar contexto. -->
+                    <form method="post" th:action="@{/admin/borrarPerfume}"
+                          onsubmit="return confirm('¿Eliminar este perfume?');">
+                        <input type="hidden" name="id" th:value="${p.id}">
+                        <input type="hidden" name="texto" th:value="${texto}">
+                        <input type="hidden" name="categoriaId" th:value="${categoriaId}">
+                        <input type="hidden" name="precioMin" th:value="${precioMin}">
+                        <input type="hidden" name="precioMax" th:value="${precioMax}">
+                        <input type="hidden" name="orden" th:value="${orden}">
+                        <input type="hidden" name="pagina" th:value="${paginaActual}">
+                        <button class="btn btn-danger" type="submit">Borrar</button>
+                    </form>
+                </div>
             </div>
         </article>
     </section>
+
+    <nav class="catalogo-paginacion" aria-label="Páginas de perfumes"
+         th:if="${totalPaginas > 1}">
+        <a class="catalogo-page-btn" th:if="${paginaActual > 1}"
+           th:href="@{/admin/gestionarPerfumes(texto=${texto},categoriaId=${categoriaId},precioMin=${precioMin},precioMax=${precioMax},orden=${orden},pagina=${paginaActual - 1})}">
+            Anterior
+        </a>
+        <a class="catalogo-page-btn" th:each="numero : ${numerosPagina}"
+           th:href="@{/admin/gestionarPerfumes(texto=${texto},categoriaId=${categoriaId},precioMin=${precioMin},precioMax=${precioMax},orden=${orden},pagina=${numero})}"
+           th:text="${numero}" th:classappend="${numero == paginaActual} ? 'is-active' : ''"
+           th:aria-current="${numero == paginaActual} ? 'page' : null">1</a>
+        <a class="catalogo-page-btn" th:if="${paginaActual < totalPaginas}"
+           th:href="@{/admin/gestionarPerfumes(texto=${texto},categoriaId=${categoriaId},precioMin=${precioMin},precioMax=${precioMax},orden=${orden},pagina=${paginaActual + 1})}">
+            Siguiente
+        </a>
+    </nav>
 </main>
 
 </body>

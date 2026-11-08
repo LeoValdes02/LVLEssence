@@ -16,6 +16,7 @@ import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.math.BigDecimal;
 
 @Service
 @Transactional
@@ -119,12 +120,13 @@ public class ServicioCarritoImplJPA implements ServicioCarrito {
             datos.put("id", p.getId());
             datos.put("nombre", p.getNombre());
             datos.put("marca", p.getMarca());
-            datos.put("precio", p.getPrecio());
+            BigDecimal precioFinal = p.getPrecioFinal();
+            datos.put("precio", precioFinal);
+            datos.put("precioOriginal", p.getPrecio());
+            datos.put("descuentoPorcentaje", p.getDescuentoPorcentaje());
+            datos.put("enOferta", p.isEnOferta());
             datos.put("cantidad", pc.getCantidad());
-
-            double subtotal = p.getPrecio() * pc.getCantidad();
-            datos.put("subtotal",
-                    Math.round(subtotal * 100.0) / 100.0);
+            datos.put("subtotal", precioFinal.multiply(BigDecimal.valueOf(pc.getCantidad())));
 
             resultado.add(datos);
         }
