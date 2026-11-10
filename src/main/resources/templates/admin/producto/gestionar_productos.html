@@ -81,7 +81,7 @@
     </p>
 
     <form id="admin-descuentos-lote" method="post" th:action="@{/admin/aplicarDescuento}"
-          class="admin-descuentos-lote">
+          class="admin-descuentos-lote" data-confirmar="¿Aplicar este porcentaje a los perfumes seleccionados?" data-destructivo="false" data-accion="Aplicar" onsubmit="return window.LVLFeedback ? true : confirm('¿Aplicar este porcentaje a los perfumes seleccionados?');">
         <!-- El token CSRF se incluye automáticamente mediante Thymeleaf/Spring Security. -->
         <input type="hidden" name="texto" th:value="${texto}">
         <input type="hidden" name="categoriaId" th:value="${categoriaId}">
@@ -94,8 +94,7 @@
             <input type="number" id="descuento-lote" name="porcentajeDescuento"
                    min="0" max="100" value="10" step="1" required aria-label="Descuento porcentual">
             <span>%</span>
-            <button type="submit" class="btn btn-primary"
-                    onclick="return confirm('¿Aplicar este porcentaje a los perfumes seleccionados?');">
+            <button type="submit" class="btn btn-primary">
                 Aplicar descuento
             </button>
         </div>
@@ -103,12 +102,12 @@
     </form>
 
     <section class="admin-product-grid" aria-label="Perfumes encontrados">
-        <article class="admin-product-card" th:each="p : ${perfumes}">
+        <article class="admin-product-card admin-perfume-card" th:each="p : ${perfumes}">
             <img th:src="@{/mostrar_imagen(id=${p.id})}"
                  th:alt="|Imagen de ${p.nombre}|" loading="lazy">
             <div class="admin-product-info">
                 <label class="admin-seleccion-oferta">
-                    <input type="checkbox" name="ids" th:value="${p.id}" form="admin-descuentos-lote">
+                    <input class="glass-switch" type="checkbox" name="ids" th:value="${p.id}" form="admin-descuentos-lote">
                     Seleccionar para oferta
                 </label>
                 <p class="product-brand" th:text="${p.marca}"></p>
@@ -117,12 +116,13 @@
                     <span th:if="${p.enOferta}" class="oferta-insignia"
                           th:text="|-${p.descuentoPorcentaje}%|">-20%</span>
                     <p th:if="${p.enOferta}" class="precio-original">
-                        <span th:text="${p.precio}"></span> EUR (original)
+                        <s><span th:text="${p.precio}"></span> EUR</s> (original)
                     </p>
                     <p class="product-price"><span th:text="${p.precioFinal}"></span> EUR</p>
                 </div>
 
                 <dl class="product-details">
+                    <div><dt>Stock</dt><dd th:text="${p.stock != null ? p.stock : 'No especificado'}"></dd></div>
                     <div>
                         <dt>Familia olfativa</dt>
                         <dd th:text="${p.familiaOlfativa}"></dd>
@@ -150,7 +150,7 @@
 
                     <!-- POST y token CSRF de Thymeleaf/Spring Security. Conservar contexto. -->
                     <form method="post" th:action="@{/admin/borrarPerfume}"
-                          onsubmit="return confirm('¿Eliminar este perfume?');">
+                          data-confirmar="¿Eliminar este perfume?" onsubmit="return window.LVLFeedback ? true : confirm('¿Eliminar este perfume?');">
                         <input type="hidden" name="id" th:value="${p.id}">
                         <input type="hidden" name="texto" th:value="${texto}">
                         <input type="hidden" name="categoriaId" th:value="${categoriaId}">

@@ -36,7 +36,7 @@
                     </div>
                 </dl>
 
-                <form method="post" th:action="@{/admin/borrarCategoria}" onsubmit="return confirm('¿Eliminar esta categoría?')"><input type="hidden" name="id" th:value="${c.id}"><button class="btn btn-danger" type="submit">Borrar</button></form>
+                <form method="post" th:action="@{/admin/borrarCategoria}" data-confirmar="¿Eliminar esta categoría?" onsubmit="return window.LVLFeedback ? true : confirm('¿Eliminar esta categoría?')"><input type="hidden" name="id" th:value="${c.id}"><button class="btn btn-danger" type="submit">Borrar</button></form>
                 <br>
                 <a class="btn btn-danger" th:href="@{/admin/editarCategoria(id=${c.id})}">Editar</a>
                 <br>

@@ -8,15 +8,18 @@
 <body>
 
 <div th:fragment="menu" class="admin-header">
+    <link rel="stylesheet" th:href="@{/css/feedback-premium.css}">
+    <script th:src="@{/javascript/feedback-premium.js}" defer></script>
 
     <div class="admin-topbar">
-        <a class="admin-link" th:href="@{/}">
-            Volver a la parte pública
-        </a>
+        <a class="admin-brand" th:href="@{/admin/inicioAdmin}">LVL ESSENCE</a>
+        <button type="button" class="admin-menu-abrir" aria-expanded="false" aria-controls="admin-menu">Menú</button>
     </div>
 
-    <nav class="admin-nav"
+    <nav class="admin-nav" id="admin-menu"
          aria-label="Navegación de administración">
+
+        <button type="button" class="admin-menu-cerrar">Cerrar menú</button>
 
         <a th:href="@{/admin/gestionarPerfumes}">
             Gestionar perfumes
@@ -33,13 +36,15 @@
         <a th:href="@{/admin/gestionarPedidos}">
             Gestionar pedidos
         </a>
-        <form method="post" th:action="@{/admin/cerrarSesion}">
+        <a class="admin-volver-tienda" th:href="@{/}">Volver a la tienda</a>
+        <form class="admin-logout" method="post" th:action="@{/admin/cerrarSesion}">
             <button type="submit" class="btn btn-secondary">
                 Cerrar sesión
             </button>
         </form>
 
     </nav>
+    <script th:src="@{/javascript/admin-premium.js}" defer></script>
 
 </div>
 

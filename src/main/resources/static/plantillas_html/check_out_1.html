@@ -13,13 +13,13 @@
             <div class="form-group">
                 <label for="campo_nombre">Nombre completo</label>
                 <input type="text" id="campo_nombre"
-                       name="nombre" required>
+                       name="nombre" autocomplete="name" required>
             </div>
 
             <div class="form-group">
                 <label for="campo_direccion">Dirección</label>
                 <input type="text" id="campo_direccion"
-                       name="direccion" required>
+                       name="direccion" autocomplete="street-address" required>
             </div>
 
             <div class="form-group">
@@ -31,13 +31,13 @@
             <div class="form-group">
                 <label for="campo_ciudad">Ciudad</label>
                 <input type="text" id="campo_ciudad"
-                       name="ciudad" required>
+                       name="ciudad" autocomplete="address-level2" required>
             </div>
 
             <div class="form-group">
                 <label for="campo_codigo_postal">Código postal</label>
                 <input type="text" id="campo_codigo_postal"
-                       name="codigoPostal"
+                       name="codigoPostal" autocomplete="postal-code"
                        inputmode="numeric"
                        pattern="[0-9]{5}"
                        maxlength="5" required>

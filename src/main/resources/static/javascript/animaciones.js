@@ -26,16 +26,20 @@
             ".catalogo-encabezado",
             ".catalogo-filtros",
             ".product-card",
-            ".pagina-informativa"
+            ".pagina-informativa",
+            ".detalle-nota"
         ].join(", ");
 
         const pendientes = new Set();
+        function revelar(elemento) {
+            elemento.classList.add("lvl-visible");
+            pendientes.delete(elemento);
+            entrada.unobserve(elemento);
+        }
         const entrada = new IntersectionObserver(function (entradas) {
             for (const elemento of entradas) {
                 if (!elemento.isIntersecting) continue;
-                elemento.target.classList.add("lvl-visible");
-                pendientes.delete(elemento.target);
-                entrada.unobserve(elemento.target);
+                revelar(elemento.target);
             }
         }, {
             threshold: 0.08,
@@ -87,6 +91,10 @@
 
         cambios.observe(raiz, {childList: true, subtree: true});
         registrarElementos();
+        raiz.addEventListener("focusin", function (evento) {
+            const elemento = evento.target.closest(elementosAnimables);
+            if (elemento && pendientes.has(elemento)) revelar(elemento);
+        });
 
         // Si la preferencia del sistema cambia mientras la pagina esta abierta,
         // el usuario debe poder ver inmediatamente cualquier contenido pendiente.

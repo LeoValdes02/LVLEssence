@@ -28,18 +28,32 @@ public class ServicioPerfumesImplJPA implements ServicioPerfumes {
 
     @PersistenceContext
     private EntityManager entityManager;
+    @org.springframework.beans.factory.annotation.Autowired private com.leo.tienda.perfumes.servicios.ServicioGaleria galeria;
+
+    @Override
+    public void registrarPerfumeConGaleria(com.leo.tienda.perfumes.formularios.FormularioPerfume formulario) {
+        Perfumes perfume = formulario.paraCrear();
+        asignarCategoriaDesdeFormulario(perfume);
+        entityManager.persist(perfume);
+        galeria.actualizar(perfume, formulario.getFotoSubida(), formulario.getFotosAdicionales(), formulario.getEliminarImagenes(), formulario.getOrdenImagenes());
+    }
+    @Override
+    public void guardarCambiosConGaleria(com.leo.tienda.perfumes.formularios.FormularioPerfume formulario) throws Exception {
+        Perfumes original = entityManager.find(Perfumes.class, formulario.getId(), jakarta.persistence.LockModeType.PESSIMISTIC_WRITE);
+        if (original == null) throw new IllegalArgumentException("Perfume no encontrado");
+        galeria.actualizar(original, formulario.getFotoSubida(), formulario.getFotosAdicionales(), formulario.getEliminarImagenes(), formulario.getOrdenImagenes());
+        // La portada se ha validado y actualizado; el metodo existente no debe sobrescribirla.
+        var foto = formulario.getFotoSubida();
+        try { formulario.setFotoSubida(null); guardarCambiosPerfume(formulario); }
+        finally { formulario.setFotoSubida(foto); }
+    }
 
     @Override
     public void registrarPerfume(Perfumes p) {
         asignarCategoriaDesdeFormulario(p);
-        //el perfume ahora mismo tiene la fotoSubida, pero
-        // en imagenPortada no tiene nada.
         try {
-            p.setImagenPortada(p.getFotoSubida().getBytes());
-        } catch (IOException e) {
-            System.out.println("NO PUDE PROCESAR LA FOTO SUBIDA");
-            throw new RuntimeException(e);
-        }
+            if (p.getFotoSubida() != null && !p.getFotoSubida().isEmpty()) p.setImagenPortada(p.getFotoSubida().getBytes());
+        } catch (IOException e) { throw new IllegalStateException("No se pudo leer la imagen", e); }
         entityManager.persist(p);
     }
 
@@ -48,6 +62,20 @@ public class ServicioPerfumesImplJPA implements ServicioPerfumes {
         // lanzar JPQL
         // la consulta lanzada equivale al sql: select * from tabala_perfumes as p
         return entityManager.createQuery("select p from Perfumes p").getResultList();
+    }
+
+    @Override
+    public List<String> obtenerMarcas() {
+        return entityManager.createQuery("select distinct p.marca from Perfumes p where p.marca is not null and p.marca <> '' order by p.marca", String.class).getResultList();
+    }
+
+    @Override
+    public List<String> obtenerNotasDisponibles() {
+        List<Object[]> filas = entityManager.createQuery("select p.notasSalida, p.notasCorazon, p.notasFondo from Perfumes p", Object[].class).getResultList();
+        var notas = new java.util.TreeSet<String>(String.CASE_INSENSITIVE_ORDER);
+        for (Object[] fila : filas) for (Object campo : fila) if (campo != null)
+            for (String nota : campo.toString().split(",")) if (!nota.isBlank()) notas.add(nota.trim());
+        return new ArrayList<>(notas);
     }
 
     private static final int RESULTADOS_POR_PAGINA = 10;
@@ -109,7 +137,7 @@ public class ServicioPerfumesImplJPA implements ServicioPerfumes {
         TypedQuery<PerfumeResumen> consulta = entityManager.createQuery(
                 "select new com.leo.tienda.perfumes.responseData.PerfumeResumen(" +
                 "p.id, p.nombre, p.marca, " + PRECIO_CATALOGO +
-                ", p.precio, coalesce(p.descuentoPorcentaje, 0), c.nombre) " +
+                ", p.precio, coalesce(p.descuentoPorcentaje, 0), c.nombre, p.familiaOlfativa) " +
                 "from Perfumes p left join p.categoria c" + filtros +
                 " order by " + ordenJpql, PerfumeResumen.class);
         aplicarFiltros(consulta, patron, categoriaId, precioMin, precioMax);
@@ -191,6 +219,8 @@ public class ServicioPerfumesImplJPA implements ServicioPerfumes {
             Long pedidos = entityManager.createQuery("select count(p) from ProductoPedido p where p.perfume.id = :id", Long.class).setParameter("id", id).getSingleResult();
             Long carritos = entityManager.createQuery("select count(p) from ProductoCarrito p where p.perfume.id = :id", Long.class).setParameter("id", id).getSingleResult();
             if (pedidos > 0 || carritos > 0) throw new IllegalStateException("No se puede borrar un perfume incluido en pedidos o carritos.");
+            entityManager.createQuery("delete from Valoracion v where v.perfume.id = :id").setParameter("id", id).executeUpdate();
+            entityManager.createQuery("delete from Favorito f where f.perfume.id = :id").setParameter("id", id).executeUpdate();
             entityManager.remove(perfumeAborrar);
 
         } else {
@@ -201,22 +231,26 @@ public class ServicioPerfumesImplJPA implements ServicioPerfumes {
 
     @Override
     public void guardarCambiosPerfume(Perfumes perfumeEditar) throws Exception {
+        Perfumes original = entityManager.find(Perfumes.class, perfumeEditar.getId());
+        if (original == null) throw new IllegalArgumentException("Perfume no encontrado");
         asignarCategoriaDesdeFormulario(perfumeEditar);
+        original.setNombre(perfumeEditar.getNombre());
+        original.setMarca(perfumeEditar.getMarca());
+        original.setPrecio(perfumeEditar.getPrecio());
+        original.setDescuentoPorcentaje(perfumeEditar.getDescuentoPorcentaje());
+        original.setFamiliaOlfativa(perfumeEditar.getFamiliaOlfativa());
+        original.setMililitros(perfumeEditar.getMililitros());
+        original.setConcentracion(perfumeEditar.getConcentracion());
+        original.setGenero(perfumeEditar.getGenero());
+        original.setDescripcion(perfumeEditar.getDescripcion());
+        original.setCategoria(perfumeEditar.getCategoria());
+        original.setNotasSalida(perfumeEditar.getNotasSalida());
+        original.setNotasCorazon(perfumeEditar.getNotasCorazon());
+        original.setNotasFondo(perfumeEditar.getNotasFondo());
+        original.setStock(perfumeEditar.getStock());
+        if (perfumeEditar.getFotoSubida() != null && !perfumeEditar.getFotoSubida().isEmpty())
+            original.setImagenPortada(perfumeEditar.getFotoSubida().getBytes());
 
-//      para no perder la foto del perfume, debemos ver si el usuario
-//      le ha asignado una nueva foto en el caso contrario le cargamos la anterior
-        if (perfumeEditar.getFotoSubida().getSize() == 0) {
-            Perfumes original =
-                    entityManager.find(Perfumes.class, perfumeEditar.getId());
-            perfumeEditar.setImagenPortada(original.getImagenPortada());
-        } else {
-            perfumeEditar.setImagenPortada(perfumeEditar.getFotoSubida().getBytes());
-        }
-
-
-//      merge actualiza el registro ai ya existe
-//       si no existe
-        entityManager.merge(perfumeEditar);
     }
 
     @Override
@@ -228,11 +262,11 @@ public class ServicioPerfumesImplJPA implements ServicioPerfumes {
 
     @Override
     public Map<String, Object> obtenerJSONPerfumesPorId(Long id) {
-        return (Map<String, Object>) ((NativeQueryImpl) entityManager.createNativeQuery(ConstantesSQL.SQL_OBTENER_PERFUME_JSON))
+        List<?> resultados = ((NativeQueryImpl) entityManager.createNativeQuery(ConstantesSQL.SQL_OBTENER_PERFUME_JSON))
                 .setParameter("id", id)
                 .setTupleTransformer(AliasToEntityMapResultTransformer.INSTANCE)
-                .getResultList()
-                .get(0);
+                .getResultList();
+        return resultados.isEmpty() ? null : (Map<String, Object>) resultados.get(0);
     }
 
     private void asignarCategoriaDesdeFormulario(Perfumes perfume) {

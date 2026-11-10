@@ -16,7 +16,9 @@ public class ConstantesSQL {
             "FROM TABLA_PERFUMES tp LEFT JOIN CATEGORIA c ON tp.categoria_id = c.id";
 
     public static final String SQL_OBTENER_PERFUME_JSON =
-            "SELECT " + CAMPOS_COMUNES + ", tp.descripcion AS DESCRIPCION " +
+            "SELECT " + CAMPOS_COMUNES + ", tp.descripcion AS DESCRIPCION, tp.concentracion AS CONCENTRACION, " +
+            "tp.mililitros AS MILILITROS, tp.notas_salida AS NOTAS_SALIDA, " +
+            "tp.notas_corazon AS NOTAS_CORAZON, tp.notas_fondo AS NOTAS_FONDO " +
             "FROM TABLA_PERFUMES tp LEFT JOIN CATEGORIA c ON tp.categoria_id = c.id " +
             "WHERE tp.id = :id";
 }

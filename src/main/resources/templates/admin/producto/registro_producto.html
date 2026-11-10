@@ -22,6 +22,8 @@
         </div>
 
         <form class="luxury-form" action="#" th:action="@{/admin/guardarPerfume}" th:object="${nuevo}" method="post" enctype="multipart/form-data">
+            <div th:if="${#fields.hasGlobalErrors()}" role="alert" class="field-error"><p th:each="error : ${#fields.globalErrors()}" th:text="${error}"></p></div>
+            <p th:if="${#fields.hasAnyErrors()}" role="alert" class="field-error">Revisa los datos y vuelve a seleccionar las imagenes si es necesario.</p>
             <div class="form-field">
                 <label for="nombre">Nombre</label>
                 <input type="text" th:field="*{nombre}">
@@ -30,7 +32,7 @@
 
             <div class="form-field">
                 <label for="marca">Marca</label>
-                <input type="text" th:field="*{marca}">
+                <select th:field="*{marca}"><option value="">Selecciona una opcion</option><option th:each="opcion : ${marcas}" th:value="${opcion}" th:text="${opcion}"></option></select><span class="field-error" th:if="${#fields.hasErrors('marca')}" th:errors="*{marca}"></span>
             </div>
 
             <div class="form-grid">
@@ -41,8 +43,8 @@
                 </div>
 
                 <div class="form-field">
-                    <label for="mililitros">Mililitros</label>
-                    <input type="text" th:field="*{mililitros}">
+                    <label for="mililitros">Tamano (ml)</label>
+                    <select th:field="*{mililitros}"><option value="0">Selecciona una opcion</option><option th:each="opcion : ${tamanos}" th:value="${opcion}" th:text="${opcion}"></option></select><span class="field-error" th:if="${#fields.hasErrors('mililitros')}" th:errors="*{mililitros}"></span>
                 </div>
             </div>
 
@@ -68,35 +70,46 @@
                             th:value="${categoria.id}"
                             th:text="${categoria.nombre}">
                     </option>
-                </select>
+                </select><span class="field-error" th:if="${#fields.hasErrors('idCategoria')}" th:errors="*{idCategoria}"></span>
             </div>
 
             <div class="form-grid">
                 <div class="form-field">
                     <label for="concentracion">Concentracion</label>
-                    <input type="text" th:field="*{concentracion}">
+                    <select th:field="*{concentracion}"><option value="">Selecciona una opcion</option><option th:each="opcion : ${concentraciones}" th:value="${opcion}" th:text="${opcion}"></option></select><span class="field-error" th:if="${#fields.hasErrors('concentracion')}" th:errors="*{concentracion}"></span>
                 </div>
 
                 <div class="form-field">
                     <label for="genero">Genero</label>
-                    <input type="text" th:field="*{genero}">
+                    <select th:field="*{genero}"><option value="">Selecciona una opcion</option><option th:each="opcion : ${generos}" th:value="${opcion}" th:text="${opcion}"></option></select><span class="field-error" th:if="${#fields.hasErrors('genero')}" th:errors="*{genero}"></span>
                 </div>
             </div>
 
             <div class="form-field">
                 <label for="descripcion">Descripcion</label>
-                <input type="text" th:field="*{descripcion}">
+                <input type="text" th:field="*{descripcion}"><span class="field-error" th:if="${#fields.hasErrors('descripcion')}" th:errors="*{descripcion}"></span>
             </div>
 
+            <div class="form-field"><label for="stock">Stock</label><input type="number" min="0" step="1" th:field="*{stock}"><span class="field-error" th:if="${#fields.hasErrors('stock')}" th:errors="*{stock}"></span></div>
+            <div class="form-field"><label for="seleccionSalida">Notas de salida</label><select multiple th:field="*{seleccionSalida}"><option th:each="nota : ${notas}" th:value="${nota}" th:text="${nota}"></option></select><span class="field-error" th:if="${#fields.hasErrors('seleccionSalida')}" th:errors="*{seleccionSalida}"></span></div>
+            <div class="form-field"><label for="seleccionCorazon">Notas de corazon</label><select multiple th:field="*{seleccionCorazon}"><option th:each="nota : ${notas}" th:value="${nota}" th:text="${nota}"></option></select><span class="field-error" th:if="${#fields.hasErrors('seleccionCorazon')}" th:errors="*{seleccionCorazon}"></span></div>
+            <div class="form-field"><label for="seleccionFondo">Notas de fondo</label><select multiple th:field="*{seleccionFondo}"><option th:each="nota : ${notas}" th:value="${nota}" th:text="${nota}"></option></select><span class="field-error" th:if="${#fields.hasErrors('seleccionFondo')}" th:errors="*{seleccionFondo}"></span></div>
             <div class="form-field">
                 <label for="fotoSubida">Portada</label>
-                <input type="file" th:field="*{fotoSubida}">
+                <input type="file" th:field="*{fotoSubida}" accept="image/jpeg,image/png,image/webp">
             </div>
 
+            <button class="btn" type="button" id="generarProducto">Generar producto</button><small id="avisoGenerador" aria-live="polite"></small>
+            <div class="form-field">
+                <label for="fotosAdicionales">Imagenes adicionales</label>
+                <input type="file" id="fotosAdicionales" name="fotosAdicionales" accept="image/jpeg,image/png,image/webp" multiple>
+                <small>Hasta 5 imagenes adicionales, 2 MB por imagen. JPEG, PNG o WebP.</small>
+            </div>
             <button class="btn btn-primary form-submit" type="submit">Registrar</button>
         </form>
     </section>
 </main>
 
+<script th:src="@{/javascript/generar_producto.js}"></script>
 </body>
 </html>

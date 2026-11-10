@@ -107,6 +107,9 @@ public class ServicioUsuariosImplJPA implements ServicioUsuarios {
             entityManager.remove(carrito);
         }
 
+        entityManager.createQuery("delete from Valoracion v where v.usuario.id = :id").setParameter("id", id).executeUpdate();
+        entityManager.createQuery("delete from Favorito f where f.usuario.id = :id").setParameter("id", id).executeUpdate();
+
         // Finalmente borrar el usuario
         entityManager.remove(usuario);
     }

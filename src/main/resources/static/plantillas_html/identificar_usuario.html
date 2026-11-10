@@ -1,39 +1,17 @@
-<section class="auth-section">
-    <div class="auth-card">
-
-        <div class="section-heading">
-            <p class="eyebrow">Mi cuenta</p>
-            <h1>Iniciar sesión</h1>
-            <p>Accede a tu cuenta de LVL ESSENCE.</p>
-        </div>
-
-        <form id="form_identificar_usuario">
-
-            <!-- EMAIL -->
-            <div class="form-group">
-                <label for="email">Correo electrónico</label>
-                <input
-                        type="email"
-                        id="email"
-                        name="email"
-                        placeholder="correo@ejemplo.com"
-                        autocomplete="email"
-                        required
-                >
-            </div>
-            <br>
-
-            <input type="password" id="pass" name="pass" required, autocomplete="current-password" placeholder="Contraseña">
-
-
-            <div id="mensaje_identificacion"></div>
-            <br>
-
-            <button type="submit" class="btn btn-primary">
-                Iniciar sesión
-            </button>
-
-        </form>
-
-    </div>
+<section class="auth-section acceso-premium" aria-labelledby="acceso-titulo">
+ <div class="acceso-panel glass-panel">
+  <div class="acceso-formulario">
+   <a href="#inicio" data-ruta="inicio" class="acceso-marca">LVL ESSENCE</a>
+   <h1 id="acceso-titulo" tabindex="-1">Iniciar sesión</h1><p>Accede a tu cuenta de LVL ESSENCE.</p>
+   <p class="acceso-obligatorio">Todos los campos son obligatorios.</p>
+   <form id="form_identificar_usuario">
+    <div class="form-group"><label for="email">Correo electrónico</label><input type="email" id="email" name="email" placeholder="correo@ejemplo.com" autocomplete="email" required></div>
+    <div class="form-group"><label for="pass">Contraseña</label><div class="acceso-password"><input type="password" id="pass" name="pass" autocomplete="current-password" required><button type="button" class="acceso-ver-password" aria-controls="pass" aria-pressed="false">Mostrar contraseña</button></div></div>
+    <p id="mensaje_identificacion" class="acceso-mensaje" role="status" aria-live="polite"></p>
+    <button type="submit" class="btn btn-primary acceso-enviar">Iniciar sesión</button>
+   </form>
+   <p class="acceso-alternar">¿No tienes cuenta? <a href="#registrarme" data-ruta="registrarme">Crear cuenta</a></p>
+  </div>
+  <aside class="acceso-visual" aria-hidden="true"><div class="acceso-halo"></div><img src="/imagenes_productos_iniciales/Sauvage.webp" alt="" width="500" height="500"><p>LVL ESSENCE</p><span>Una experiencia de perfumería selecta.</span></aside>
+ </div>
 </section>

@@ -31,6 +31,8 @@ public class PerfumesREST {
     @Autowired
     private ServicioCategorias servicioCategorias;
 
+    @Autowired private com.leo.tienda.perfumes.servicios.ServicioDescubrimiento descubrimiento;
+
     // Devuelve los IDs reales de cada categoría sin exponer entidades JPA.
     @GetMapping("categorias")
     public List<CategoriaFiltro> listarCategorias() {
@@ -69,10 +71,26 @@ public class PerfumesREST {
         }
     }
 
+    @GetMapping("notas")
+    public List<String> notas() { return servicioPerfumes.obtenerNotasDisponibles(); }
+
+    @GetMapping("menu")
+    public Map<String, Object> menu(@RequestParam(required = false) Long referencia) {
+        var novedades = servicioPerfumes.buscarPerfumes("", null, null, null, "recientes", 1).perfumes().stream().limit(4).toList();
+        try {
+            return Map.of("novedades", novedades, "sugerencias", descubrimiento.recomendar(referencia),
+                    "mejorValorados", descubrimiento.mejorValorados(), "general", referencia == null);
+        } catch (java.util.NoSuchElementException error) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, error.getMessage());
+        }
+    }
+
     @RequestMapping("obtener_perfume")
     public Map<String, Object> obtenerPerfume(@RequestParam Long id) {
         //estos return de un @RestController devuelven json
-        return servicioPerfumes.obtenerJSONPerfumesPorId(id);
+        Map<String, Object> resultado = servicioPerfumes.obtenerJSONPerfumesPorId(id);
+        if (resultado == null) throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Perfume no encontrado");
+        return resultado;
     }
 
 }

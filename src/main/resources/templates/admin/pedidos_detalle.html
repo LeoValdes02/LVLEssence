@@ -162,7 +162,8 @@
             Este pedido todavía no tiene productos.
         </p>
 
-        <div style="overflow-x: auto; margin-top: 16px;">
+        <p class="admin-tabla-ayuda" th:unless="${#lists.isEmpty(pedido.productosPedido)}">Desplaza la tabla horizontalmente si es necesario.</p>
+        <div class="admin-tabla-scroll" tabindex="0" role="region" aria-label="Perfumes del pedido">
 
             <table th:unless="${#lists.isEmpty(
                          pedido.productosPedido)}">

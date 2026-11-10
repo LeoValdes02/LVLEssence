@@ -1,45 +1,20 @@
-
-<section class="auth-section">
-    <div class="auth-card">
-
-        <div class="section-heading">
-            <p class="eyebrow">{{MARCA}}</p>
-            <h1>{{NOMBRE}}</h1>
-            <p>{{CATEGORIA}}</p>
-        </div>
-
-        <img
-                class="imagen-producto"
-                src="/mostrar_imagen?id={{ID}}"
-                alt="{{NOMBRE}}">
-
-        <p data-no-traducir>{{DESCRIPCION}}</p>
-        <div id="detalle_precio_actual" data-id="{{ID}}">
-            <div id="detalle_precio_original" class="precio-anterior"
-                 {{^TIENE_DESCUENTO}}hidden{{/TIENE_DESCUENTO}}>
-                <s><span id="detalle_importe_original">{{PRECIO_ORIGINAL}}</span> EUR</s>
-                <span id="detalle_porciento" class="oferta-insignia">-{{DESCUENTO_PORCENTAJE}}%</span>
-            </div>
-            <p class="product-price"><span id="detalle_importe_final">{{PRECIO}}</span> EUR</p>
-        </div>
-
-        <div class="form-group">
-            <label for="cantidad_{{ID}}">Cantidad</label>
-
-            <input
-                    class="quantity-input"
-                    type="number"
-                    id="cantidad_{{ID}}"
-                    min="1"
-                    step="1"
-                    value="1">
-        </div>
-
-        <button
-                class="btn btn-primary"
-                type="button"
-                onclick="agregarProductoCarrito({{ID}})">
-            Agregar al carrito
-        </button>
-    </div>
-</section>
+<article class="detalle-premium" aria-labelledby="detalle-titulo" data-id="{{ID}}">
+ <button type="button" class="detalle-volver" id="volver_catalogo"><span aria-hidden="true">&#8592;</span> <span>Volver al catalogo</span></button>
+ <div class="detalle-escena">
+  <section class="detalle-panel glass-panel">
+   <p class="detalle-marca" data-no-traducir>{{MARCA}}</p><h1 id="detalle-titulo" data-no-traducir>{{NOMBRE}}</h1>
+   <p id="resumen-valoracion" aria-live="polite">Cargando valoraciones...</p><p class="detalle-descripcion" data-no-traducir>{{DESCRIPCION}}</p>
+   <div class="detalle-chips" aria-label="Caracteristicas del perfume">{{#TIENE_TAMANO}}<span class="glass-chip" data-no-traducir>{{MILILITROS}} ml</span>{{/TIENE_TAMANO}}{{#CONCENTRACION}}<span class="glass-chip" data-no-traducir>{{CONCENTRACION}}</span>{{/CONCENTRACION}}</div>
+   <div class="detalle-cantidad-grupo"><label for="cantidad_{{ID}}">Cantidad</label><div class="detalle-pasos"><button type="button" class="detalle-menos" aria-label="Reducir cantidad">−</button><input class="detalle-cantidad" type="number" id="cantidad_{{ID}}" min="1" step="1" value="1"><button type="button" class="detalle-mas" aria-label="Aumentar cantidad">+</button></div></div>
+   <div id="detalle_precio_actual" data-id="{{ID}}"><p class="detalle-precio"><span>Precio final</span> <strong><span id="detalle_importe_final">{{PRECIO}}</span> EUR</strong></p><div id="detalle_precio_original" class="detalle-precio-original" {{^TIENE_DESCUENTO}}hidden{{/TIENE_DESCUENTO}}><span>Precio original</span> <s><span id="detalle_importe_original">{{PRECIO_ORIGINAL}}</span> EUR</s> <span id="detalle_porciento" class="detalle-descuento">-{{DESCUENTO_PORCENTAJE}}%</span></div></div>
+   <div class="detalle-acciones"><button class="detalle-boton" type="button" onclick="agregarProductoCarrito({{ID}}, this)">Agregar al carrito</button><button type="button" class="favorito-agregar detalle-favorito" data-id="{{ID}}" aria-pressed="false" disabled>Anadir a favoritos</button></div><p class="detalle-favorito-estado" role="status">Cargando favoritos...</p>
+  </section>
+  <div class="detalle-galeria"><div class="detalle-miniaturas" role="group" aria-label="Imagenes del perfume" hidden></div><figure class="detalle-figura"><div class="detalle-halo" aria-hidden="true"></div><div class="detalle-movimiento"><img class="detalle-imagen" src="/mostrar_imagen?id={{ID}}" alt="{{NOMBRE}}"></div><figcaption class="detalle-imagen-ausente" hidden>Imagen no disponible</figcaption></figure></div>
+ </div>
+ <section class="detalle-notas" aria-labelledby="detalle-notas-titulo"><h2 id="detalle-notas-titulo">Notas de fragancia</h2><div class="detalle-notas-grid">
+  <section class="detalle-nota"><h3>Notas de salida</h3>{{#HAY_SALIDA}}<ul>{{#SALIDA}}<li data-no-traducir>{{.}}</li>{{/SALIDA}}</ul>{{/HAY_SALIDA}}{{^HAY_SALIDA}}<p>No especificadas</p>{{/HAY_SALIDA}}</section>
+  <section class="detalle-nota"><h3>Notas de corazon</h3>{{#HAY_CORAZON}}<ul>{{#CORAZON}}<li data-no-traducir>{{.}}</li>{{/CORAZON}}</ul>{{/HAY_CORAZON}}{{^HAY_CORAZON}}<p>No especificadas</p>{{/HAY_CORAZON}}</section>
+  <section class="detalle-nota"><h3>Notas de fondo</h3>{{#HAY_FONDO}}<ul>{{#FONDO}}<li data-no-traducir>{{.}}</li>{{/FONDO}}</ul>{{/HAY_FONDO}}{{^HAY_FONDO}}<p>No especificadas</p>{{/HAY_FONDO}}</section>
+ </div></section>
+ <section class="detalle-valoracion" aria-labelledby="titulo-valoracion" data-id="{{ID}}"><h2 id="titulo-valoracion">Valoraciones</h2><form id="form-valoracion"><label for="puntuacion">Tu puntuacion</label><select id="puntuacion" name="puntuacion" required><option value="">Selecciona una puntuacion</option><option value="1">1 / 5</option><option value="2">2 / 5</option><option value="3">3 / 5</option><option value="4">4 / 5</option><option value="5">5 / 5</option></select><button class="detalle-boton" type="submit">Guardar puntuacion</button></form><p id="mensaje-valoracion" role="status"></p></section>
+</article>

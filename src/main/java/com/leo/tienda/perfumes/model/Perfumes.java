@@ -38,6 +38,11 @@ public class Perfumes {
     private String concentracion;
     private String genero;
     private String descripcion;
+    private String notasSalida;
+    private String notasCorazon;
+    private String notasFondo;
+    @Min(value = 0, message = "El stock no puede ser negativo")
+    private Integer stock;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,6 +59,13 @@ public class Perfumes {
     // en base de datos
     @Lob // para tipos de columna, p.ej blob o clob, para guardar imagenes/archivos/arrays de bytes
     private byte[] imagenPortada;
+
+    @OneToMany(mappedBy = "perfume", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    @OrderBy("orden ASC, id ASC")
+    @com.fasterxml.jackson.annotation.JsonIgnore
+    private java.util.List<ImagenPerfume> imagenesAdicionales = new java.util.ArrayList<>();
+
+    public java.util.List<ImagenPerfume> getImagenesAdicionales() { return imagenesAdicionales; }
 
     @ManyToOne
     private Categoria categoria;
@@ -157,6 +169,15 @@ public class Perfumes {
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
     }
+
+    public String getNotasSalida() { return notasSalida; }
+    public void setNotasSalida(String value) { this.notasSalida = value; }
+    public String getNotasCorazon() { return notasCorazon; }
+    public void setNotasCorazon(String value) { this.notasCorazon = value; }
+    public String getNotasFondo() { return notasFondo; }
+    public void setNotasFondo(String value) { this.notasFondo = value; }
+    public Integer getStock() { return stock; }
+    public void setStock(Integer stock) { this.stock = stock; }
 
     public long getId() {
         return id;

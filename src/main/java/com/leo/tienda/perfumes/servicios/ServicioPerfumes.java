@@ -10,8 +10,14 @@ import java.util.Map;
 public interface ServicioPerfumes {
 
     void registrarPerfume(Perfumes v); //
+    void registrarPerfumeConGaleria(com.leo.tienda.perfumes.formularios.FormularioPerfume formulario);
+    void guardarCambiosConGaleria(com.leo.tienda.perfumes.formularios.FormularioPerfume formulario) throws Exception;
 
     List<Perfumes> obtenerPerfumes();
+
+    List<String> obtenerMarcas();
+
+    List<String> obtenerNotasDisponibles();
 
     /**
      * Búsqueda combinada, 10 perfumes por página (numeración desde 1).

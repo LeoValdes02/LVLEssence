@@ -1,0 +1,29 @@
+.acceso-premium { padding-block: clamp(1rem, 3vw, 2.5rem); }
+.acceso-panel { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, .9fr); width: min(1050px, 100%); margin: auto; overflow: hidden; }
+.acceso-formulario { min-width: 0; padding: clamp(1.25rem, 4vw, 3.5rem); }
+.acceso-marca { display: inline-block; margin-bottom: 2rem; color: var(--blue-ice); font-family: var(--font-title); letter-spacing: .12em; }
+.acceso-formulario h1 { margin-bottom: .75rem; }
+.acceso-formulario > p { color: var(--text-muted); }
+.acceso-formulario .acceso-obligatorio { margin-top: 1.5rem; font-size: .85rem; }
+.acceso-formulario form { display: grid; gap: .85rem; margin-top: 1rem; }
+.acceso-formulario .form-group { display: grid; gap: .4rem; min-width: 0; }
+.acceso-formulario input { width: 100%; min-width: 0; min-height: 48px; }
+.acceso-password { display: flex; flex-wrap: wrap; align-items: center; gap: .5rem; }
+.acceso-password input { flex: 1 1 180px; }
+.acceso-ver-password { min-height: 44px; padding: .5rem .8rem; border: 1px solid var(--glass-border); border-radius: var(--radius-pill); color: var(--text); background: var(--glass-raised); font: inherit; cursor: pointer; }
+.acceso-ver-password:hover { background: var(--glass-hover); }
+.acceso-formulario :is(a, button, input):focus-visible { outline: 3px solid var(--glass-focus); outline-offset: 3px; }
+.acceso-enviar { min-height: 48px; width: 100%; }
+.acceso-enviar:disabled { opacity: .65; cursor: wait; }
+.acceso-mensaje:empty { display: none; }
+.acceso-mensaje { color: var(--blue-ice); overflow-wrap: anywhere; }
+.acceso-mensaje[data-error="true"] { color: #ffb8bc; }
+.acceso-formulario .acceso-alternar { margin-top: 1.5rem; }
+.acceso-alternar a { color: var(--blue-ice); text-decoration: underline; text-underline-offset: .2em; }
+.acceso-visual { position: relative; isolation: isolate; display: flex; flex-direction: column; align-items: center; justify-content: center; overflow: hidden; padding: 2rem; text-align: center; background: radial-gradient(ellipse at center, rgba(25,81,252,.32), transparent 65%), var(--bg); border-left: 1px solid var(--glass-border); }
+.acceso-visual img { position: relative; width: min(100%, 360px); height: auto; max-height: 430px; object-fit: contain; }
+.acceso-visual p { font-family: var(--font-title); letter-spacing: .12em; }
+.acceso-visual span { color: var(--text-muted); margin-top: .5rem; }
+.acceso-halo { position: absolute; z-index: -1; width: 65%; aspect-ratio: 1; border-radius: 50%; background: radial-gradient(circle, rgba(55,129,252,.28), transparent 70%); }
+@media (max-width: 767px) { .acceso-panel { grid-template-columns: minmax(0, 1fr); } .acceso-visual { display: none; } }
+@media (prefers-reduced-motion: reduce) { .acceso-premium *, .acceso-premium *::before, .acceso-premium *::after { animation: none; transition: none; } }

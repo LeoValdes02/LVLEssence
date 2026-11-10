@@ -1,6 +1,11 @@
 package com.leo.tienda.perfumes.controllers;
 
 import com.leo.tienda.perfumes.model.Perfumes;
+import com.leo.tienda.perfumes.formularios.FormularioPerfume;
+import com.leo.tienda.perfumes.formularios.OpcionesPerfume;
+import java.util.ArrayList;
+import java.util.LinkedHashSet;
+import java.util.Objects;
 import com.leo.tienda.perfumes.responseData.PaginaPerfumes;
 import com.leo.tienda.perfumes.responseData.PerfumeResumen;
 import com.leo.tienda.perfumes.servicios.ServicioCategorias;
@@ -29,6 +34,7 @@ public class ControladorPerfumes {
 
     @Autowired
     private ServicioCategorias servicioCategorias;
+    @Autowired private com.leo.tienda.perfumes.servicios.ServicioGaleria galeria;
 
     /** Misma búsqueda que el catálogo público, pero renderizada con Thymeleaf. */
     @GetMapping("gestionarPerfumes")
@@ -90,22 +96,30 @@ public class ControladorPerfumes {
 
     @GetMapping("registrarPerfume")
     public String registrarPerfume(Model model) {
-        Perfumes nuevo = new Perfumes();
+        FormularioPerfume nuevo = new FormularioPerfume();
         nuevo.setPrecio(1);
         model.addAttribute("nuevo", nuevo);
-        model.addAttribute("categorias", servicioCategorias.obtenerCategorias());
+        prepararOpciones(model, null);
         return "admin/producto/registro_producto";
     }
 
     @PostMapping("guardarPerfume")
-    public String guardarPerfume(@Valid @ModelAttribute("nuevo") Perfumes nuevo,
-                                 BindingResult resultadoValidacion, Model model) {
-        if (resultadoValidacion.hasErrors()) {
-            model.addAttribute("categorias", servicioCategorias.obtenerCategorias());
+    public String guardarPerfume(@Valid @ModelAttribute("nuevo") FormularioPerfume nuevo,
+                                 BindingResult errores, Model model) {
+        validarFormulario(nuevo, null, errores);
+        if (errores.hasErrors()) {
+            prepararOpciones(model, null);
             return "admin/producto/registro_producto";
         }
-        servicioPerfumes.registrarPerfume(nuevo);
-        return "admin/producto/registro_producto_ok";
+        nuevo.normalizarNotas();
+        try {
+            servicioPerfumes.registrarPerfumeConGaleria(nuevo);
+            return "admin/producto/registro_producto_ok";
+        } catch (IllegalArgumentException error) {
+            errores.reject("galeria", error.getMessage());
+            prepararOpciones(model, null);
+            return "admin/producto/registro_producto";
+        }
     }
 
     /** Tras borrar, redirigir (PRG) y conservar filtros. No permite borrado por GET. */
@@ -175,22 +189,75 @@ public class ControladorPerfumes {
     }
 
     @PostMapping("guardaCambiosrPerfume")
-    public String guardaCambiosrPerfume(@Valid @ModelAttribute("perfumeEditar") Perfumes perfumeEditar,
-                                       BindingResult resultadoValidacion, Model model) throws Exception {
-        if (resultadoValidacion.hasErrors()) {
-            model.addAttribute("categorias", servicioCategorias.obtenerCategorias());
+    public String guardaCambiosrPerfume(@Valid @ModelAttribute("perfumeEditar") FormularioPerfume formulario,
+                                       BindingResult errores, Model model) throws Exception {
+        Perfumes original = servicioPerfumes.obtenerPerfumesPorId(formulario.getId());
+        if (original == null) throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND);
+        validarFormulario(formulario, original, errores);
+        if (errores.hasErrors()) {
+            prepararOpciones(model, original);
             return "admin/producto/editar_producto";
         }
-        servicioPerfumes.guardarCambiosPerfume(perfumeEditar);
-        return "redirect:/admin/gestionarPerfumes";
+        formulario.normalizarNotas();
+        try {
+            servicioPerfumes.guardarCambiosConGaleria(formulario);
+            return "redirect:/admin/gestionarPerfumes";
+        } catch (IllegalArgumentException error) {
+            errores.reject("galeria", error.getMessage());
+            prepararOpciones(model, original);
+            return "admin/producto/editar_producto";
+        }
     }
 
     private void prepararFormularioEditar(Long id, Model model) {
-        Perfumes perfumeEditar = servicioPerfumes.obtenerPerfumesPorId(id);
-        if (perfumeEditar.getCategoria() != null) {
-            perfumeEditar.setIdCategoria(perfumeEditar.getCategoria().getId());
+        Perfumes original = servicioPerfumes.obtenerPerfumesPorId(id);
+        if (original == null) throw new org.springframework.web.server.ResponseStatusException(org.springframework.http.HttpStatus.NOT_FOUND);
+        model.addAttribute("perfumeEditar", FormularioPerfume.desde(original));
+        prepararOpciones(model, original);
+    }
+
+    private <T> List<T> conAnterior(List<T> opciones, T anterior) {
+        var valores = new LinkedHashSet<>(opciones);
+        if (anterior != null && !anterior.toString().isBlank()) valores.add(anterior);
+        return new ArrayList<>(valores);
+    }
+
+    private void prepararOpciones(Model model, Perfumes original) {
+        var marcas = new LinkedHashSet<>(OpcionesPerfume.MARCAS);
+        marcas.addAll(servicioPerfumes.obtenerMarcas());
+        model.addAttribute("marcas", conAnterior(new ArrayList<>(marcas), original == null ? null : original.getMarca()));
+        model.addAttribute("concentraciones", conAnterior(OpcionesPerfume.CONCENTRACIONES, original == null ? null : original.getConcentracion()));
+        model.addAttribute("tamanos", conAnterior(OpcionesPerfume.TAMANOS, original == null || original.getMililitros() <= 0 ? null : original.getMililitros()));
+        model.addAttribute("generos", conAnterior(OpcionesPerfume.GENEROS, original == null ? null : original.getGenero()));
+        var notas = new LinkedHashSet<>(OpcionesPerfume.NOTAS);
+        if (original != null) {
+            var anteriores = FormularioPerfume.desde(original);
+            notas.addAll(anteriores.getSeleccionSalida());
+            notas.addAll(anteriores.getSeleccionCorazon());
+            notas.addAll(anteriores.getSeleccionFondo());
         }
-        model.addAttribute("perfumeEditar", perfumeEditar);
+        model.addAttribute("notas", new ArrayList<>(notas));
         model.addAttribute("categorias", servicioCategorias.obtenerCategorias());
+        model.addAttribute("imagenesGaleria", original == null ? List.of() : galeria.listar(original.getId()));
+    }
+
+    private void validarFormulario(FormularioPerfume f, Perfumes original, BindingResult errores) {
+        var marcas = new LinkedHashSet<>(OpcionesPerfume.MARCAS);
+        marcas.addAll(servicioPerfumes.obtenerMarcas());
+        if (f.getMarca() == null || f.getMarca().isBlank() || !marcas.contains(f.getMarca())) errores.rejectValue("marca", "invalida", "Selecciona una marca valida");
+        if ((f.getConcentracion() == null || !OpcionesPerfume.CONCENTRACIONES.contains(f.getConcentracion())) && (original == null || f.getConcentracion() == null || !Objects.equals(original.getConcentracion(), f.getConcentracion()))) errores.rejectValue("concentracion", "invalida", "Selecciona una concentracion valida");
+        if (!OpcionesPerfume.TAMANOS.contains(f.getMililitros()) && (original == null || f.getMililitros() <= 0 || original.getMililitros() != f.getMililitros())) errores.rejectValue("mililitros", "invalido", "Selecciona un tamano valido");
+        if ((f.getGenero() == null || !OpcionesPerfume.GENEROS.contains(f.getGenero())) && (original == null || f.getGenero() == null || !Objects.equals(original.getGenero(), f.getGenero()))) errores.rejectValue("genero", "invalido", "Selecciona un genero valido");
+        if (f.getDescripcion() == null || f.getDescripcion().isBlank()) errores.rejectValue("descripcion", "obligatoria", "Introduce una descripcion");
+        if (!Double.isFinite(f.getPrecio())) errores.rejectValue("precio", "invalido", "Introduce un precio valido");
+        if (f.getStock() == null && original == null) errores.rejectValue("stock", "obligatorio", "Introduce el stock");
+        if (servicioCategorias.obtenerCategorias().stream().noneMatch(c -> c.getId() == f.getIdCategoria())) errores.rejectValue("idCategoria", "invalida", "Selecciona una categoria valida");
+        FormularioPerfume anterior = original == null ? null : FormularioPerfume.desde(original);
+        validarNotas(f.getSeleccionSalida(), anterior == null ? List.of() : anterior.getSeleccionSalida(), "seleccionSalida", errores);
+        validarNotas(f.getSeleccionCorazon(), anterior == null ? List.of() : anterior.getSeleccionCorazon(), "seleccionCorazon", errores);
+        validarNotas(f.getSeleccionFondo(), anterior == null ? List.of() : anterior.getSeleccionFondo(), "seleccionFondo", errores);
+    }
+    private void validarNotas(List<String> notas, List<String> anteriores, String campo, BindingResult errores) {
+        if (notas != null && notas.stream().anyMatch(n -> n == null || (!OpcionesPerfume.NOTAS.contains(n) && !anteriores.contains(n)))) errores.rejectValue(campo, "invalida", "Selecciona notas validas");
     }
 }

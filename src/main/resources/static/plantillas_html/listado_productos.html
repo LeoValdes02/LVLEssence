@@ -4,18 +4,23 @@
     de dentro se aplicara a CADA elemento del array que le pasemos.
 -->
 
-<article class="product-card">
+<article class="product-card" data-producto-id="{{ID}}">
     <div class="product-media">
         <img
                 class="imagen-producto"
-                src="/mostrar_imagen?id={{ID}}"
+                src="/mostrar_imagen?id={{ID}}" loading="lazy"
                 alt="{{NOMBRE}}">
+        <span class="product-sin-imagen" hidden>Imagen no disponible</span>
+        <button type="button" class="galeria-anterior" aria-label="Imagen anterior" hidden>&#8249;</button>
+        <button type="button" class="galeria-siguiente" aria-label="Imagen siguiente" hidden>&#8250;</button>
+        <span class="galeria-indicador" aria-hidden="true" hidden></span>
+        <button type="button" class="favorito-agregar product-favorito" data-id="{{ID}}" aria-label="Anadir a favoritos" aria-pressed="false"><span aria-hidden="true">&#9825;</span></button>
     </div>
 
     <div class="product-info">
         <p class="product-brand">{{MARCA}}</p>
         <h2 class="product-name">{{NOMBRE}}</h2>
-        <p class="product-meta">{{CATEGORIA}}</p>
+        <p class="product-meta">{{FAMILIA}}</p>
         {{#TIENE_DESCUENTO}}
         <div class="precio-anterior"><s>{{PRECIO_ORIGINAL}} EUR</s> <span class="oferta-insignia">-{{DESCUENTO_PORCENTAJE}}%</span></div>
         {{/TIENE_DESCUENTO}}
@@ -28,7 +33,7 @@
                 Ver detalles
             </a>
 
-            <input
+            <label class="cantidad-tarjeta" for="cantidad_{{ID}}">Cantidad</label><input
                     class="quantity-input"
                     id="cantidad_{{ID}}"
                     type="number"
@@ -39,7 +44,7 @@
             <button
                     class="btn btn-primary"
                     type="button"
-                    onclick="agregarProductoCarrito({{ID}})">
+                    onclick="agregarProductoCarrito({{ID}}, this)">
                 Agregar al carrito
             </button>
         </div>

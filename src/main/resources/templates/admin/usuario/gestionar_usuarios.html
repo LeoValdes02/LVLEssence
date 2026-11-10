@@ -49,7 +49,7 @@
 
                 <form th:action="@{/admin/borrarUsuario}"
                       method="post"
-                      onsubmit="return confirm('¿Seguro que quieres borrar este usuario?')">
+                      data-confirmar="¿Seguro que quieres borrar este usuario?" onsubmit="return window.LVLFeedback ? true : confirm('¿Seguro que quieres borrar este usuario?')">
 
                     <input type="hidden" name="id" th:value="${u.id}">
 
@@ -58,7 +58,7 @@
                     </button>
                 </form>
                 <br>
-                <a class="btn btn-danger" th:href="@{/admin/editarUsuario(id=${u.id})}">Editar</a>
+                <a class="btn btn-secondary" th:href="@{/admin/editarUsuario(id=${u.id})}">Editar</a>
                 <br>
             </div>
         </article>
