@@ -6,13 +6,14 @@
         const boton = document.querySelector('.detalle-favorito[data-id="' + id + '"]');
         if (!boton) return;
         boton.setAttribute('aria-pressed', String(activo));
-        boton.textContent = LVLI18n.t(activo ? 'Eliminar de favoritos' : 'Anadir a favoritos');
+        boton.querySelector('.favorito-texto').textContent = LVLI18n.t(activo ? 'Eliminar de favoritos' : 'Anadir a favoritos');
+        boton.querySelector('.favorito-icono').textContent = activo ? '♥' : '♡';
         boton.dataset.favoritoActivo = String(activo);
     };
     document.addEventListener('lvl:idioma-cambiado', function () {
         const boton = document.querySelector('.detalle-favorito');
         if (boton) window.marcarFavoritoDetalle(Number(boton.dataset.id), boton.dataset.favoritoActivo === 'true');
-        document.querySelectorAll('.detalle-miniaturas button').forEach((b, i) => b.setAttribute('aria-label', (LVLI18n.idioma() === 'en' ? 'Show image ' : 'Mostrar imagen ') + (i + 1)));
+        document.querySelectorAll('.detalle-miniaturas button').forEach((b, i) => b.setAttribute('aria-label', LVLI18n.t('Mostrar imagen') + ' ' + (i + 1)));
     });
     window.iniciarDetallePremium = function (id, version, versionActual) {
         window.limpiarDetallePremium();
@@ -37,7 +38,7 @@
                 miniaturas.hidden = false;
                 urls.forEach(function (url, i) {
                     const b = document.createElement('button'), thumb = document.createElement('img');
-                    b.type = 'button'; b.setAttribute('aria-label', (LVLI18n.idioma() === 'en' ? 'Show image ' : 'Mostrar imagen ') + (i + 1));
+                    b.type = 'button'; b.setAttribute('aria-label', LVLI18n.t('Mostrar imagen') + ' ' + (i + 1));
                     b.setAttribute('aria-pressed', String(i === 0)); thumb.src = url; thumb.alt = ''; thumb.loading = 'lazy'; b.append(thumb);
                     b.addEventListener('click', () => seleccionar(i), {signal}); miniaturas.append(b);
                 });

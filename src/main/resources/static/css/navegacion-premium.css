@@ -6,6 +6,18 @@
 .premium-nav.premium-compacta .premium-logo { transform: scale(.94); }
 .premium-enlaces, .premium-utilidades { display: flex; align-items: center; gap: clamp(10px, 1.4vw, 22px); }
 .premium-utilidades { justify-content: flex-end; }
+.premium-utilidades .nav-utilidad { position: relative; width: 44px; min-width: 44px; height: 44px; justify-content: center; }
+.premium-nav .nav-icono { width: 22px; height: 22px; padding: 0; border: 0; background: transparent; color: #cbe9fd; }
+.premium-nav .premium-icono { display: block; flex: 0 0 22px; width: 22px; height: 22px; background-color: #cbe9fd; -webkit-mask: var(--icono) center / contain no-repeat; mask: var(--icono) center / contain no-repeat; }
+.premium-icono-buscar { --icono: url('/icons/search.png'); }
+.premium-icono-cuenta { --icono: url('/icons/user.png'); }
+.premium-icono-favoritos { --icono: url('/icons/corazon.png'); }
+.premium-icono-carrito { --icono: url('/icons/shopping-bag.png'); }
+.premium-nav :is(.nav-utilidad, .premium-carrito-movil):is(:hover, :focus-visible) .premium-icono { background-color: #81b5fc; }
+.premium-nav :is(.nav-utilidad[aria-expanded="true"], .premium-cuenta[open] > .nav-utilidad, .nav-utilidad[aria-current="page"], .nav-utilidad:target, .premium-carrito-movil[aria-current="page"]) .premium-icono { background-color: #3781fc; }
+.premium-utilidades .nav-etiqueta { position: absolute; z-index: 2; top: calc(100% + 4px); left: 50%; transform: translateX(-50%); padding: .4rem .65rem; border: 1px solid var(--glass-border); border-radius: var(--radius-sm); background: var(--glass-solid); color: var(--text); white-space: nowrap; opacity: 0; visibility: hidden; pointer-events: none; }
+.premium-utilidades .nav-utilidad:hover .nav-etiqueta, .premium-utilidades .nav-utilidad:focus-visible .nav-etiqueta { opacity: 1; visibility: visible; }
+.premium-utilidades #contador_carrito { position: absolute; top: 0; right: 0; }
 .premium-nav a, .premium-nav button, .premium-cuenta summary, .premium-cuenta-movil summary { color: var(--text); text-decoration: none; background: transparent; border: 0; padding: 5px 0; font: inherit; font-size: .82rem; cursor: pointer; }
 .premium-enlaces > a, .premium-utilidades > a, .premium-utilidades > button, .premium-cuenta > summary { min-height: 44px; display: inline-flex; align-items: center; }
 .premium-nav a:hover, .premium-nav button:hover { color: var(--accent); }

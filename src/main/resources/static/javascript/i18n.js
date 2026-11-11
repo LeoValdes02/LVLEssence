@@ -8,6 +8,21 @@
 
     const CLAVE = "lvl-essence-idioma";
     const diccionario = {
+        "Identifícate": "Sign in",
+        "Mostrar imagen": "Show image",
+        "Progreso de compra": "Checkout progress",
+        "Envío": "Shipping",
+        "Envoltorio": "Gift wrap",
+        "Confirmación": "Confirmation",
+        "Carrito": "Bag",
+        "Descubre nuestra selección de perfumes.": "Discover our selection of perfumes.",
+        "Amaderados": "Woody",
+        "Cítricos": "Citrus",
+        "Orientales": "Oriental",
+        "Selecciones destacadas": "Featured selections",
+        "Último añadido": "Latest arrival",
+        "Ver categoría": "View category",
+        "Ver más": "See more",
         "Productos sugeridos": "Suggested products",
         "Ver todos los resultados": "See all results",
         "Buscando...": "Searching...",
@@ -383,6 +398,23 @@
             "Responsibilities and dispute resolution mechanisms."
     };
 
+    const japones = {
+        "Hola,": "こんにちは、", "Identifícate": "ログイン", "Carrito": "カート", "Inicio": "ホーム", "Tienda": "ショップ", "Sobre nosotros": "私たちについて", "Notas": "香りのノート",
+        "Buscar": "検索", "Buscar perfume": "香水を検索", "Cuenta": "アカウント", "Favoritos": "お気に入り", "Ver carrito": "カートを見る",
+        "Iniciar sesion": "ログイン", "Iniciar sesión": "ログイン", "Registrarme": "新規登録", "Cerrar sesion": "ログアウト", "Cerrar sesión": "ログアウト",
+        "Idioma": "言語", "Cambiar idioma": "言語を変更", "Elige tu idioma": "言語を選択", "Selecciona el idioma de la tienda.": "ショップの言語を選択してください。", "Cerrar": "閉じる",
+        "Menu": "メニュー", "Cerrar menu": "メニューを閉じる", "Navegacion principal": "メインナビゲーション", "Navegación principal": "メインナビゲーション",
+        "Descubre nuestra selección de perfumes.": "厳選された香水をご覧ください。", "Amaderados": "ウッディ", "Cítricos": "シトラス", "Orientales": "オリエンタル", "Selecciones destacadas": "おすすめコレクション", "Último añadido": "新着アイテム", "Ver categoría": "カテゴリーを見る", "Ver más": "もっと見る",
+        "Bienvenido a LVL ESSENCE": "LVL ESSENCEへようこそ", "Perfumería selecta": "厳選されたフレグランス", "Aromas elegidos para dejar memoria": "記憶に残る、選び抜かれた香り", "Explora una selección de perfumes para descubrir tu próxima fragancia.": "厳選された香水から、次のお気に入りの香りを見つけましょう。", "Explorar perfumes": "香水を見る",
+        "Productos sugeridos": "おすすめ商品", "Ver todos los resultados": "すべての検索結果を見る", "Buscando...": "検索中...", "Sin resultados.": "該当する商品はありません。", "Error al buscar. Puedes realizar la búsqueda completa.": "検索に失敗しました。通常の検索をお試しください。",
+        "Categoría": "カテゴリー", "Todas": "すべて", "Precio mín. (€)": "最低価格 (€)", "Precio máx. (€)": "最高価格 (€)", "Sin límite": "指定なし", "Ordenar por": "並び替え", "Nombre: A-Z": "名前順 A–Z", "Nombre: Z-A": "名前順 Z–A", "Precio: menor a mayor": "価格の安い順", "Precio: mayor a menor": "価格の高い順", "Más recientes": "新着順", "Aplicar filtros": "絞り込む", "Limpiar": "クリア", "Cargando perfumes...": "香水を読み込み中...", "Anterior": "前へ", "Siguiente": "次へ", "Página anterior": "前のページ", "Página siguiente": "次のページ", "Ver detalles": "詳細を見る", "Agregar al carrito": "カートに入れる", "Cantidad": "数量", "Imagen no disponible": "画像はありません",
+        "Notas de fragancia": "香りのノート", "Notas olfativas": "香りのノート", "Notas de salida": "トップノート", "Notas de corazon": "ミドルノート", "Notas de fondo": "ベースノート", "No especificadas": "未指定", "No especificado": "未指定", "Precio original": "通常価格", "Precio final": "販売価格", "Volver al catalogo": "ショップに戻る", "Anadir a favoritos": "お気に入りに追加", "Eliminar de favoritos": "お気に入りから削除", "Cargando favoritos...": "お気に入りを読み込み中...", "Valoraciones": "レビュー", "Sin valoraciones": "まだ評価はありません", "Tu puntuacion": "あなたの評価", "Guardar puntuacion": "評価を保存", "Reducir cantidad": "数量を減らす", "Aumentar cantidad": "数量を増やす", "Imagen anterior": "前の画像", "Imagen siguiente": "次の画像",
+        "Tu selección": "選択した商品", "Carrito de compra": "ショッピングカート", "Subtotal": "小計", "Total": "合計", "Tu carrito está vacío.": "カートは空です。", "Realizar pedido": "購入手続きへ", "Continuar compra": "購入手続きを続ける", "Eliminar perfume": "商品を削除", "Resumen de compra": "注文内容", "Unidades": "点数", "Datos de envío": "配送先情報", "Paso 1 de 4": "ステップ 1 / 4", "Nombre completo": "氏名", "Dirección": "住所", "Provincia": "都道府県・地域", "Ciudad": "市区町村", "Código postal": "郵便番号", "Continuar al pago": "支払いへ進む", "Datos de pago": "お支払い情報", "Paso 2 de 4": "ステップ 2 / 4", "Continuar": "続ける", "Personaliza tu pedido": "ご注文の設定", "Paso 3 de 4": "ステップ 3 / 4", "Ver resumen del pedido": "注文内容を確認", "Resumen del pedido": "注文内容", "Paso 4 de 4 - Confirmación": "ステップ 4 / 4 - 確認", "Confirmar pedido": "注文を確定", "¡Pedido confirmado!": "注文を受け付けました！", "Pago simulado": "模擬決済", "Personalización": "カスタマイズ",
+        "Crear cuenta": "アカウント作成", "Nombre": "名", "Apellidos": "姓", "Correo electrónico": "メールアドレス", "Contraseña": "パスワード", "Teléfono": "電話番号", "Mostrar contraseña": "パスワードを表示", "Enviando...": "送信中...", "Credenciales incorrectas.": "認証情報が正しくありません。", "Correo o contraseña incorrectos.": "メールアドレスまたはパスワードが正しくありません。", "Todos los campos son obligatorios.": "すべての項目を入力してください。",
+        "Notificaciones": "お知らせ", "Cerrar notificación": "通知を閉じる", "Confirmar acción": "操作の確認", "¿Deseas continuar?": "続行しますか？", "Confirmar": "確認", "Cancelar": "キャンセル", "Eliminar": "削除", "Reintentar": "再試行", "Contacto": "お問い合わせ", "Política de privacidad": "プライバシーポリシー", "Política de devoluciones": "返品ポリシー", "Términos y servicios": "利用規約", "Administración": "管理画面", "Volver al inicio": "ホームに戻る",
+        "Progreso de compra": "購入手続きの進行状況", "Envío": "配送", "Envoltorio": "ギフト包装", "Confirmación": "確認", "Mostrar imagen": "画像を表示", "votos": "件の評価"
+    };
+
     // Las plantillas de Mustache pueden mezclar etiquetas con datos variables.
     // Traducimos únicamente el prefijo conocido, conservando el dato dinámico.
     const prefijos = [
@@ -410,12 +442,21 @@
     const originalesAtributos = new WeakMap();
     let idioma = "es";
     try {
-        if (localStorage.getItem(CLAVE) === "en") idioma = "en";
+        const guardado = localStorage.getItem(CLAVE);
+        if (guardado === "en" || guardado === "ja") idioma = guardado;
     } catch (_) { /* Navegadores sin almacenamiento: solo sesión actual. */ }
 
     function traducirFrase(frase) {
-        if (idioma !== "en") return frase;
+        if (idioma === "es") return frase;
         const limpia = frase.replace(/\s+/g, " ").trim();
+        if (idioma === "ja") {
+            if (Object.prototype.hasOwnProperty.call(japones, limpia)) return japones[limpia];
+            const cantidad = limpia.match(/^(\d+) (?:perfume encontrado|perfumes encontrados)$/);
+            if (cantidad) return cantidad[1] + "件の香水が見つかりました";
+            const paginaJa = limpia.match(/^Ir a la página (\d+)$/);
+            if (paginaJa) return paginaJa[1] + "ページへ";
+            return frase;
+        }
         if (Object.prototype.hasOwnProperty.call(diccionario, limpia)) return diccionario[limpia];
         // Textos generados: «11 perfumes encontrados», «1 perfume encontrado», etc.
         const recuento = limpia.match(/^(\d+) (perfume encontrado|perfumes encontrados)$/);
@@ -451,7 +492,7 @@
         }
         const limpio = registro.original.trim();
         const traducido = traducirFrase(limpio);
-        const esperado = idioma === "en" && traducido !== limpio
+        const esperado = idioma !== "es" && traducido !== limpio
             ? registro.original.replace(limpio, traducido)
             : registro.original;
         registro.ultimo = esperado;
@@ -500,7 +541,7 @@
     }
 
     function establecerIdioma(nuevo) {
-        if (nuevo !== "es" && nuevo !== "en") return;
+        if (nuevo !== "es" && nuevo !== "en" && nuevo !== "ja") return;
         idioma = nuevo;
         try { localStorage.setItem(CLAVE, idioma); } catch (_) { /* no disponible */ }
         actualizarSelector();

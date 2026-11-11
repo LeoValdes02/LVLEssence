@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap');
+
 :root {
     --blue-deep: #03195b;
     --blue-dark: #0b2cb1;
@@ -47,8 +49,8 @@
     --space-lg: 1.5rem;
     --space-xl: 2.5rem;
     --space-2xl: 4rem;
-    --font-title: "Playfair Display", Georgia, serif;
-    --font-body: "Inter", Arial, sans-serif;
+    --font-title: "Helvetica Neue", Helvetica, "Yu Gothic", "Hiragino Kaku Gothic ProN", Meiryo, Arial, sans-serif;
+    --font-body: "Outfit", "Yu Gothic", "Hiragino Kaku Gothic ProN", Meiryo, Arial, sans-serif;
     --transition: .25s ease;
 }
 
@@ -71,6 +73,39 @@ body {
     background: var(--bg);
     font-family: var(--font-body);
     line-height: 1.6;
+}
+
+/* Fondo ambiental exclusivo de la tienda pública. */
+body.public-page {
+    position: relative;
+    isolation: isolate;
+    background-color: var(--bg);
+}
+body.public-page::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background-image: linear-gradient(rgba(3, 15, 42, .78), rgba(3, 15, 42, .88)), url('/imagenes_productos_iniciales/bg1.png');
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    pointer-events: none;
+}
+
+/* Fondo ambiental exclusivo de administración. */
+body.admin-page {
+    position: relative;
+    isolation: isolate;
+    background-color: var(--bg);
+}
+body.admin-page::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    background: linear-gradient(rgba(3, 15, 42, .65), rgba(3, 15, 42, .78)), url('/imagenes_productos_iniciales/bg3.jfif') center / cover no-repeat;
+    pointer-events: none;
 }
 
 a {
@@ -925,10 +960,6 @@ tr:hover td {
     font-size: .88rem;
     font-weight: 700;
 }
-.admin-seleccion-oferta input[type="checkbox"] {
-    width: 1.05rem;
-    height: 1.05rem;
-}
 @media (max-width: 600px) {
     .admin-descuentos-controles .btn { width: 100%; }
 }
@@ -1215,13 +1246,14 @@ input.glass-switch:disabled, .glass-icon-button:disabled { opacity: .6; cursor: 
 .admin-page .admin-menu-abrir, .admin-page .admin-menu-cerrar { display: none; min-height: 44px; padding: .6rem 1rem; border: 1px solid var(--glass-border); border-radius: var(--radius-pill); color: var(--text); background: var(--glass-raised); font: inherit; cursor: pointer; }
 .admin-page .admin-nav[hidden] { display: none; }
 .admin-page .admin-perfume-card { grid-template-columns: minmax(80px, 110px) minmax(0, 1fr); align-items: start; }
+.admin-page .admin-product-grid { grid-template-columns: repeat(auto-fit, minmax(min(100%, 480px), 1fr)); }
 .admin-page .admin-perfume-card > img { width: 100%; height: 145px; object-fit: contain; }
 .admin-page .admin-perfume-card .product-price { margin-top: .35rem; }
 .admin-page .admin-seleccion-oferta { display: flex; align-items: center; gap: .65rem; min-height: 44px; cursor: pointer; }
 .admin-page .admin-seleccion-oferta input { flex: 0 0 auto; }
 .admin-page .admin-catalogo-acciones { display: flex; flex-wrap: wrap; align-items: center; gap: .65rem; }
 .admin-page .admin-catalogo-acciones form { margin: 0; }
-.admin-page .admin-product-info { overflow-wrap: anywhere; }
+.admin-page .admin-product-info { overflow-wrap: break-word; }
 .admin-page .admin-product-card:not(.admin-perfume-card) { grid-template-columns: minmax(0, 1fr); }
 .admin-page .luxury-form, .admin-page .form-field { min-width: 0; }
 .admin-page .luxury-form input, .admin-page .luxury-form select, .admin-page .luxury-form textarea { max-width: 100%; }
@@ -1248,3 +1280,43 @@ input.glass-switch:disabled, .glass-icon-button:disabled { opacity: .6; cursor: 
     .admin-page .admin-product-grid { grid-template-columns: minmax(0, 1fr); }
 }
 @media (prefers-reduced-motion: reduce) { .admin-page .admin-nav a, .admin-page .admin-nav a::after, .admin-page .admin-seleccion-oferta input::before { transition: none; } }
+
+.icono-cuenta { width: 22px; height: 22px; vertical-align: middle; flex: none; }
+.favorito-icono { display: inline-block; font-family: Arial, sans-serif; font-size: 1.55rem; line-height: 1; }
+.favorito-agregar[aria-pressed="true"] .favorito-icono { color: #ffb8d2; }
+.escaparate { grid-column: 1 / -1; min-width: 0; padding: clamp(2rem, 5vw, 4rem) 0; }
+.escaparate > h2 { font-family: var(--font-title); }
+.hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+.hero-content { min-width: 0; }
+.hero-imagen { align-self: stretch; min-width: 0; min-height: 430px; overflow: hidden; }
+.hero-imagen img { width: 100%; height: 100%; object-fit: cover; object-position: center 48%; display: block; }
+.escaparate-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(1rem, 2vw, 1.5rem); }
+.escaparate-bloque { display: grid; grid-template-columns: minmax(0, 1fr); min-width: 0; overflow: hidden; border: 1px solid var(--glass-border); border-radius: var(--radius-lg); background: var(--glass-solid); }
+.escaparate-1, .escaparate-4 { grid-column: 1 / -1; grid-template-columns: minmax(0, 1.1fr) minmax(0, .9fr); }
+.escaparate-4 .escaparate-media { order: 1; }
+.escaparate-media { min-width: 0; min-height: 270px; background: var(--gradient-hero); }
+.escaparate-media > img { display: block; width: 100%; height: 100%; min-height: 270px; max-height: 420px; object-fit: cover; object-position: center; }
+.escaparate-texto { min-width: 0; padding: clamp(1.5rem, 3vw, 3rem); align-self: center; }
+.escaparate-bloque h2 { font-family: var(--font-title); overflow-wrap: break-word; }
+.escaparate-bloque .btn { max-width: 100%; white-space: normal; text-align: center; }
+.escaparate-producto { display: flex; align-items: center; gap: .75rem; margin: 1.25rem 0; min-width: 0; overflow-wrap: break-word; }
+.escaparate-producto img { flex: 0 0 64px; width: 64px; height: 72px; object-fit: contain; border-radius: .5rem; background: var(--glass-raised); }
+.premium-enlaces a[aria-current="page"] { color: var(--blue-ice); text-decoration: underline; text-underline-offset: .4em; }
+.admin-page .admin-seleccion-oferta { width: 100%; justify-content: flex-start; text-align: left; padding: .5rem 0; }
+.admin-page .admin-seleccion-oferta input.glass-switch { flex: 0 0 2.75rem; width: 2.75rem; height: 1.5rem; margin: 0; }
+.admin-page .admin-seleccion-oferta span { min-width: 0; line-height: 1.4; }
+.admin-page .admin-product-info { overflow-wrap: break-word; }
+.admin-page .admin-catalogo-acciones .btn { min-height: 44px; }
+.admin-page .admin-perfume-card .product-details { grid-template-columns: minmax(0, 1fr); }
+@media (max-width: 800px) {
+    .hero { grid-template-columns: minmax(0, 1fr); }
+    .hero-imagen { min-height: 280px; max-height: 420px; }
+    .escaparate-grid { grid-template-columns: minmax(0, 1fr); }
+    .escaparate-1, .escaparate-4 { grid-column: auto; grid-template-columns: minmax(0, 1fr); }
+    .escaparate-4 .escaparate-media { order: 0; }
+}
+@media (max-width: 640px) {
+    .admin-page .admin-perfume-card { grid-template-columns: minmax(0, 1fr); }
+    .admin-page .admin-perfume-card > img { width: 100%; height: 150px; }
+    .admin-page .admin-perfume-card .product-details { grid-template-columns: minmax(0, 1fr); }
+}

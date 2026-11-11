@@ -11,8 +11,7 @@
     <link href="https://fonts.googleapis.com" rel="preconnect">
     <link crossorigin href="https://fonts.gstatic.com" rel="preconnect">
 
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
-          rel="stylesheet">
+
 
     <link href="/css/estilos.css" rel="stylesheet">
     <link href="/css/feedback-premium.css" rel="stylesheet">
@@ -21,11 +20,11 @@
     <link href="/css/acceso-premium.css" rel="stylesheet">
     <link href="/css/navegacion-premium.css" rel="stylesheet">
 </head>
-<body>
+<body class="public-page">
 
 <header class="site-header premium-nav" id="navegacion-premium">
     <div class="premium-nav-bar">
-        <button type="button" class="premium-movil" id="nav-movil" aria-label="Menu" aria-expanded="false" aria-controls="nav-enlaces">&#9776; <span>Menu</span></button>
+        <button type="button" class="premium-movil" id="nav-movil" aria-label="Menu" aria-expanded="false" aria-controls="nav-enlaces"><svg class="nav-icono" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M3 6h18M3 12h18M3 18h18"/></svg><span>Menu</span></button>
         <nav class="premium-enlaces" id="nav-enlaces" aria-label="Navegacion principal">
             <button type="button" class="premium-cerrar-movil" id="cerrar-menu">Cerrar menu</button>
             <a href="#inicio" data-ruta="inicio">Inicio</a>
@@ -44,13 +43,13 @@
             <form id="panel-busqueda" class="premium-busqueda" hidden><label for="buscar-nav">Buscar perfume</label><input id="buscar-nav" type="search" inputmode="search" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="sugerencias-lista"><button type="submit">Buscar</button><button type="button" id="cerrar-busqueda">Cerrar</button><div id="sugerencias-panel" class="sugerencias-panel" hidden><p class="sugerencias-titulo">Productos sugeridos</p><p id="sugerencias-estado" role="status" aria-live="polite"></p><ul id="sugerencias-lista" role="listbox" aria-label="Productos sugeridos"></ul><button type="submit" class="sugerencias-todos">Ver todos los resultados</button></div></form>
         </nav>
         <a class="premium-logo" href="#inicio" id="inicio" data-ruta="inicio">LVL ESSENCE</a>
-        <a class="premium-carrito-movil" href="#carrito" data-ruta="carrito" aria-label="Ver carrito"><span aria-hidden="true">&#9635;</span><span class="contador-carrito-movil" hidden></span></a>
+        <a class="premium-carrito-movil" href="#carrito" data-ruta="carrito" aria-label="Ver carrito"><span class="premium-icono premium-icono-carrito" aria-hidden="true"></span><span class="contador-carrito-movil" hidden></span></a>
         <div class="premium-utilidades">
-            <button type="button" id="abrir-busqueda" aria-expanded="false" aria-controls="panel-busqueda" aria-label="Buscar"><span aria-hidden="true">&#9906;</span> <span>Buscar</span></button>
-            <details id="menu_usuario" class="premium-cuenta"><summary aria-label="Cuenta" aria-expanded="false"><span aria-hidden="true">&#9823;</span> <span class="cuenta-etiqueta">Cuenta</span><span id="cliente_identificado" data-no-traducir hidden></span></summary><div><div class="cuenta-invitado"><a href="#identificarme" id="identificarme" data-ruta="identificarme">Iniciar sesion</a><a href="#registrarme" id="registrarme" data-ruta="registrarme">Registrarme</a></div><div class="cuenta-identificada" hidden><a href="#cerrar" id="cerrar_sesion">Cerrar sesion</a></div></div></details>
-            <a href="#favoritos" id="favoritos" data-ruta="favoritos" aria-label="Favoritos"><span aria-hidden="true">&#9825;</span> <span>Favoritos</span></a>
-            <a href="#carrito" id="carrito" data-ruta="carrito" aria-label="Ver carrito"><span aria-hidden="true">&#9635;</span> <span id="contador_carrito" hidden></span></a>
-            <button type="button" id="abrir_modal_idioma" aria-label="Cambiar idioma" title="Cambiar idioma" aria-haspopup="dialog" aria-controls="modal_idioma"><span id="etiqueta_idioma" data-no-traducir>ES</span></button>
+            <button type="button" id="abrir-busqueda" class="nav-utilidad" aria-expanded="false" aria-controls="panel-busqueda" aria-label="Buscar"><span class="premium-icono premium-icono-buscar" aria-hidden="true"></span><span class="nav-etiqueta" aria-hidden="true">Buscar</span></button>
+            <details id="menu_usuario" class="premium-cuenta"><summary class="nav-utilidad" aria-label="Identifícate" aria-expanded="false"><span class="premium-icono premium-icono-cuenta" aria-hidden="true"></span><span class="nav-etiqueta" aria-hidden="true">Identifícate</span></summary><div><span id="cliente_identificado" data-no-traducir hidden></span><div class="cuenta-invitado"><a href="#identificarme" id="identificarme" data-ruta="identificarme">Iniciar sesion</a><a href="#registrarme" id="registrarme" data-ruta="registrarme">Registrarme</a></div><div class="cuenta-identificada" hidden><a href="#cerrar" id="cerrar_sesion">Cerrar sesion</a></div></div></details>
+            <a href="#favoritos" id="favoritos" class="nav-utilidad" data-ruta="favoritos" aria-label="Favoritos"><span class="premium-icono premium-icono-favoritos" aria-hidden="true"></span><span class="nav-etiqueta" aria-hidden="true">Favoritos</span></a>
+            <a href="#carrito" id="carrito" class="nav-utilidad" data-ruta="carrito" aria-label="Ver carrito"><span class="premium-icono premium-icono-carrito" aria-hidden="true"></span><span id="contador_carrito" hidden></span><span class="nav-etiqueta" aria-hidden="true">Carrito</span></a>
+            <button type="button" id="abrir_modal_idioma" class="nav-utilidad" aria-label="Cambiar idioma" aria-haspopup="dialog" aria-controls="modal_idioma"><span id="etiqueta_idioma" data-no-traducir>ES</span><span class="nav-etiqueta" aria-hidden="true">Idioma</span></button>
         </div>
     </div>
 </header>
@@ -87,6 +86,8 @@
                     aria-pressed="true" lang="es">Español <span>ES</span></button>
             <button type="button" class="opcion-idioma" data-idioma="en" data-no-traducir
                     aria-pressed="false" lang="en">English <span>EN</span></button>
+            <button type="button" class="opcion-idioma" data-idioma="ja" data-no-traducir
+                    aria-pressed="false" lang="ja">日本語 <span>JA</span></button>
         </div>
         <button type="button" id="cerrar_modal_idioma" class="btn btn-secondary">Cerrar</button>
     </div>
@@ -126,7 +127,7 @@
     let nombreClienteActual = '';
     function actualizarSaludo() {
         $('#cliente_identificado').text(nombreClienteActual
-            ? (LVLI18n.idioma() === 'en' ? 'Hello, ' : 'Hola, ') + nombreClienteActual : '');
+            ? LVLI18n.t('Hola,') + ' ' + nombreClienteActual : '');
     }
     document.addEventListener('lvl:idioma-cambiado', actualizarSaludo);
     function actualizarSesion() {
@@ -134,6 +135,8 @@
             $('.cuenta-invitado, .cuenta-etiqueta').prop('hidden', usuario.identificado);
             $('.cuenta-identificada, #cliente_identificado').prop('hidden', !usuario.identificado);
             nombreClienteActual = usuario.identificado ? usuario.nombre : '';
+            const etiquetaCuenta = usuario.identificado ? 'Cuenta' : 'Identifícate';
+            $('#menu_usuario summary').attr('aria-label', etiquetaCuenta).find('.nav-etiqueta').text(etiquetaCuenta);
             actualizarSaludo();
             window.actualizarContadorCarrito?.();
         });
@@ -249,7 +252,31 @@
     }
 
     function mostrar_inicio() {
-        mostrar_perfumes(true);
+        const version = idNavegacion;
+        cargaPlantillaInicio.done(function () {
+            if (version !== idNavegacion) return;
+            $('#contenedor').html(plantilla_inicio);
+            $.getJSON('/restPerfumes/categorias').done(function (categorias) {
+                ['Amaderados', 'Cítricos', 'Orientales'].forEach(function (nombre) {
+                    const categoria = categorias.find(c => c.nombre.toLocaleLowerCase('es') === nombre.toLocaleLowerCase('es'));
+                    if (!categoria) return;
+                    $.getJSON('/restPerfumes/buscar', {categoriaId: categoria.id, pagina: 1}).done(function (datos) {
+                        if (version === idNavegacion) agregarEscaparate(categoria.nombre, datos.perfumes[0], categoria.id);
+                    });
+                });
+            });
+            $.getJSON('/restPerfumes/buscar', {orden: 'recientes', pagina: 1}).done(function (datos) {
+                if (version === idNavegacion && datos.perfumes.length) agregarEscaparate('Último añadido', datos.perfumes[0], '');
+            });
+        });
+    }
+
+    function agregarEscaparate(titulo, perfume, categoriaId) {
+        const destino = categoriaId === '' ? '#perfumes/recientes' : '#perfumes/categoria/' + encodeURIComponent(categoriaId);
+        const orden = {'Amaderados': 1, 'Cítricos': 2, 'Orientales': 3, 'Último añadido': 4}[titulo];
+        const imagenes = {1: 'hero5.webp', 2: 'hero4.webp', 3: 'hero3.webp', 4: 'hero6.webp'};
+        const html = '<article class="escaparate-bloque escaparate-{{orden}}" style="order: {{orden}}"><div class="escaparate-media"><img src="/imagenes_productos_iniciales/{{imagen}}" alt="" loading="lazy"></div><div class="escaparate-texto"><p class="eyebrow">LVL ESSENCE</p><h2>{{titulo}}</h2><p>Descubre nuestra selección de perfumes.</p>{{#producto}}<div class="escaparate-producto"><img src="/mostrar_imagen?id={{id}}" alt="{{nombre}}" loading="lazy" onerror="this.hidden=true"><span data-no-traducir>{{marca}} · {{nombre}}</span></div>{{/producto}}<a class="btn btn-secondary" href="{{destino}}">{{cta}}</a></div></article>';
+        $('#escaparate').append(Mustache.render(html, {producto: perfume, titulo: titulo, destino: destino, orden: orden, imagen: imagenes[orden], cta: categoriaId === '' ? 'Ver más' : 'Ver categoría'}));
     }
 
     function cargarCategoriasCatalogo() {
@@ -487,7 +514,7 @@
         idNavegacion++;
         if (detalleDesdeFavoritos) { detalleDesdeFavoritos = false; window.mostrarFavoritos(); return; }
         const ruta = decodeURIComponent(location.hash.slice(1)) || "inicio";
-        mostrar_perfumes(ruta === "inicio", paginaCatalogoActual);
+        if (ruta === 'inicio') mostrar_inicio(); else mostrar_perfumes(false, paginaCatalogoActual);
     });
 
     // =====================================================
@@ -572,6 +599,7 @@
                     if (formulario.isConnected) { mensaje.textContent = "Bienvenido a LVL ESSENCE. Has iniciado sesión."; formulario.reset(); formulario.querySelector('#pass').type = 'password'; formulario.querySelector('.acceso-ver-password').setAttribute('aria-pressed', 'false'); }
                     actualizarSesion();
                     window.reanudarFavorito?.();
+                    irARuta('inicio');
                 } else {
                     if (formulario.isConnected) { mensaje.dataset.error = 'true'; mensaje.textContent = "Credenciales incorrectas."; }
                 }
@@ -961,7 +989,17 @@
         window.limpiarDetallePremium?.();
         idNavegacion++;
         const vistaSolicitada = idNavegacion;
-        const ruta = decodeURIComponent(location.hash.slice(1)) || 'inicio';
+        const hash = decodeURIComponent(location.hash.slice(1)) || 'inicio';
+        const categoriaRuta = hash.match(/^perfumes\/categoria\/(\d+)$/);
+        const ruta = categoriaRuta || hash === 'perfumes/recientes' ? 'perfumes' : hash;
+        if (categoriaRuta) {
+            Object.assign(filtrosCatalogo, {texto: '', categoriaId: categoriaRuta[1], precioMin: '', precioMax: '', orden: 'nombreAsc'});
+        }
+        if (hash === 'perfumes/recientes') Object.assign(filtrosCatalogo, {texto: '', categoriaId: '', precioMin: '', precioMax: '', orden: 'recientes'});
+        document.querySelectorAll('.premium-enlaces a[data-ruta]').forEach(function (enlace) {
+            if (enlace.dataset.ruta === ruta) enlace.setAttribute('aria-current', 'page');
+            else enlace.removeAttribute('aria-current');
+        });
         $('#menu_usuario').prop('open', false);
 
         if (ruta === 'inicio') {
@@ -1013,7 +1051,7 @@
 
     $(document).on('click', '#explorar_catalogo', function (e) {
         e.preventDefault();
-        document.getElementById('catalogo_inicio')?.scrollIntoView({behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth', block: 'start'});
+        irARuta('perfumes');
     });
 
     window.addEventListener('hashchange', navegarDesdeHash);

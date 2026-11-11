@@ -6,9 +6,9 @@
         if (!paso || contenedor.querySelector('.checkout-progreso')) return;
         const nav = document.createElement('nav');
         nav.className = 'checkout-progreso';
-        nav.setAttribute('aria-label', LVLI18n.idioma() === 'en' ? 'Checkout progress' : 'Progreso de compra');
+        nav.setAttribute('aria-label', 'Progreso de compra');
         const lista = document.createElement('ol');
-        const nombres = LVLI18n.idioma() === 'en' ? ['Shipping', 'Simulated payment', 'Gift wrap', 'Confirmation'] : ['Envío', 'Pago simulado', 'Envoltorio', 'Confirmación'];
+        const nombres = ['Envío', 'Pago simulado', 'Envoltorio', 'Confirmación'];
         nombres.forEach(function (nombre, i) {
             const item = document.createElement('li');
             item.className = i + 1 < paso ? 'completado' : i + 1 === paso ? 'actual' : 'pendiente';

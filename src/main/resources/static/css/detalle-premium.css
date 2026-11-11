@@ -10,7 +10,7 @@
 .detalle-concentracion { color: var(--blue-ice); letter-spacing: .14em; }
 .detalle-descripcion { color: #e0eaff; line-height: 1.65; margin: 16px auto; max-width: 60ch; overflow-wrap: anywhere; }
 .detalle-escena { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(250px, 1.5fr) minmax(0, 1fr); gap: 20px; align-items: center; min-height: 510px; }
-.detalle-nombre-fondo { position: absolute; width: 100%; top: 43%; transform: translateY(-50%); text-align: center; overflow: hidden; color: rgba(203,233,253,.1); font: 700 clamp(3rem, 10vw, 10rem)/1 'Playfair Display', serif; white-space: nowrap; pointer-events: none; }
+.detalle-nombre-fondo { position: absolute; width: 100%; top: 43%; transform: translateY(-50%); text-align: center; overflow: hidden; color: rgba(203,233,253,.1); font: 700 clamp(3rem, 10vw, 10rem)/1 var(--font-title); white-space: nowrap; pointer-events: none; }
 .detalle-caracteristicas { display: grid; gap: clamp(24px, 4vw, 58px); position: relative; z-index: 1; }
 .detalle-caracteristica { display: flex; gap: 13px; align-items: flex-start; border-bottom: 1px solid var(--borde); padding: 0 0 14px; }
 .detalle-caracteristica > span, .detalle-nota > span { color: var(--azul); font-size: 1.4rem; }
@@ -23,13 +23,15 @@
 .detalle-imagen-ausente[hidden] { display: none; }
 .detalle-imagen[hidden] { display: none; }
 .detalle-notas { position: relative; border-top: 1px solid var(--borde); text-align: center; padding: 40px 0; }
-.detalle-notas > h2 { font: 600 clamp(1.8rem, 3vw, 2.6rem) 'Playfair Display', serif; color: #fff; margin: 0 0 30px; }
+.detalle-notas > h2 { font: 600 clamp(1.8rem, 3vw, 2.6rem) var(--font-title); color: #fff; margin: 0 0 30px; }
 .detalle-notas-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
 .detalle-nota { border: 1px solid var(--borde); border-radius: var(--radius-md); background-color: var(--glass-solid); background-image: var(--glass-reflection); box-shadow: var(--glass-inset); padding: 24px 14px; }
 .detalle-nota h3 { color: #fff; font-size: 1rem; margin: 10px 0; }
 .detalle-nota ul { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; padding: 0; margin: 0; list-style: none; }
 .detalle-nota li { border: 1px solid var(--borde); border-radius: 99px; padding: 5px 10px; color: #e5f0ff; overflow-wrap: anywhere; }
 .detalle-nota p { color: #d5e4ff; margin: 0; }
+.detalle-nota { background: transparent; box-shadow: none; border: 0; border-top: 1px solid var(--borde); border-radius: 0; }
+.detalle-nota li { background: var(--glass-solid); }
 .detalle-compra { display: flex; justify-content: space-between; align-items: center; gap: 24px; border: 1px solid var(--borde); border-radius: var(--radius-lg); background-color: var(--glass-solid); background-image: var(--glass-reflection); box-shadow: var(--glass-inset); padding: clamp(20px, 3vw, 30px); }
 .detalle-precio-original { color: var(--blue-ice); }
 .detalle-precio-original[hidden] { display: none; }

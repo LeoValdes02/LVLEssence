@@ -34,7 +34,7 @@
     window.marcarFavoritoCatalogo = function (id, activo) {
         document.querySelectorAll('.product-favorito[data-id="' + id + '"]').forEach(b => {
             b.setAttribute('aria-pressed', String(activo));
-            b.setAttribute('aria-label', activo ? 'Eliminar de favoritos' : 'Anadir a favoritos');
+            b.setAttribute('aria-label', LVLI18n.t(activo ? 'Eliminar de favoritos' : 'Anadir a favoritos'));
             b.querySelector('span').textContent = activo ? '♥' : '♡';
         });
     };
